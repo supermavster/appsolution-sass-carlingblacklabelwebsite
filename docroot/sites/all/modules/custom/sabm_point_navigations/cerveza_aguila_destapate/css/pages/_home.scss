@@ -1,0 +1,164 @@
+//
+// HOME
+//
+
+&-home {
+  
+  @include section-container();
+  
+  @include e(container) {
+    position: relative;
+    padding: em(24px) 0 em(32px);
+    border-bottom: em(6px) solid white;
+    
+    @include media-breakpoint-up(lg) {
+      border-width: em(8px);
+      padding: em(48px) 0 em(56px);
+    }
+  }
+  
+  @include e(background) {
+    background-image: image('destapate-bg-primary.png');
+    background-position: center center;
+    background-size: cover;
+    overflow: hidden;
+    
+    @include media-breakpoint-up(lg) {
+      background-position: center bottom;
+    }
+  }
+  
+  @include e(heading) {
+    //margin-bottom: rem(12px);
+    
+    @include media-breakpoint-up(lg) {
+      //margin-bottom: rem(24px);
+    }
+  }
+  
+  @include e(body) {
+    $body-offset: rem(10px);
+    @include ms-respond(font-size, 1);
+    display: block;
+    margin-top: $body-offset;
+    letter-spacing: rem(-.4px);
+    color: palette(themes, secondary);
+    text-align: center;
+  
+  
+    @include media-breakpoint-down(md) {
+      max-width: 75vw;
+      margin-right: auto;
+      margin-left: auto;
+    }
+  
+    @media (max-width: 320px) {
+      max-width: 70vw;
+    }
+    
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, 0);
+      letter-spacing: rem(-.2px);
+      margin-top: $body-offset * 1.6;
+    }
+    
+    @include m(medium) {
+      @include ms-respond(font-size, 3);
+  
+      @include media-breakpoint-up(lg) {
+        @include ms-respond(font-size, 2);
+      }
+    }
+    
+    @include m(white) {
+      color: white;
+    }
+    
+    @include m(mask) {
+      @include media-breakpoint-up(lg) {
+        position: relative;
+        z-index: 1;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: -$body-offset * 1.6;
+          left: 50%;
+          bottom: -$body-offset * 1.6;
+          width: 100vw;
+          background-color: rgba(palette(themes, primary), .5);
+          transform: translateX(-50%);
+          z-index: -1;
+        }
+      }
+    }
+  }
+  
+  @include e(list) {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    
+    li {
+      
+      @include media-breakpoint-up(lg) {
+        
+        span {
+          position: relative;
+          
+          $dot-size: .4em;
+          
+          &::before {
+            content: '';
+            position: absolute;
+            left: -$dot-size * 2;
+            top: 50%;
+            width: $dot-size;
+            height: $dot-size;
+            border-radius: 50%;
+            background-color: palette(themes, secondary);
+            transform: translateY(-50%);
+          }
+        }
+        
+      }
+      
+      p {
+        display: inherit;
+        text-transform: uppercase;
+        
+        @include media-breakpoint-up(lg) {
+          @include ms-respond(font-size, -1)
+        }
+      }
+    }
+  }
+  
+  @include e(btn) {
+  
+    span {
+      @include text-stroke(#ff1100, initial);
+    }
+  
+    @include m(referees) {
+  
+      span::before {
+        content: 'conoce los jurados';
+      }
+    }
+  
+    @include m(gallery) {
+    
+      span::before {
+        content: 'galería de historias';
+      }
+    }
+  
+    @include m(upload) {
+    
+      span::before {
+        content: 'Sube tu video o foto';
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+<?php
+/**
+ * Implements hook_library_alter().
+ */
+function ab_jquery_update_library_alter(&$libraries, $module) {
+  if ($module !== 'system') {
+    return;
+  }
+  
+  if (!path_is_admin(current_path())) {
+    $libraries['jquery']['version'] = '1.12.0';
+    $libraries['jquery']['js'] = array(
+      drupal_get_path('module', 'ab_jquery_update') . '/js/jquery.1.12.0.min.js' => array('group' => JS_LIBRARY, 'weight' => -20),
+    );
+
+    $libraries['jquery']['dependencies'] = array(
+      array('ab_jquery_update', 'ab_jquery_update_msie'),
+    );
+
+    $libraries['jquery.cookie']['version'] = '1';
+    $libraries['jquery.cookie']['js'] = array(
+      drupal_get_path('module', 'ab_jquery_update') . '/js/jquery.cookie.js' => array(),
+    );
+  }
+}
+/**
+ * Implements hook_library.
+ */
+function ab_jquery_update_library() {
+  $libraries['ab_jquery_update_msie'] = array(
+    'title' => 'MSIE',
+    'version' => '1',
+    'js' => array(
+      drupal_get_path('module', 'ab_jquery_update') . '/js/jquery.msie.js' => array(),
+    ),
+  );
+
+  return $libraries;
+}

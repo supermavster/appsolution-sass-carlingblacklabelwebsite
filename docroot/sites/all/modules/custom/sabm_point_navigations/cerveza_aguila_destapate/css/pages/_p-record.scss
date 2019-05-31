@@ -1,0 +1,387 @@
+//
+// _p-record
+//
+
+&-p-record {
+  $border-width: rem(5px);
+  $frame-offset: rem(8px);
+  position: relative;
+  @extend %page-wrapper;
+  
+  @include media-breakpoint-down(md) {
+    padding-bottom: 60vw;
+  }
+  
+  @include media-breakpoint-up(lg) {
+    background-position: center 75%;
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    @include responsive-image('destapate-bg-video_record_mask');
+    background-size: cover;
+    background-position: center bottom;
+  }
+  
+  @include m(upload) {
+  
+    &::before {
+      @include responsive-image('destapate-bg-video_upload-mask');
+      background-size: contain;
+      background-position: center bottom;
+    }
+  }
+  
+  @include e(heading) {
+    
+    &::before {
+      mix-blend-mode: initial !important;
+      content: 'Luces, cámara, destápate';
+    }
+    
+    @include m(upload) {
+      
+      &::before {
+        content: 'Ya está listo tu video' !important;
+      }
+    }
+    
+  }
+  
+  @include e(subheading) {
+    @extend %subheading;
+    color: palette(themes, secondary);
+    margin-bottom: rem(10px);
+    
+    @include media-breakpoint-down(md) {
+      font-size: ms(5) !important;
+    }
+    
+    @include m(upload) {
+      
+      @include media-breakpoint-down(md) {
+        font-size: ms(2) !important;
+      }
+    }
+  }
+  
+  @include e(video) {
+    position: relative;
+    margin-bottom: em(16px);
+    
+    @include media-breakpoint-up(lg) {
+      margin-bottom: em(48px);
+    }
+    
+    video.embed-responsive-item {
+      padding: ($border-width * 0.9);
+      
+      @include media-breakpoint-up(lg) {
+        padding: ($border-width * 1.5);
+      }
+    }
+  }
+  
+  @include e(embed) {
+    @extend %embed-responsive;
+    @extend %embed-responsive-4by3;
+    
+    video,
+    img,
+    iframe {
+      @extend %embed-responsive-item;
+      object-fit: cover;
+    }
+  }
+  
+  @include e(frame) {
+    
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    z-index: 1;
+    border: $border-width solid white;
+    pointer-events: none;
+    
+    @include media-breakpoint-up(lg) {
+      border-width: $border-width * 2;
+    }
+    
+    @include m(inner) {
+      border: ($border-width / 2) solid white;
+      flex-grow: 1;
+      margin: $frame-offset;
+      
+      @include media-breakpoint-up(lg) {
+        border-width: $border-width * 2;
+        margin: $frame-offset * 1.75;
+      }
+    }
+  }
+  
+  @include e(controls) {
+    position: relative;
+    z-index: 0;
+    padding: em(4px) em(8px);
+    
+    @include media-breakpoint-up(lg) {
+      
+      padding: em(6px) em(10px);
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      mix-blend-mode: color-burn;
+      background-color: rgba(palette(themes, secondary), .9);
+      z-index: -1;
+    }
+    
+    .btn-grabando {
+      $dot-size: em(8px);
+      position: relative;
+      margin-left: $dot-size * 1.5;
+      
+      &::before {
+        display: block;
+        position: absolute;
+        content: '';
+        left: -$dot-size * 1.5;
+        width: $dot-size;
+        height: $dot-size;
+        top: 50%;
+        border-radius: 50%;
+        background-color: #ff0000;
+        transform: translateY(-50%);
+      }
+    }
+  
+    .time {
+      display: none;
+    }
+    
+    .time,
+    .btn-grabando {
+      @extend %body;
+    }
+  }
+  
+  .destapate-btn {
+    margin-bottom: rem(16px) !important;
+    
+    @include media-breakpoint-down(md) {
+      width: 100% !important;
+    }
+    
+    span {
+      @include text-stroke(#0045a1, initial);
+  
+      &::before {
+        content: 'INICIAR GRABACIÓN ';
+      }
+    }
+  }
+  
+  #recorder {
+    overflow: visible;
+    
+    & > div {
+      @extend %embed-responsive-item;
+    }
+    
+    .ba-videorecorder-theme-modern-chooser-container {
+      background-color: palette(themes, secondary);
+      background-image: image('destapate-img-video-poster.png');
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .ba-videorecorder-theme-modern-chooser-button-container {
+      display: none;
+    }
+    
+    .ba-videorecorder-theme-modern-label-label {
+      @extend %body;
+      width: auto;
+      left: auto;
+      z-index: 62;
+      bottom: -4em;
+      top: initial;
+  
+      @include media-breakpoint-up(lg) {
+        bottom: -1.5em;
+      }
+    }
+    
+    .ba-videorecorder-theme-modern-chooser-button-0 {
+      background-color: transparent;
+      background-image: image('destapate-img-btn.png');
+      background-size: contain;
+      background-position: center;
+      mix-blend-mode: multiply;
+      width: calc(100vw - #{$grid-gutter-width} * 2);
+      height: 56px;
+      transform: translateY(50vw);
+      opacity: .9;
+      
+      span {
+        display: none;
+        opacity: 0;
+      }
+  
+      @include media-breakpoint-up(md) {
+        display: none;
+      }
+    }
+  }
+  
+  form#cerveza-aguila-destapate-form-video-record {
+    justify-content: space-around;
+    max-width: calc(#{map-get($grid-breakpoints, "xl")} / 1);
+    margin: 0 auto;
+  
+    @include media-breakpoint-down(md) {
+      text-align: center;
+    }
+    
+    & > div {
+      @include make-row();
+      justify-content: center;
+      
+      & > input[type="submit"],
+      & > a {
+        @include make-col(12);
+        @extend %btn;
+        margin-bottom: rem(16px) !important;
+  
+        @include media-breakpoint-up(lg) {
+          @include make-col(5);
+          margin-right: rem(16px) !important;
+          margin-left: rem(16px) !important;
+          mix-blend-mode: initial !important;
+        }
+      }
+  
+      & > a {
+        @include text-stroke(#0045a1, initial);
+        
+        &.destapate-upload__submit {
+          &::before {
+            content: 'Guardar y compartir' !important;
+          }
+        }
+      }
+  
+      & > a:not(.destapate-register__submit) {
+  
+        &::before {
+          content: 'Grabar de nuevo';
+        }
+      }
+  
+      & > input[type="submit"] {
+        display: none !important;
+  
+        @include text-stroke(#0045a1, initial);
+  
+        &::before {
+          content: 'Grabar de nuevo';
+        }
+      }
+      
+      #edit-wrapper {
+        @include make-col-ready();
+        
+        @include media-breakpoint-up(lg) {
+          @include make-col(8);
+          
+          .form-item {
+            margin-right: auto;
+            margin-left: auto;
+  
+            &:not(.form-item-terms) {
+              max-width: calc(#{map-get($grid-breakpoints, "md")} / 2);
+            }
+  
+            &.form-item-terms {
+              margin-bottom: rem(24px);
+  
+              label {
+                margin: 0 auto;
+                width: auto;
+              }
+            }
+          }
+        }
+       
+        
+        input[type="text"],
+        select {
+          text-align: center;
+        }
+      }
+    }
+    
+    .form-item {
+      
+      &.form-item-name label {
+        display: none !important;
+      }
+      
+      label {
+        //font-size: ms(5);
+        margin-bottom: rem(4px);
+        color: palette(themes, secondary);
+        display: block;
+        
+        &.option {
+          
+          a {
+            color: palette(themes, secondary);
+          }
+        }
+        
+        &.option {
+          @include media-breakpoint-down(xs) {
+            @include ms-respond(font-size, 2);
+          }
+        }
+      }
+    }
+    
+  }
+  .group-record {
+    display: none;
+  }
+  
+  .destapate-btn {
+    mix-blend-mode: initial;
+
+    span {
+      display: inline-block;
+    }
+  }
+  
+  .btn-start {
+    
+    img {
+      width: 1em;
+      height: 1em;
+      transform: translateY(-4px);
+      margin-left: 14px;
+    }
+  }
+}

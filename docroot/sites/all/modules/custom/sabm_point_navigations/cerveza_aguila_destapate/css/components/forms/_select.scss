@@ -1,0 +1,12 @@
+select {
+  @extend %box;
+  $select-icon: rem(10px);
+  background-image: image('destapate-icon-arrow_down.png');
+  background-position: calc(100% - #{$select-icon * 1.25}) 50%;
+  background-size: $select-icon;
+  padding-right: $select-icon * 2;
+  
+  &:invalid {
+    color: palette(grays, muted);
+  }
+}

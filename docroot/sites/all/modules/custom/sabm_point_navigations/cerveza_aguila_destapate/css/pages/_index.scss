@@ -1,0 +1,17 @@
+// Page components
+// --------
+
+
+.#{$project-name} {
+  @import "home";
+  @import "terms";
+  @import "register";
+  @import "p-select";
+  @import "p-upload";
+  @import "p-link";
+  @import "p-record";
+  @import "p-gallery";
+  @import "p-share";
+  @import "p-referee";
+  @import "p-terms";
+}

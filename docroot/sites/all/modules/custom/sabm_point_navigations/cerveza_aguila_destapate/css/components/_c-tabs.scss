@@ -1,0 +1,132 @@
+//
+// _c-tabs
+//
+
+&-c-tabs {
+  
+  @include e(list) {
+    @include make-row();
+    @extend %box-wrapper;
+    justify-content: center;
+  
+    @include media-breakpoint-up(lg) {
+      border: rem(2px) solid white;
+      flex-wrap: nowrap;
+      margin: 0 auto;
+    }
+
+    .text {
+      opacity: 0;
+      position: absolute;
+      width: 90vw;
+      top: -6.1em;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: map-get($grid-breakpoints, "lg");
+      text-align: center;
+
+      @include media-breakpoint-up(lg) {
+        width: 100vw;
+        top: -3.5em;
+      }
+
+      &::before {
+        width: 90vw;
+        left: 50%;
+        transform: translateX(-50%);
+
+        @include media-breakpoint-up(lg) {
+          width: 100vw;
+        }
+      }
+    }
+  }
+  
+  @include e(item) {
+    @include make-col-ready();
+    position: initial;
+    padding: 0;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none; // Reset earlier grid tiers
+  
+    @include media-breakpoint-up(lg) {
+      height: 100%;
+      margin: 0 -1px;
+    }
+
+    &.active-tab {
+
+
+      .text {
+        opacity: 1;
+      }
+
+      .destapate-c-tabs__link {
+        opacity: 1;
+        mix-blend-mode: initial;
+      }
+    }
+  }
+  
+  @include e(link) {
+    @extend %btn--tertiary;
+    @include ms-respond(font-size, 1);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: rem(8px);
+    padding-bottom: rem(8px);
+    width: 100%;
+    height: 100%;
+    line-height: 1;
+    border-radius: 0;
+    background-color: transparent;
+    opacity: .7;
+    mix-blend-mode: multiply;
+  
+    @include media-breakpoint-up(lg) {
+      font-size: ms(5) !important;
+      padding: rem(12px) rem(12px) !important;
+      margin-top: -1px;
+    }
+    
+    @include hover-focus {
+      background-color: transparent;
+      
+      &::before,
+      &::after {
+        @extend %transition;
+        background-color: rgba(palette(themes, tertiary), .7);
+      }
+    }
+  
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      mix-blend-mode: color-burn;
+      background-color: rgba(palette(themes, tertiary), .35);
+  
+      @include media-breakpoint-up(lg) {
+        background-color: rgba(palette(themes, tertiary), .5);
+      }
+    }
+  
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, -2);
+      padding-right: 0;
+      padding-left: 0;
+    }
+    
+    @include m(active) {
+      opacity: 1;
+      mix-blend-mode: initial;
+    }
+  }
+}

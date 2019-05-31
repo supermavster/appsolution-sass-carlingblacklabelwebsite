@@ -1,0 +1,146 @@
+//
+// REFEREE
+//
+
+&-p-referee {
+  @extend %page-container;
+  position: relative;
+  position: relative;
+  background-image: image('destapate-bg-pattern.jpg');
+  background-size: 250vw;
+  background-repeat: repeat-y;
+  background-position: center top;
+  
+  @include media-breakpoint-up(lg) {
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-bottom: 35vw;
+  
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: image('destapate-bg-referee-mask.png');
+      background-size: contain;
+      background-position: center 117%;
+    }
+  }
+  
+  @include e(heading) {
+    @include ms-respond(font-size, 9);
+    @include text-stroke(palette(themes, tertiary), initial);
+    margin-bottom: rem(8px);
+  
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, 6);
+      margin-bottom: rem(0px);
+      //margin-bottom: rem(32px);
+    }
+
+    &::before {
+      content: 'conoce los jurados';
+    }
+  }
+  
+  @include e(subheading) {
+    @include ms-respond(font-size, 5);
+    text-align: center;
+    color: #fff;
+    margin: rem(0px) auto rem(40px);
+    padding: rem(8px) rem(24px) rem(16px);
+  
+    &::before {
+      display: block;
+      background-color: rgba(palette(themes, secondary), .5);
+  
+  
+      @include media-breakpoint-down(md) {
+        width: auto;
+        left: $grid-gutter-width;
+        right: $grid-gutter-width;
+        transform: none;
+      }
+  
+      @include media-breakpoint-up(lg) {
+        background-color: rgba(#acb622, .5);
+      }
+    }
+  
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, 0);
+      padding-top: rem(32px);
+      padding-bottom: rem(32px);
+    }
+  }
+  
+  @include e(list) {
+    max-width: calc(#{map-get($grid-breakpoints, "xl")} + (#{$grid-gutter-width} * 6));
+    margin: 0 auto;
+  }
+  
+  @include e(item) {
+    margin-bottom: rem(32px);
+  
+    @include media-breakpoint-up(lg) {
+      margin-right: $grid-gutter-width * 2;
+      margin-left: $grid-gutter-width * 2;
+    }
+  }
+  
+  @include e(media) {
+    margin: 0 auto;
+    max-width: em(300px);
+    //max-height: em(300px);
+    border: ($border-width * 2) solid white;
+    
+    img {
+      object-fit: cover;
+    }
+  }
+  
+  @include e(summary) {
+    position: relative;
+    margin-top: rem(16px);
+    padding: rem(16px) rem(2px);
+    @include ms-respond(font-size, 5);
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+    z-index: 1;
+  
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, -1);
+      margin-top: 0;
+    }
+  
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -$grid-gutter-width;
+      right: -$grid-gutter-width;
+      height: 100%;
+      background-color: rgba(#00b9e8, .6);
+      mix-blend-mode: multiply;
+      z-index: -1;
+    }
+  }
+  
+  @include e(btn) {
+    @extend %btn;
+    @extend %btn--tertiary;
+    mix-blend-mode: initial !important;
+  
+    span {
+      @include text-stroke(#ff0b00, initial);
+    
+      &::before {
+        content: 'Regresar al inicio';
+      }
+    }
+  }
+}

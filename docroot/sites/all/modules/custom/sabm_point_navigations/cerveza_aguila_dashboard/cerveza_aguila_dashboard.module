@@ -1,0 +1,582 @@
+<?php
+require_once "sites/cervezaaguila/libraries/vendor/autoload.php";
+define('APPLICATION_NAME', 'Google Sheets API PHP Quickstart');
+define('CREDENTIALS_PATH', drupal_get_path('module', 'cerveza_aguila_dashboard') . '/resources/.credentials/sheets.googleapis.com.json');
+define('CLIENT_SECRET_PATH', drupal_get_path('module', 'cerveza_aguila_dashboard') . '/resources/client_secret.json');
+// If modifying these scopes, delete your previously saved credentials
+// at ~/.credentials/sheets.googleapis.com-php-quickstart.json
+define('SCOPES', implode(' ', array(
+  Google_Service_Sheets::SPREADSHEETS_READONLY)
+));
+date_default_timezone_set('America/New_York'); // Prevent DateTime tz exception
+
+/**
+ * Implements hook_permission().
+ */
+function cerveza_aguila_dashboard_permission() {
+  return array(
+    'cerveza_aguila_dashboard view dashboard' => array(
+      'title' => 'View Dashboard',
+    )
+  );
+}
+/**
+ * Implements hook_menu().
+ */
+function cerveza_aguila_dashboard_menu() {
+  return array(
+    'dashboard_aguila' => array(
+      'title' => 'Dashboard',
+      'page callback' => 'cerveza_aguila_dashboard_home',
+      'access callback' => TRUE,
+    ),
+    'admin/config/system/dashboard' => array(
+      'title' => 'Dashboard configuracion ventas',
+      'page callback' => 'cerveza_aguila_dashboard',
+      'access arguments' =>  array('administer site configuration'),
+    ),
+    'admin/config/system/dashboard/dashboard-aguila' => array(
+      'title' => 'Dashboard configuración ventas',
+      'page callback' => 'cerveza_aguila_dashboard_config',
+      'access arguments' =>  array('administer site configuration'),
+    ),
+    'admin/config/system/dashboard-redencion' => array(
+      'title' => 'Dashboard configuración redención',
+      'page callback' => 'cerveza_aguila_rendicion_config',
+      'access arguments' =>  array('administer site configuration'),
+    ),
+  );
+}
+
+function cerveza_aguila_dashboard_home() {
+  if (user_access('cerveza_aguila_dashboard view dashboard')) {
+    return array();
+  }
+  else {
+    drupal_set_message('No tiene permisos para ver el dashboard', 'error');
+    drupal_goto('user');
+  }
+}
+
+
+function cerveza_aguila_dashboard_config(){
+  $form = drupal_get_form('dashboard_config_form');
+  return $form;
+}
+
+function cerveza_aguila_rendicion_config(){
+  $form = drupal_get_form('rendicion_config_form');
+  return $form;
+}
+
+
+function cerveza_aguila_share_config(){
+  $form = drupal_get_form('share_config_form');
+  return $form;
+}
+
+
+function cerveza_aguila_dashboard(){
+  $original = getSales(0);
+  $light = getSales(1);
+  $cero = getSales(2);
+  $aguila = getSales(3);
+  $items = array(
+      'original'     =>$original,
+      'light'        =>$light,
+      'cero'         =>$cero,
+      'aguila'       =>$aguila,
+    );
+  return theme('dashboard_custom',array('items' => $items));
+}
+
+
+/**
+ * Implements hook_form().
+ */
+function dashboard_config_form($form, &$form_state){
+  // #tree will ensure the HTML elements get named distinctively.
+  // Not just name=[name] but name=[container][123][name].
+  $form['#tree'] = TRUE;
+  if (empty($form_state['number_names'])) {
+    $form_state['number_names'] = 1;
+  }
+
+  for ($i = 1; $i <= $form_state['number_names']; $i++) {
+
+    $form['container'][$i] = array(
+      '#type' => 'container',
+    );
+    $form['container'][$i]['type'] = array(
+       '#type' => 'select',
+       '#title' => t('Tipo'),
+       '#options' => array(
+          0 => t('Original'),
+          1 => 'Light',
+          2 => t('Cero'),
+       ),
+       '#description' => t('Seleccione el tipo de la información a cargar'),
+       '#required' => TRUE
+    );
+
+    $form['container'][$i]['cantidad'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Cantidad'),
+      '#size' => 60,
+      '#maxlength' => 128,
+      '#required' => TRUE,
+    );
+
+    $form['container'][$i]['budget'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Budget'),
+      '#size' => 60,
+      '#maxlength' => 128,
+      '#required' => TRUE,
+    );
+  }
+
+  $form['add_item'] = array(
+    '#type' => 'submit',
+    '#value' => t('Add another'),
+    '#submit' => array('dashboard_config_form_add_item'),
+  );
+
+  if ($form_state['number_names'] > 1) {
+
+    $form['remove_item'] = array(
+      '#type' => 'submit',
+      '#value' => t('Remove latest'),
+      '#submit' => array('dashboard_config_form_remove_item'),
+      // Since we are removing a name, don't validate until later.
+      '#limit_validation_errors' => array(),
+    );
+  }
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Guardar'));
+
+   return $form;
+}
+
+function dashboard_config_form_add_item($form, &$form_state) {
+  // All we need is to increase the number used in our for loop above ...
+  $form_state['number_names']++;
+  // ... and rebuild our form.
+  $form_state['rebuild'] = TRUE;
+}
+
+function dashboard_config_form_remove_item($form, &$form_state) {
+  // Just the other way around until only one item is left ...
+  if ($form_state['number_names'] > 1) {
+    $form_state['number_names']--;
+  }
+  // ... and form rebuild again.
+  $form_state['rebuild'] = TRUE;
+}
+
+function rendicion_config_form($form, &$form_state){
+  $sobre= getSurrenders(0);
+  $copas= getSurrenders(1);
+  $form['sobres'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Sobres'),
+    '#default_value' => $sobre['total'],
+    '#required' => TRUE,
+  );
+  $form['copas'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Copas'),
+    '#default_value' => $copas['total'],
+    '#required' => TRUE,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Guardar'));
+  return $form;
+}
+
+function share_config_form($form, &$form_state){
+  $form['aguila'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Aguila'),
+    '#default_value' => variable_get('aguila', ''),
+    '#required' => TRUE,
+  );
+
+  $form['cocacola'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Coca Cola'),
+    '#default_value' => variable_get('cocacola', ''),
+    '#required' => TRUE,
+  );
+
+  $form['visa'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Visa'),
+    '#default_value' => variable_get('visa', ''),
+    '#required' => TRUE,
+  );
+
+  $form['bancolombia'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Bancolombia'),
+    '#default_value' => variable_get('bancolombia', ''),
+    '#required' => TRUE,
+  );
+
+  $form['homecenter'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Homecenter'),
+    '#default_value' => variable_get('homecenter', ''),
+    '#required' => TRUE,
+  );
+
+  $form['movistar'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Movistar'),
+    '#default_value' => variable_get('movistar', ''),
+    '#required' => TRUE,
+  );
+
+  $form['adidas'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Adidas'),
+    '#default_value' => variable_get('adidas', ''),
+    '#required' => TRUE,
+  );
+
+  $form['total'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Total'),
+    '#default_value' => variable_get('total', ''),
+    '#required' => TRUE,
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_form_submit().
+ */
+function dashboard_config_form_submit($form, &$form_state) {
+  global $user;
+  foreach ($form_state['values']['container'] as $key => $value) {
+    try{
+      $venta = db_insert('cerveza_aguila_dashboard_ventas') // Table name no longer needs {}
+              ->fields(array(
+                'uid' => $user->uid,
+                'created' => REQUEST_TIME,
+                'vendido' => $value['cantidad'],
+                'budget'=> $value['budget'],
+                'tipo'=> $value['type']
+              ))
+              ->execute();
+      drupal_set_message(t('Se guardaron correctamente los registros'), 'status');
+      watchdog('cerveza_aguila_dashboard','Se guardo registro correctamente');
+    }catch(Exception $e){
+        watchdog('cerveza_aguila_dashboard','Excepción capturada: '. $e->getMessage());
+    }
+  }
+}
+
+function rendicion_config_form_submit($form, &$form_state){
+  global $user;
+  try{
+      $sobres = db_insert('cerveza_aguila_dashboard_rendiciones') // Table name no longer needs {}
+              ->fields(array(
+                'uid' => $user->uid,
+                'created' => REQUEST_TIME,
+                'total' => $form_state['values']['sobres'],
+                'type'=> 0,
+              ))
+              ->execute();
+      $copas = db_insert('cerveza_aguila_dashboard_rendiciones') // Table name no longer needs {}
+              ->fields(array(
+                'uid' => $user->uid,
+                'created' => REQUEST_TIME,
+                'total' => $form_state['values']['copas'],
+                'type'=> 1,
+              ))
+              ->execute();
+      drupal_set_message(t('Se guardaron correctamente los registros'), 'status');
+      watchdog('cerveza_aguila_dashboard_rendiciones','Se guardo registro correctamente');
+    }catch(Exception $e){
+        watchdog('cerveza_aguila_dashboard_rendiciones','Excepción capturada: '. $e->getMessage());
+    }
+}
+
+/**
+ * HOOK_preprocess_HOOK().
+ */
+function cerveza_aguila_dashboard_preprocess_html(&$vars) {
+
+  $paths = array('dashboard_aguila');
+  if (drupal_match_path(current_path(), implode(PHP_EOL, $paths))) {
+    //Conexión
+    // Get the API client and construct the service object.
+    $client = getClient();
+    $service = new Google_Service_Sheets($client);
+
+    // Prints the names and majors of students in a sample spreadsheet:
+    // https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+    $spreadsheetId = '1S_O05GZplOdAD8SSnUUJcyW8i0EFSy98y_VaAMtqJKM';
+    $range = 'A2:M2';
+    $response = $service->spreadsheets_values->get($spreadsheetId, $range);
+    $values = $response->getValues();
+
+    $token = json_decode(getToken());
+    $feelings = json_decode(getFeelings($token->access_token));
+    $finalFeelings = finalFeelings($feelings->data);
+    $finalFeelings['negative'] = $values[0][10];
+    $finalFeelings['neutral'] = $values[0][11];
+    $finalFeelings['positve'] = $values[0][12];
+    $total = $feelings->meta->totalCount;
+    $original = getSales(0);
+    $light = getSales(1);
+    $cero = getSales(2);
+    $aguila = getSales(3);
+    $sobres = getSurrenders(0);
+    $copas = getSurrenders(1);
+    $data = array(
+      'finalFeelings'=>$finalFeelings,
+      'total'        => $values[0][2],
+      'original'     =>$original,
+      'light'        =>$light,
+      'cero'         =>$cero,
+      'aguila'       => $aguila,
+      'sobres'       => $sobres,
+      'copas'        => $copas,
+      'OrganicsViews'=> $values[0][0],
+      'TotalViews'   => $values[0][1],
+      'AguilaTotal'  => $values[0][3],
+      'Coca-Cola'    => $values[0][4],
+      'Adidas'       => $values[0][5],
+      'Movistar'     => $values[0][6],
+      'Homecenter'   => $values[0][7],
+      'Bancolombia'  => $values[0][8],
+      'Visa'         => $values[0][9],
+
+    );
+    $vars['data']=$data;
+  }
+}
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function cerveza_aguila_dashboard_theme_registry_alter(&$theme_registry) {
+  $extension = '.tpl.php';
+  $module_path = drupal_get_path('module', 'cerveza_aguila_dashboard');
+  $files = file_scan_directory($module_path . '/templates', '/' . preg_quote($extension) . '$/');
+
+  foreach ($files as $file) {
+    $template = drupal_basename($file->filename, $extension);
+    $theme = str_replace('-', '_', $template);
+    list($base_theme, $specific) = explode('__', $theme, 2);
+    // Don't override base theme.
+    if (!empty($specific) && isset($theme_registry[$base_theme])) {
+      $theme_info = array(
+        'template' => $template,
+        'path' => drupal_dirname($file->uri),
+        //'variables'  => $theme_registry[$base_theme]['variables'],
+        'base hook' => $base_theme,
+        // Other available value: theme_engine.
+        'type' => 'module',
+        'theme path' => $module_path,
+      );
+
+      $theme_registry[$theme] = $theme_info;
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cerveza_aguila_dashboard_theme($existing, $type, $theme, $path) {
+  $items = array();
+  $items['dashboard_custom'] = array(
+      'template' => 'templates/dashboard',
+      'variables' => array(
+        'items' => NULL
+      )
+  );
+  return $items;
+}
+
+
+
+/**
+ * Funciones custom
+ **/
+
+function getToken(){
+  $url = "https://api.socialstudio.radian6.com/oauth/token";
+  $query = http_build_query(
+            array(
+              'grant_type' => 'password',
+              'client_id'  => 'mcxx6cf8c9cd08b7445fb670ebb260ece552',
+              'client_secret'=> '30b1db3e5dbf41c7b161500d257d8a9a',
+              'username'   => 'bcamargo',
+              'password'   => 'fH940QC6m0Kzqx4'
+            )
+          );
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS,$query);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    //curl_setopt($ch,CURLOPT_TIMEOUT,4);
+    $server_output = curl_exec($ch);
+    curl_close ($ch);
+    return $server_output;
+ }
+
+
+function getFeelings($token){
+  $url = "https://api.socialstudio.radian6.com/v3/posts?topics=1215980&startDate=1522558800000&sinceId=757637496802";
+  $headers[] = 'Content-Type: application/json';
+  $headers[] = 'Authorization: Bearer ' . $token;
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL,$url);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  //curl_setopt($ch,CURLOPT_TIMEOUT,4);
+  $server_output2 = curl_exec($ch);
+
+  curl_close ($ch);
+
+  return $server_output2;
+}
+function finalFeelings($feelings){
+  $positive=0;
+  $negative=0;
+  $neutral=0;
+  foreach ($feelings as $key => $value) {
+    if($value->sentiment[0]->value == 0){
+      $neutral = $neutral + 1;
+    }elseif($value->sentiment[0]->value < 0){
+      $negative = $negative + 1;
+    }elseif($value->sentiment[0]->value > 0){
+      $positive = $positive + 1;
+    }
+  }
+  $data = array(
+    'neutral' => $neutral,
+    'negative'=> $negative,
+    'positve' => $positive
+  );
+  return $data;
+}
+
+
+/**
+ * Query custom
+ */
+function getSales($type){
+  $datos = array();
+  $query = db_select('cerveza_aguila_dashboard_ventas', 'v')
+    ->fields('v')
+    ->range(0,2)
+    ->orderBy('created', 'DESC')//ORDER BY created
+    ->condition('v.tipo', $type);
+  $result = $query->execute();
+
+  while($record = $result->fetchAssoc()) {
+      $datos[] = array(
+        'vendido' => $record['vendido'],
+        'bp'      => $record['bp'],
+        'budget'  => $record['budget'],
+        'tipo'  => $record['tipo']
+      );
+  }
+  return $datos;
+}
+
+
+function getSurrenders($type){
+  $result = db_select('cerveza_aguila_dashboard_rendiciones', 'r')
+    ->fields('r')
+    ->range(0,1)
+    ->orderBy('created', 'DESC')//ORDER BY created
+    ->condition('r.type', $type)
+    ->execute()
+    ->fetchAssoc();
+    return $result;
+}
+
+
+function getClient() {
+  $client = new Google_Client();
+  $client->setApplicationName(APPLICATION_NAME);
+  $client->setScopes(SCOPES);
+  $client->setAuthConfig(CLIENT_SECRET_PATH);
+  $client->setAccessType('offline');
+
+  // Load previously authorized credentials from a file.
+  $credentialsPath = expandHomeDirectory(CREDENTIALS_PATH);
+  if (file_exists($credentialsPath)) {
+    $accessToken = json_decode(file_get_contents($credentialsPath), true);
+  } else {
+    // Request authorization from the user.
+    $authUrl = $client->createAuthUrl();
+    $authCode = '4/AABiPVr_wCnLaN-xRPTSa_fUKzcb7g7DJ-VsNjYaiJIADo0CM_X4LgM';
+
+    // Exchange authorization code for an access token.
+    $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
+
+    // Store the credentials to disk.
+    if(!file_exists(dirname($credentialsPath))) {
+      mkdir(dirname($credentialsPath), 0700, true);
+    }
+    file_put_contents($credentialsPath, json_encode($accessToken));
+    printf("Credentials saved to %s\n", $credentialsPath);
+  }
+  $client->setAccessToken($accessToken);
+
+  // Refresh the token if it's expired.
+  if ($client->isAccessTokenExpired()) {
+    $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+    file_put_contents($credentialsPath, json_encode($client->getAccessToken()));
+  }
+  return $client;
+}
+
+/**
+ * Expands the home directory alias '~' to the full path.
+ * @param string $path the path to expand.
+ * @return string the expanded path.
+ */
+function expandHomeDirectory($path) {
+  $homeDirectory = getenv('HOME');
+  if (empty($homeDirectory)) {
+    $homeDirectory = getenv('HOMEDRIVE') . getenv('HOMEPATH');
+  }
+  return str_replace('~', realpath($homeDirectory), $path);
+}
+
+
+/**
+ * Download a file's content.
+ *
+ * @param Google_Service_Drive $service Drive API service instance.
+ * @param File $file Drive File instance.
+ * @return String The file's content if successful, null otherwise.
+ */
+function downloadFile($service, $file) {
+  $downloadUrl = $file->getDownloadUrl();
+  if ($downloadUrl) {
+    $request = new Google_Http_Request($downloadUrl, 'GET', null, null);
+    $httpRequest = $service->getClient()->getAuth()->authenticatedRequest($request);
+    if ($httpRequest->getResponseHttpCode() == 200) {
+      return $httpRequest->getResponseBody();
+    } else {
+      // An error occurred.
+      return null;
+    }
+  } else {
+    // The file doesn't have any content stored on Drive.
+    return null;
+  }
+}

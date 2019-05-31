@@ -1,0 +1,233 @@
+//
+// Interactions.
+//
+
+%transition {
+  transition: $transition;
+}
+
+%box-shadow {
+  box-shadow: 0 em(12px) em(24px) rgba(palette(grays, dark), .1);
+}
+
+//
+// Typography.
+//
+
+%lead,
+%h1,
+%h2,
+%h3,
+%h4,
+%h5,
+%h6,
+%body {
+  margin: 0;
+  font-weight: 400;
+  font-family: $font-stack-primary;
+}
+
+%lead {
+  @include ms-respond(font-size, 6);
+}
+
+%h1 {
+  @include ms-respond(font-size, 7);
+}
+
+%h2 {
+  @include ms-respond(font-size, 4);
+}
+
+%h3 {
+  @include ms-respond(font-size, 3);
+}
+
+%h4 {
+  @include ms-respond(font-size, 2);
+}
+
+%h5 {
+  @include ms-respond(font-size, 1);
+  line-height: em(28px, ms(1));
+}
+
+%body {
+  @include ms-respond(font-size, 0);
+  line-height: 1.2;
+}
+
+%small {
+  @include ms-respond(font-size, -1);
+}
+
+%tiny {
+  @include ms-respond(font-size, -2);
+}
+
+%smallcaps {
+  @include ms-respond(font-size, -2);
+  text-transform: uppercase;
+  letter-spacing: em(1px, ms(-2));
+}
+
+%caption {
+  @extend %tiny;
+}
+
+%heading-title {
+  @extend %h1;
+  font-weight: 600;
+}
+
+%text-shadow {
+  text-shadow: $text-shadow;
+  
+  @include media-breakpoint-up(lg) {
+    text-shadow: rem(0px) rem(3px) rem(.6px) rgba($color-secondary, .8);
+  }
+}
+
+%filter-shadow {
+  filter: drop-shadow(rem(2px) rem(2px) rem(0px) rgba($color-secondary, .9));
+  
+  @include media-breakpoint-up(lg) {
+    filter: drop-shadow(rem(4px) rem(4px) rem(0px) rgba($color-secondary, .9));
+  }
+}
+
+%text-stroke {
+  position: relative;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: center;
+  
+  &::before {
+    position: absolute;
+    left: 50%;
+    width: 100%;
+    transform: translateX(-50%);
+  }
+}
+
+%box {
+  
+  &-wrapper {
+    max-width: map-get($grid-breakpoints, "xl");
+  }
+  
+  &-item {
+    margin-bottom: $grid-gutter-width * 2;
+    
+    @include media-breakpoint-up(lg) {
+      padding-left: $grid-gutter-width * 1.5;
+      padding-right: $grid-gutter-width * 1.5;
+    }
+  }
+  
+  &-placeholder {
+    font-size: 14px;
+    margin-top: rem(10px);
+    color: palette(themes, secondary);
+    text-transform: uppercase;
+    text-align: center;
+  }
+  
+  &-content {
+    border: em(8px) solid palette(grays, 'white');
+  }
+}
+
+%page {
+  &-container {
+    padding-top: $page-offset-top;
+    padding-bottom: em(40px);
+    min-height: 100vh;
+    
+    @include media-breakpoint-up(lg) {
+      padding-top: $page-offset-top * 1.5;
+      //padding-bottom: em(32px);
+    }
+  }
+  
+  &-wrapper {
+    @extend %page-container;
+    background-image: image('destapate-bg-primary.png');
+    background-size: contain;
+    background-repeat: repeat-y;
+    background-position: center top;
+    
+    @include media-breakpoint-up(lg) {
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center top;
+    }
+  }
+  
+}
+
+%slider {
+  
+  @include e(wrapper) {
+    position: relative;
+  }
+  
+  @include e(arrow) {
+    position: absolute;
+    font-size: 0;
+    width: $slider-arrow-size;
+    height: $slider-arrow-size;
+    background-image: image('destapate-icon-arrow-secondary.svg');
+    background-size: contain;
+    appearance: none;
+    z-index: 1;
+    cursor: pointer;
+  
+    @include media-breakpoint-up(md) {
+      width: $slider-arrow-size * 1.5;
+      height: $slider-arrow-size * 1.5;
+    }
+    
+    @include m(prev) {
+      left: 0;
+      transform: scaleX(-1);
+    }
+    
+    @include m(next) {
+      right: 0;
+    }
+  }
+  
+  @include e(dots) {
+    position: absolute;
+    display: flex !important;
+    left: 50%;
+    margin-top: em(24px);
+    transform: translateX(-50%);
+    
+    li {
+  
+      button {
+        font-size: 0;
+        width: $slider-arrow-size;
+        height: $slider-arrow-size;
+        margin: 0 ($slider-arrow-size / 3);
+        background-color: transparent;
+        border-radius: 50%;
+        border: ($border-width * 4) solid white;
+        cursor: pointer;
+  
+        @include media-breakpoint-up(lg) {
+          width: $slider-arrow-size / 1.5;
+          height: $slider-arrow-size / 1.5;
+          margin: 0 ($slider-arrow-size / 6);
+        }
+      }
+  
+      &.slick-active button {
+        @extend %transition;
+        background-color: palette(themes, tertiary);
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+name = Menu Image
+description = Provides a field to upload an image and associate it with menu item.
+package = Menu
+core = 7.x
+php = 5.4
+
+files[] = menu_image.test
+
+dependencies[] = menu
+dependencies[] = image
+dependencies[] = managed_file
+
+; Information added by Drupal.org packaging script on 2016-02-08
+version = "7.x-1.0"
+core = "7.x"
+project = "menu_image"
+datestamp = "1454970541"
+

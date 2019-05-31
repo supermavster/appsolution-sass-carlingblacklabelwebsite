@@ -1,0 +1,23 @@
+<?php
+/**
+ * Implements hook_install().
+ */
+function cerveza_aguila_destapate_install() {
+  $v = taxonomy_vocabulary_machine_name_load('categoria_destapate');
+  if (!$v) {
+    $vocabulary = new stdClass();
+    $vocabulary->name = 'Categoria Destapate';
+    $vocabulary->machine_name = 'categoria_destapate';
+    taxonomy_vocabulary_save($vocabulary);
+    $vid = $vocabulary->vid;
+
+    $terms = array('LOS DEL TUMBAO', 'LOS DE LOS LIKES', 'LOS SOÑADORES', 'LOS ARTISTAS', 'LOS CAMPEONES');
+
+    foreach ($terms as $item) {
+      $term = new stdClass();
+      $term->vid = $vid;
+      $term->name = $item;
+      taxonomy_term_save($term);
+    }
+  }
+}

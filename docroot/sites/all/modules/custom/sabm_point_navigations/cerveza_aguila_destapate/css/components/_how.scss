@@ -1,0 +1,115 @@
+//
+// HOW
+//
+
+&-how {
+  @include section-container();
+  position: relative;
+  padding-top: em(16px);
+  padding-bottom: 34vw;
+  @include responsive-image('destapate-bg-register');
+  background-position: center top;
+  border-bottom: 0;
+  
+  @include media-breakpoint-up(lg) {
+    padding-bottom: 21.5vw;
+  }
+  
+  &::before {
+    @include responsive-image('destapate-bg-how-mask-top');
+    top: 0;
+    background-position: center top;
+    pointer-events: none;
+  }
+  
+  &::after {
+    @include responsive-image('destapate-bg-how-mask-bottom');
+    background-position: center bottom;
+    bottom: 0;
+    pointer-events: none;
+  }
+  
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+  
+    @include media-breakpoint-up(lg) {
+      //background-size: cover;
+    }
+  }
+  
+
+  
+  %text {
+    color: white;
+    //text-shadow: none;
+  }
+  
+  @include e(heading) {
+    
+    @include text-stroke(#005d9d, color-burn);
+    
+    &::before {
+      content: 'Participa de una';
+    }
+  }
+  
+  @include e(list) {
+    margin: 0 auto;
+    margin-bottom: em(40px);
+    max-width: map-get($container-max-widths, "lg");
+    
+    @include media-breakpoint-up(lg) {
+      margin-top: em(24px);
+      margin-bottom: em(32px);
+    }
+  }
+  
+  @include e(item) {
+    margin-bottom: rem(24px);
+  }
+  
+  @include e(index) {
+    @extend %text;
+  }
+  
+  @include e(text) {
+    @extend %text;
+    @extend %text-shadow;
+    white-space: pre-wrap;
+    
+    @include media-breakpoint-down(md) {
+      @include ms-respond(font-size, 4);
+      text-shadow: none;
+      margin-bottom: rem(4px);
+      line-height: 1.1;
+      letter-spacing: rem(.05px);
+    }
+  }
+  
+  @include e(icon) {
+    @extend %filter-shadow;
+    
+    @include media-breakpoint-down(md) {
+      filter: none;
+      width: em(72px);
+      height: em(72px);
+    }
+    
+    @include media-breakpoint-up(lg) {
+      margin-bottom: 0;
+    }
+  }
+  
+  @include e(btn) {
+    @extend %btn;
+    @extend %btn--tertiary;
+    mix-blend-mode: initial;
+    display: block;
+  }
+}

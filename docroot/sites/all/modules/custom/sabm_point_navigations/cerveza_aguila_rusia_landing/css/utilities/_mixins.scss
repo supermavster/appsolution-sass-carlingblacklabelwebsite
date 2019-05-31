@@ -1,0 +1,93 @@
+
+/*------------------------------------*\
+  #MIXINS
+\*------------------------------------*/
+
+
+/**
+ * Font face.
+ */
+
+
+@mixin font-face($font-name, $file-name, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: quote($font-name);
+    src: url('../fonts/#{$file-name}' + '.eot');
+    src: url('../fonts/#{$file-name}' + '.woff') format('woff'),
+         url('../fonts/#{$file-name}' + '.ttf') format('truetype'),
+         url('../fonts/#{$file-name}' + '.svg') format('svg');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+
+/**
+ * Font prefixes.
+ * 1. Font-size.
+ * 2. Line-height.
+ * 3. Font-weight.
+ * 4. Color.
+ */
+
+@mixin text($size, $l-height: null, $weight: null, $color: null) {
+  font-size: $size;
+  line-height: $l-height;
+  font-weight: $weight;
+  color: $color;
+}
+
+
+
+
+
+/* BEM mixins.
+ ========================================================================== */
+
+
+
+/**
+ * Element mixin.
+ */
+
+@mixin e($element) {
+    &__#{$element} {
+        @content;
+    }
+}
+
+
+
+/**
+ * Modifier mixin.
+ */
+
+@mixin m($modifier) {
+    &--#{$modifier} {
+        @content;
+    }
+}
+
+
+
+
+
+///* Colors mixins.
+// ========================================================================== */
+//
+//
+@mixin generate-colors() {
+  @each $color in $colors {
+    .color-#{nth($color, 2)} {
+      color: nth($color, 1) !important;
+    }
+    .bg-#{nth($color, 2)} {
+      background: nth($color, 1);
+    }
+    .border-#{nth($color, 2)} {
+      border-color: nth($color, 1);
+    }
+  }
+}
+
+

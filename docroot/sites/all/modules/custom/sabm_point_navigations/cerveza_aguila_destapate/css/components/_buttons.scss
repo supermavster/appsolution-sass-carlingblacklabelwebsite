@@ -1,0 +1,135 @@
+//
+// Buttons
+//
+
+// Base
+// ---------
+%#{$btn-name} {
+  @include ms-respond(font-size, 6);
+  $default-color: rgba(palette(states, info), 1);
+  mix-blend-mode: hard-light;
+  font-family: $font-stack-primary;
+  position: relative;
+  display: inline-block;
+  width: auto;
+  margin: 0 auto;
+  padding: em(8px, ms(7)) em(12px, ms(7));
+  line-height: 1;
+  color: palette(grays, 'white');
+  text-align: center;
+  letter-spacing: rem(-.5px);
+  text-transform: uppercase;
+  background-color: $default-color;
+  border-width: em(3px, ms(7));
+  border-style: solid;
+  border-color: palette(grays, 'white');
+  border-radius: em(8px, ms(7));
+  cursor: pointer;
+  z-index: 1;
+  
+  @include media-breakpoint-up(lg) {
+    @include ms-respond(font-size, 2);
+    padding: rem(12px) rem(16px);
+  }
+  
+  @include hover-focus {
+    @extend %transition;
+    color: palette(grays, 'white');
+    background-color: mix(black, $default-color, 8%);
+    text-decoration: none;
+  }
+  
+}
+
+// Mixin
+// ---------
+@mixin button($color, $themes) {
+  @extend %#{$btn-name};
+  $palette: palette(#{$themes}, #{$color});
+  background-color: $palette;
+  
+  &[disabled] {
+    background-color: mix(white, $palette, 20%);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  @include hover-focus {
+    background-color: mix(black, $palette, 8%);
+  }
+}
+
+%#{$btn-name},
+.#{$project-name}-#{$btn-name} {
+  @extend %#{$btn-name};
+  
+  $color-themes: primary secondary tertiary;
+  $color-grays: 'white' dark muted light 'black';
+  $color-states: danger warning info;
+  
+  @each $color in $color-themes {
+    @include m(#{$color}) {
+      @include button(#{$color}, 'themes');
+    }
+  }
+  
+  @each $color in $color-grays {
+    @include m(#{$color}) {
+      @include button(#{$color}, 'grays');
+    }
+  }
+  
+  @each $color in $color-states {
+    @include m(#{$color}) {
+      @include button(#{$color}, 'states');
+    }
+  }
+  
+  @include m(loading) {
+    background-image: image('Spinner-1s-24px.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    color: transparent !important;
+    pointer-events: none;
+    background-color: mix(white, palette(themes, secondary), 10%) !important;
+    cursor: not-allowed;
+  }
+  
+  @include m(file) {
+    @extend %#{$btn-name};
+    @include ms-respond(font-size, 4);
+    padding: rem(8px) rem(8px);
+    letter-spacing: -1px;
+    width: 100%;
+    
+    @media (max-width: 320px) {
+      @include ms-respond(font-size, 2);
+    }
+    
+    @include media-breakpoint-up(lg) {
+      padding: rem(12px) rem(8px);
+      @include ms-respond(font-size, 0);
+    }
+  }
+  
+  @include m(hidden) {
+    opacity: 0;
+    z-index: 1;
+  }
+  
+  @include m(absolute) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+}
+
+a.#{$project-name}-#{$btn-name},
+button[type="submit"],
+input[type="submit"] {
+  @extend %btn;
+}
+
+

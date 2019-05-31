@@ -1,0 +1,79 @@
+//
+// FOOTER
+//
+
+& .content .footer .content-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  
+  .logo-aguila {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-top: em(8px);
+    height: em(48px);
+    
+    @include media-breakpoint-down(md) {
+      order: 0;
+    }
+    
+    img {
+      width: auto;
+    }
+  }
+  
+  .politicas {
+    
+    li a {
+      margin-top: rem(8px);
+      padding: 0;
+      color: palette(states, info);
+      font-family: $font-stack-sans;
+      text-decoration: underline;
+      letter-spacing: rem(-.5px);
+      
+      @include media-breakpoint-up(lg) {
+        margin-top: rem(12px);
+      }
+    }
+  
+    @include media-breakpoint-down(md) {
+      order: 1;
+    }
+  
+  }
+  
+  .terminos {
+    width: auto;
+    margin-top: em(12px);
+  
+    @include media-breakpoint-down(md) {
+      order: 2;
+    }
+  
+    @include media-breakpoint-up(lg) {
+      margin: 0 auto;
+    }
+    
+    p {
+      font-size: em(14px);
+      color: palette(grays, 'black');
+      font-family: $font-stack-sans;
+    }
+  }
+  
+  .logo-restriccion {
+    margin: em(8px);
+  
+    @include media-breakpoint-down(md) {
+      order: 3;
+    }
+  
+    @include media-breakpoint-up(lg) {
+      margin: 0 auto;
+    }
+  }
+}

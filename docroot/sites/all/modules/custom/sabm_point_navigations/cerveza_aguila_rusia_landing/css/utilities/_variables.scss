@@ -1,0 +1,145 @@
+/*------------------------------------*\
+  #VARIABLES
+\*------------------------------------*/
+
+/* Browser support fallbacks.
+ ========================================================================== */
+
+/**
+ * Fonts face.
+ */
+
+@include font-face('8-bit', '8-bit', 400);
+@include font-face('Astoria', 'Astoria-Bold', 400);
+@include font-face('HelveticaNeue', 'HelveticaNeue-Regular', 400);
+@include font-face('HelveticaNeue', 'HelveticaNeue-Bold', 700);
+@include font-face('HelveticaNeue', 'HelveticaNeue-Black', 900);
+
+/**
+ * Fonts stacks.
+ */
+
+$stack-sans: Arial, "Helvetica Neue", Helvetica, sans-serif !default;
+$font-stack-sans: "HelveticaNeue", $stack-sans; // Custom sans serif font.
+$font-stack-mono: "8-bit", $stack-sans; // Custom sans serif font.
+$font-stack-heading: "Astoria", $stack-sans; // Custom sans serif font.
+
+/* Fonts.
+ ========================================================================== */
+
+/**
+ * Modular scale.
+ */
+
+$modularscale: (
+        base: 18px,
+        ratio: $major-third,
+        a: (
+                ratio: $major-second,
+        ),
+        576px: (
+                base: 14px,
+                ratio: $minor-third,
+        ),
+        768px: (
+                base: 16px
+        )
+);
+
+/**
+ * Font properties.
+ */
+
+$base-font-size: ms(0);
+$base-line-height: 1.5;
+
+/* Colors.
+ ========================================================================== */
+
+/**
+ * Color defaults.
+ */
+
+$color-black: #2d2d2d;
+$color-grey: #5e5e5e;
+$color-white: #fff;
+$color-bg: #ffda0e;
+$color-primary: #ef1700;
+$color-secondary: #0362cd;
+$color-success: #28a745;
+$color-danger: #FE3824;
+$color-warning: #FFCD00;
+$color-info: #FFCD00;
+
+/**
+ * Color palette modifiers.
+ */
+
+$colors: (
+        $color-black black,
+        $color-grey grey,
+        $color-white white,
+        $color-bg bg,
+        $color-primary primary,
+        $color-secondary secondary,
+        $color-success success,
+        $color-danger danger,
+        $color-warning warning,
+        $color-info info
+);
+
+$palettes: (
+        base: (
+                white: $color-white,
+                grey: $color-grey,
+                black: $color-black,
+                bg: $color-bg,
+                primary: $color-primary,
+                secondary: $color-secondary
+        ),
+        black: (
+                base: $color-black,
+                50: #FAFAFA,
+                100: #F5F5F5,
+                200: #EEEEEE,
+                300: #E0E0E0,
+                400: #BDBDBD,
+                500: $color-grey,
+                600: #757575,
+                700: #616161,
+                800: #424242,
+                900: #212121
+        ),
+        state: (
+                success: $color-success,
+                danger: $color-danger,
+                warning: $color-warning,
+                info: $color-info,
+        )
+);
+
+$gradient: linear-gradient(315deg, #0A71B3 0%, #009DDF 100%);
+
+/* Utilities.
+ ========================================================================== */
+
+/**
+ * Animations.
+ */
+
+$base-duration: .4s;
+$base-timing: cubic-bezier(0.215, 0.61, 0.355, 1);
+;
+
+/**
+ * Z-index list.
+ */
+
+$zindex-navbar: 1000;
+$zindex-dropdown: 1000;
+$zindex-popover: 1060;
+$zindex-tooltip: 1070;
+$zindex-navbar-fixed: 1030;
+$zindex-modal-background: 1040;
+$zindex-modal: 1050;
+$zindex-loading: 1080;

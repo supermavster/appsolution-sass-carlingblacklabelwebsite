@@ -1,0 +1,66 @@
+//
+// Header
+//
+
+& .content .header .block-region-header .block-content.content {
+  
+  
+  .block-content {
+    
+    .btn-menu {
+      @extend %transition;
+      position: fixed;
+      margin: em(24px);
+      width: em(48px);
+      height: em(48px);
+      background-image: image('destapate-icon-menu.svg');
+      background-size: contain;
+      background-position: center center;
+      background-repeat: no-repeat;
+      filter: drop-shadow(rem(0px) rem(2px) rem(4px) rgba(palette(grays, 'black'), .9));
+      cursor: pointer;
+  
+      @include media-breakpoint-up(lg) {
+        margin: em(48px);
+        margin-left: em(120px);
+      }
+      
+      &:hover:not(.open) {
+        transform: scale(1.1);
+      }
+      
+      &.open {
+        background-image: none;
+      }
+      
+      img {
+        display: none;
+      }
+      
+      .btn-close {
+        top: 0;
+        left: 0;
+      }
+    }
+    
+    .logo-aguila img {
+      $logo-width: em(96px);
+      $logo-height: em(40px);
+      width: $logo-width;
+      height: $logo-height;
+      object-fit: contain;
+      position: fixed;
+      top: em(32px);
+      left: 50%;
+      transform: translateX(-50%);
+  
+      @include media-breakpoint-up(lg) {
+        top: em(40px);
+        width: $logo-width * 2;
+        height: $logo-height * 2;
+      }
+      
+    }
+  }
+  
+}

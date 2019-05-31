@@ -1,0 +1,367 @@
+
+.landing {
+  position: relative;
+
+  @include e(wrapper) {
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center bottom;
+
+    @include m(header) {
+      background-image: url("../img/backgrounds/bg-primary-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        background-image: url("../img/backgrounds/bg-primary.jpg");
+      }
+    }
+
+    @include m(map) {
+      background-position: center center;
+      background-image: url("../img/backgrounds/bg-primary-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        background-position: center bottom;
+        background-image: url("../img/backgrounds/bg-primary-map.jpg");
+      }
+    }
+
+    @include m(game) {
+      background-attachment: initial;
+      z-index: 1;
+      background-image: url("../img/backgrounds/bg-game-landing-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        z-index: 0;
+        background-image: url("../img/backgrounds/bg-game-landing-desktop.jpg");
+      }
+    }
+  }
+
+  @include e(players) {
+
+    &::before {
+      pointer-events: none;
+      @extend %absolute;
+      background-image: url("../img/backgrounds/bg-players-mobile.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center bottom;
+      z-index: 1;
+
+      @include breakpoint(tablet-landscape-up) {
+        background-size: cover;
+        background-image: url("../img/backgrounds/bg-players.png");
+      }
+
+      @include breakpoint(big-desktop-up) {
+        background-size: contain;
+      }
+    }
+  }
+
+  @include e(header) {
+    margin: 0 auto;
+    margin-top: 14vh;
+
+    @include breakpoint(tablet-landscape-up) {
+      max-width: 50vw;
+      margin-top: 9vh;
+      margin-bottom: 8vh;
+    }
+
+    @include breakpoint(desktop-up) {
+      max-width: 50vw;
+      margin-bottom: 14vh;
+    }
+
+    @include breakpoint(big-desktop-up) {
+      margin-top: 13vh;
+    }
+
+    @include m(map) {
+      margin-top: em(8px);
+
+      @include breakpoint(tablet-landscape-up) {
+        margin-top: em(96px);
+        margin-bottom: 0;
+      }
+
+      @include breakpoint(big-desktop-up) {
+        margin-top: em(96px);
+      }
+    }
+
+    @include m(game) {
+      margin-top: em(72px);
+
+      @include breakpoint(tablet-landscape-up) {
+        margin-top: em(56px);
+        margin-bottom: 0;
+      }
+
+      @include breakpoint(big-desktop-up) {
+        margin-top: em(96px);
+      }
+    }
+
+    img {
+      @extend %imgContain;
+    }
+  }
+
+  // Game.
+
+  &Game {
+    position: relative;
+
+    @include e(badge) {
+      position: absolute;
+      top: em(40px);
+
+      @include breakpoint(tablet-landscape-up) {
+        top: 0;
+      }
+
+      @include m(left) {
+        width: em(48px);
+        left: 0;
+        top: em(48px);
+
+        @include breakpoint(tablet-landscape-up) {
+          display: none;
+        }
+
+        img {
+          @extend %imgContain;
+        }
+      }
+
+      @include m(right) {
+        width: em(72px);
+        right: 0;
+
+        @include breakpoint(tablet-landscape-up) {
+          left: em(-48px);
+          right: initial;
+          width: em(152px);
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        img {
+          @extend %imgContain;
+        }
+      }
+    }
+
+    @include e(title) {
+      //width: em(320px);
+      //height: em(320px);
+      margin: 0 auto;
+
+      @include breakpoint(tablet-landscape-up) {
+        margin-bottom: em(24px);
+        height: em(480px);
+      }
+
+      img {
+        @extend %imgContain;
+      }
+    }
+  }
+
+  @include e(left) {
+    margin-bottom: em(4px);
+
+    @include breakpoint(tablet-landscape-up) {
+      margin-left: 7vw;
+      margin-bottom: 8vh;
+      height: 17vw;
+      max-height: 248px;
+    }
+
+    @include breakpoint(desktop-up) {
+
+    }
+
+    @include breakpoint(big-desktop-up) {
+      //max-height: initial;
+    }
+
+    img {
+      @extend %imgContain;
+      object-position: left;
+    }
+  }
+
+  @include e(bottom) {
+    padding-bottom: 16vh;
+
+    @include breakpoint(tablet-landscape-up) {
+      padding-bottom: 2.5rem;
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 1800px) and (max-height: 840px) {
+      transform: translateY(-6vh);
+    }
+
+    img {
+      @extend %imgContain;
+    }
+  }
+
+  @include e(btn) {
+    position: absolute;
+    bottom: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: palette(base, secondary);
+    color: palette(base, white);
+    border-radius: 0;
+    font-size: 20px;
+    padding: 2px 18px;
+
+    @include breakpoint(tablet-landscape-up) {
+
+      &:hover {
+        color: palette(base, white);
+        background-color: darken(palette(base, secondary), 10%);
+      }
+    }
+  }
+
+  @include e(map) {
+    position: relative;
+
+    img {
+      @extend %imgContain;
+    }
+
+    @include breakpoint(big-desktop-up) {
+      height: 70vh;
+    }
+  }
+
+  &Navigation {
+    z-index: 1;
+    position: absolute;
+    bottom: em(8px);
+    width: 100%;
+
+    @include breakpoint(tablet-landscape-up) {
+      bottom: em(-28px);
+    }
+
+    &::after {
+      @extend %absolute;
+      width: 100%;
+      top: initial;
+      bottom: em(25px);
+      height: em(6px);
+      background-color: palette(base, white);
+      display: none;
+      z-index: -1;
+
+      @include breakpoint(tablet-landscape-up) {
+        display: block;
+      }
+    }
+
+    @include e(anchor) {
+      z-index: 1;
+      margin: 0 auto;
+      background-image: url("../img/icons/icon-arrow-down.svg");
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-color: palette(base, white);
+      background-size: em(32px);
+      width: em(56px);
+      height: em(56px);
+      display: block;
+      border-radius: 50%;
+    }
+  }
+
+  @include e(terms) {
+    @include ms-respond(font-size, -1);
+    line-height: em(14px, ms(-1));
+    margin-bottom: 4rem;
+
+    @include breakpoint(tablet-landscape-up) {
+      margin-bottom: 2rem;
+      @include ms-respond(font-size, -2);
+      line-height: em(14px, ms(-2));
+    }
+  }
+
+  @include e(badge) {
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    height: em(56px);
+
+    @include breakpoint(tablet-landscape-up) {
+      position: absolute;
+      display: block;
+      height: 12vh;
+    }
+
+    @include m(absolute) {
+      position: absolute;
+      display: none;
+
+      @include breakpoint(tablet-landscape-up) {
+        display: block;
+      }
+    }
+
+    @include m(left) {
+      left: 3vw;
+
+      img {
+        @extend %imgContain;
+        object-position: left bottom;
+      }
+
+      @include breakpoint(tablet-landscape-up) {
+        left: 5vw;
+      }
+    }
+
+    @include m(right) {
+      right: 3vw;
+      bottom: em(4px);
+
+      img {
+        @extend %imgContain;
+        object-position: right bottom;
+      }
+
+      @include breakpoint(tablet-landscape-up) {
+        right: 5vw;
+      }
+    }
+  }
+
+  //@include e(balls) {
+  //
+  //  &::before {
+  //    @extend %absolute;
+  //    background-image: url("../img/backgrounds/bg-players-mobile.png");
+  //    background-size: contain;
+  //    background-repeat: no-repeat;
+  //    background-position: center bottom;
+  //  }
+  //}
+}
+
+.offset-top {
+  top: -1.5rem;
+
+  @include breakpoint(tablet-landscape-up) {
+    top: -5rem;
+  }
+}

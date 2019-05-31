@@ -1,0 +1,133 @@
+<?php
+/**
+ * Implements hook_schema().
+ */
+function cerveza_aguila_dashboard_schema() {
+    $schema = array();
+    $schema['cerveza_aguila_dashboard_ventas'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+            ),
+            'uid' => array(
+                'type' => 'int',
+            ),
+            'created' => array(
+                'type' => 'int',
+            ),
+            'vendido' => array(
+                'type' => 'varchar',
+                'length' => 255,
+            ),
+            'bp' => array(
+                'type' => 'varchar',
+                'length' => 255,
+            ),
+            'budget' => array(
+                'type' => 'varchar',
+                'length' => 255,
+            ),
+            'tipo' => array(
+                'type' => 'int',
+            ),
+        ),
+        'primary key' => array('id'),
+    );
+
+    $schema['cerveza_aguila_dashboard_rendiciones'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+            ),
+            'uid' => array(
+                'type' => 'int',
+            ),
+            'type' => array(
+                'type' => 'int'
+            ),
+            'created' => array(
+                'type' => 'int'
+            ),
+            'total' => array(
+                'type' => 'varchar',
+                'length' => 255,
+            ),
+        ),
+        'primary key' => array('id'),
+    );
+
+    return $schema;
+}
+
+/**
+ * Implementation of hook_install()
+ */
+function cerveza_aguila_dashboard_install() {
+    drupal_install_schema('cerveza_aguila_dashboard_ventas');
+    drupal_install_schema('cerveza_aguila_dashboard_rendiciones');
+}
+
+function cerveza_aguila_dashboard_uninstall() {
+    drupal_uninstall_schema('cerveza_aguila_dashboard_ventas');
+    drupal_uninstall_schema('cerveza_aguila_dashboard_rendiciones');
+}
+
+/**
+ * Implements hook_update().
+ */
+function cerveza_aguila_dashboard_update_7002() {
+    $schema['cerveza_aguila_dashboard_ventas'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+            ),
+            'uid' => array(
+                'type' => 'int',
+            ),
+            'created' => array(
+                'type' => 'int',
+            ),
+            'vendido' => array(
+                'type' => 'varchar',
+                'length' => 255,
+            ),
+            'bp' => array(
+                'type' => 'varchar',
+                'length' => 255,
+            ),
+            'budget' => array(
+                'type' => 'varchar',
+                'length' => 255,
+            ),
+            'tipo' => array(
+                'type' => 'int',
+            ),
+        ),
+        'primary key' => array('id')
+    );
+
+    $schema['cerveza_aguila_dashboard_rendiciones'] = array(
+        'fields' => array(
+            'id' => array(
+                'type' => 'serial',
+            ),
+            'uid' => array(
+                'type' => 'int',
+            ),
+            'type' => array(
+                'type' => 'int'
+            ),
+            'created' => array(
+                'type' => 'int'
+            ),
+            'total' => array(
+                'type' => 'varchar',
+                'length' => 255,
+            ),
+        ),
+        'primary key' => array('id')
+    );
+
+    db_create_table('cerveza_aguila_dashboard_ventas', $schema['cerveza_aguila_dashboard_ventas']);
+    db_create_table('cerveza_aguila_dashboard_rendiciones', $schema['cerveza_aguila_dashboard_rendiciones']);
+}

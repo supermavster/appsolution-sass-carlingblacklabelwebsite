@@ -1,0 +1,13 @@
+//
+// _textarea
+//
+
+.textarea,
+textarea {
+  @extend %box;
+  
+}
+
+.grippie {
+  display: none !important;
+}

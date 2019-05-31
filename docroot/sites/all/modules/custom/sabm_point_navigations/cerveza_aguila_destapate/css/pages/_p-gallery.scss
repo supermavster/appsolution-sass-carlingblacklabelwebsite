@@ -1,0 +1,179 @@
+//
+// _p-gallery.scss
+//
+
+&-p-gallery {
+  $page-offset-bottom: calc(#{$grid-gutter-width} * 3);
+
+  @extend %page-wrapper;
+
+  position: relative;
+  background-size: 200%;
+  padding-bottom: 45vw;
+
+  @include media-breakpoint-up(lg) {
+    padding-bottom: 25vw;
+    background-size: cover;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  &::before {
+    @include responsive-image('destapate-bg-gallery-mask-top');
+    background-position: center top;
+    top: 0;
+
+    @include media-breakpoint-up(lg) {
+      background-size: cover;
+      background-position: center 20%;
+      z-index: 1;
+    }
+  }
+
+  &::after {
+    @include responsive-image('destapate-bg-gallery-mask-bottom');
+    background-position: center calc(100% + #{$page-offset-bottom});
+    background-size: contain;
+    bottom: 0;
+
+    @include media-breakpoint-up(lg) {
+      background-position: center calc(100% + #{$page-offset-bottom} * 4);
+    }
+  }
+
+  @include e(heading) {
+    @include ms-respond(font-size, 8);
+    @include text-stroke(palette(themes, tertiary), color-burn);
+    margin-bottom: rem(12px);
+
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, 4);
+      margin-bottom: rem(8px);
+    }
+
+    &::before {
+      content: 'Galería de historias';
+    }
+  }
+
+  @include e(subheading) {
+    position: relative;
+    max-width: map-get($grid-breakpoints, "lg");
+    margin: 0 auto;
+
+    &::before {
+      content: '';
+      position: absolute;
+      display: block;
+      width: auto;
+      left: -$grid-gutter-width * .4;
+      right: -$grid-gutter-width * .4;
+      transform: none;
+      background-color: rgba(palette(themes, primary), .5);
+  
+      @include media-breakpoint-up(lg) {
+        width: 100vw;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    @include media-breakpoint-down(md) {
+      @include ms-respond(font-size, 1);
+      padding: rem(8px) rem(24px) rem(16px);
+      margin-bottom: rem(8px);
+
+
+
+    }
+  }
+
+  .view-lista-galeria-destapate {
+    @extend %box-wrapper;
+    margin: 0 auto;
+    margin-top: rem(32px);
+
+    .slick-initialized.slick-slider {
+      @extend %slider__wrapper;
+
+      .slick-arrow {
+        @extend %slider__arrow;
+        top: 20vw;
+
+        &.slick-next {
+          @extend %slider__arrow--next;
+          right: calc(#{-$slider-arrow-size} / 2 + (#{$grid-gutter-width} / 2));
+        }
+
+        &.slick-prev {
+          @extend %slider__arrow--prev;
+          left: calc(#{-$slider-arrow-size} / 2 + (#{$grid-gutter-width} / 2));
+        }
+      }
+    }
+
+    ul {
+      @include make-row();
+
+      li.views-row {
+        @extend %box-item;
+        margin-left: auto;
+        margin-right: auto;
+
+        @include media-breakpoint-down(md) {
+          //margin-bottom: 0;
+          padding-right: $grid-gutter-width;
+          padding-left: $grid-gutter-width;
+        }
+      }
+    }
+
+    .views-field-field-thumbnail {
+      @extend %box-content;
+      @extend %embed-responsive;
+      @extend %embed-responsive-16by9;
+
+      .field-content {
+        @extend %embed-responsive-item;
+
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .views-field-title {
+      @extend %box-placeholder;
+    }
+
+  }
+
+  @include e(btn) {
+    @extend %btn;
+    margin-top: rem(16px) !important;
+    background-color: palette(themes, secondary);
+
+    span {
+      @include text-stroke(rgba(palette(themes, secondary), .5), color-burn);
+
+      &::before {
+        opacity: .5 !important;
+        content: 'Regresar al inicio';
+        pointer-events: none;
+      }
+
+    }
+  }
+
+}

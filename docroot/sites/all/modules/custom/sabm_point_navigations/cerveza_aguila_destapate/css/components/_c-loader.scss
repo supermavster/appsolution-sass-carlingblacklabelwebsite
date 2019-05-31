@@ -1,0 +1,25 @@
+//
+// _c-loader
+//
+
+&-c-loader {
+  
+  .modal-dialog {
+    max-width: map-get($grid-breakpoints, "sm");
+  }
+  
+  .modal-content {
+    background: transparent;
+    padding: rem(24px);
+    
+    img {
+    
+    }
+    
+    h2 {
+      @include media-breakpoint-down(md) {
+        font-size: ms(10);
+      }
+    }
+  }
+}

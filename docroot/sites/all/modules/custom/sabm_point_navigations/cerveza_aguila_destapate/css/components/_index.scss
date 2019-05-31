@@ -1,0 +1,32 @@
+// Components
+// --------
+@import "forms/index";
+@import "buttons";
+
+.#{$project-name} {
+  @import "sign-up";
+  @import "video";
+  @import "modal";
+  @import "hero";
+  @import "overview";
+  @import "inspiration";
+  @import "how";
+  @import "actions";
+  @import "c-awards";
+  @import "c-tabs";
+  @import "c-slider";
+  @import "c-loader";
+  @import "c-mentors";
+  @import "c-allies";
+}
+
+
+
+.modal-backdrop {
+  opacity: 1 !important;
+  //mix-blend-mode: saturation;
+  background-color: black;
+}
+
+
+

@@ -1,0 +1,131 @@
+<?php
+/**
+ * @file
+ * Menu Image (Test).
+ */
+
+/**
+ * Class MenuImageTestCase.
+ */
+class MenuImageTestCase extends \ManagedFileBase {
+
+  /**
+   * The name of menu for testing.
+   */
+  const MENU = 'user-menu';
+  /**
+   * {@inheritdoc}
+   */
+  const MODULE = 'menu_image';
+  /**
+   * Drupal menu item.
+   *
+   * @var array
+   */
+  private $link = [];
+  /**
+   * {@inheritdoc}
+   */
+  protected $elementParents = ['options', 'menu_image'];
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return [
+      'name' => t('Menu Image'),
+      'group' => t('Menu'),
+      'description' => t('Testing of image attachment to menu item.'),
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp([], ['administer menu']);
+
+    $this->link = [
+      'menu_name' => self::MENU,
+      'link_path' => '<front>',
+      'link_title' => 'Test of Menu Image',
+    ];
+
+    menu_link_save($this->link);
+  }
+
+  /**
+   * Edit settings of the menu.
+   */
+  public function testEditMenu() {
+    $this->useElementParents = FALSE;
+
+    $page = sprintf('admin/structure/menu/manage/%s/edit', self::MENU);
+    $values = [
+      // Set maximum file size up to 1Mb.
+      '[size]' => 1,
+      '[style]' => 'thumbnail',
+    ];
+
+    $this->drupalGet($page);
+    $this->save($page, $values);
+
+    // Check that settings is correctly saved.
+    foreach ($values as $name => $value) {
+      $this->assertField($name, $value);
+    }
+  }
+
+  /**
+   * Testing of image attachment to menu item.
+   *
+   * @param string $file
+   *   An image to attach to the menu link.
+   */
+  public function testEditItem($file = 'blank.gif') {
+    $this->useElementParents = TRUE;
+
+    $page = sprintf('admin/structure/menu/item/%s/edit', $this->link['mlid']);
+
+    // Go to editing of previously created menu link.
+    $this->drupalGet($page);
+    // Upload (via AJAX) an image and relate it with menu link.
+    $this->drupalPost(NULL, [sprintf('files[%s]', $this->elementName()) => "$this->realPath/$file"], t('Upload'));
+    // Ensure that "managed_file" widget works correctly and we see
+    // the "Remove" button after uploading.
+    $this->assertField('remove_button');
+    // Save whole configuration of menu link.
+    $this->save($page);
+
+    // Get the latest file ID and ensure that it is a value of needed field.
+    $this->assertField('[fid]', self::getLatestFid());
+    // Remove uploaded file.
+    $this->drupalPost(NULL, [], t('Remove'));
+    // Ensure that file removed and "Upload" button exists.
+    $this->assertField('upload_button');
+    // Save the menu link.
+    $this->save($page);
+    // Check that file field is empty.
+    $this->assertField('[fid]', 0);
+  }
+
+  /**
+   * Save the configuration form of menu link editing.
+   *
+   * @param string $page
+   *   Configuration form to submit.
+   * @param array $values
+   *   Values to submit.
+   */
+  private function save($page, $values = []) {
+    foreach ($values as $name => $value) {
+      $values[$this->elementName($name)] = $value;
+      unset($values[$name]);
+    }
+
+    $this->drupalPost(NULL, $values, t('Save'));
+    $this->assertRaw(t('Your configuration has been saved.'));
+    $this->drupalGet($page);
+  }
+
+}

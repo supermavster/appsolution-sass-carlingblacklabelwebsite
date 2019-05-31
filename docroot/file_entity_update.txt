@@ -1,0 +1,29 @@
+<?php 
+define('DRUPAL_ROOT', getcwd());
+
+require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
+drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
+
+module_load_install('file_entity');
+$result = (object) db_query("select schema_version from system where name = :name and status = 1", array(":name" => 'file_entity'))->fetchAssoc();
+if (!empty($result->schema_version)) {
+  $min = $result->schema_version;
+}
+else {
+  echo 'File Entity is not installed.';
+  die();
+}
+for ($update = 7001; $update < 8000; $update++) {
+  $function_name = 'file_entity_update_' . $update;
+  if ($update <= $min || !function_exists($function_name)) {
+    continue;
+  }
+ 
+  echo 'Running ' . $function_name . '...' . PHP_EOL;
+  $sandbox = array();
+  $function_name($sandbox);
+  drupal_set_installed_schema_version('file_entity', $update);
+}
+echo 'Flushing caches...' . PHP_EOL;
+drupal_flush_all_caches();
+echo 'Success!';

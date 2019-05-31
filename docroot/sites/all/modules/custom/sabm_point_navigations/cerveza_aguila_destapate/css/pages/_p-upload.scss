@@ -1,0 +1,182 @@
+//
+// _p-upload
+//
+
+&-p-upload {
+  @extend %page-wrapper;
+  position: relative;
+  padding-bottom: 40vw;
+  
+  @include media-breakpoint-up(lg) {
+    background-position: center center;
+    padding-bottom: rem(24px);
+  }
+  
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: contain !important;
+    pointer-events: none;
+    
+    @include media-breakpoint-up(lg) {
+      width: calc(100% / 3.5);
+    }
+  }
+  
+  &::before {
+    @include responsive-image('destapate-bg-upload-mask-bottom');
+    background-position: center bottom;
+    
+    @include media-breakpoint-up(lg) {
+      right: 0;
+      left: initial;
+      background-position: right bottom;
+    }
+  }
+  
+  &::after {
+    
+    @include media-breakpoint-up(lg) {
+      background-image: image('destapate-bg-upload-mask-top-desktop.png');
+      background-position: left bottom;
+    }
+  }
+  
+  @include e(heading) {
+    @include ms-respond(font-size, 10);
+    @include text-stroke(palette(themes, tertiary), initial);
+    margin-bottom: rem(12px);
+    
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, 3);
+      margin-bottom: rem(8px);
+    }
+    
+    &::before {
+      opacity: 1;
+      content: 'Sin miedo sube tu historia';
+    }
+  }
+  
+  @include e(subheading) {
+    position: relative;
+    padding: rem(12px) 0;
+    
+    &::before {
+      display: block;
+      background-color: rgba(palette(themes, primary), .4);
+      width: 100vw;
+      left: 50%;
+      right: 0;
+      transform: translateX(-50%);
+      mix-blend-mode: overlay;
+    }
+    
+    @include media-breakpoint-down(md) {
+      @include ms-respond(font-size, 3);
+    }
+  }
+  
+  form#cerveza-aguila-destapate-form-upload {
+    
+    .form-type-managed-file {
+      
+      & > label {
+        order: 1;
+      }
+  
+      figure {
+        display: none;
+      }
+    }
+    
+    
+    select,
+    input[type="text"] {
+      text-align: center;
+    }
+    
+    @include media-breakpoint-down(md) {
+      //width: calc(100% + #{$grid-gutter-width} * 2);
+      //margin: 0 #{-$grid-gutter-width};
+      width: 100%;
+      max-width: 94vw;
+      margin: 0 auto;
+    }
+    
+    #edit-title {
+      @extend %form-title;
+    }
+    
+    #edit-wrapper {
+      @extend %form-wrapper;
+      
+      .form-item {
+        margin-bottom: rem(6px);
+        
+        label {
+          @include ms-respond(font-size, 3);
+          margin-bottom: rem(4px);
+          
+          @include media-breakpoint-up(lg) {
+            @include ms-respond(font-size, 0);
+          }
+        }
+        
+        &:not(.form-item-name) {
+          
+          label {
+            display: block;
+          }
+        }
+      }
+      
+    }
+    
+    .form-item-file {
+      
+      //label {
+      //  @extend %btn;
+      //  //display: none !important;
+      //  width: 100% !important;
+      //
+      //  @include media-breakpoint-down(md) {
+      //    font-size: rem(ms(2)) !important;
+      //    line-height: 1.5 !important;
+      //    letter-spacing: rem(-.2px) !important;
+      //  }
+      //}
+      
+      //input[type="file"] {
+      //  @extend %btn;
+      //  width: 100% !important;
+      //  font-size: rem(ms(2)) !important;
+      //  line-height: 1.5 !important;
+      //  letter-spacing: rem(-.2px) !important;
+      //
+      //  @include media-breakpoint-up(lg) {
+      //    font-size: rem(ms(5)) !important;
+      //  }
+      //}
+      
+      input[type="submit"] {
+        display: none;
+      }
+      
+      .form-required {
+        display: none;
+      }
+    }
+    
+    input[type="submit"] {
+      width: 100%;
+      margin-top: rem(32px);
+    }
+    
+  }
+}

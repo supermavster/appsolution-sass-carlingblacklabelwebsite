@@ -1,0 +1,32 @@
+&-label {
+  @extend %label;
+
+  &.error {
+    @extend %label--error;
+  }
+}
+
+label {
+  @extend %label;
+  
+  
+  &.option {
+  
+    a {
+      color: #fff;
+    }
+  }
+  
+  &:not(.option) {
+    height: em(24px, ms(4));
+    @include text-truncate();
+  }
+}
+
+.#{$project-name}-label {
+  
+  @include m(file) {
+    @extend %label;
+    @extend %label--variant;
+  }
+}

@@ -1,0 +1,273 @@
+
+body {
+	.footer {
+		border: none;
+		padding: 0 0 0 0;
+		margin: 0 0 0 0;
+		width: 100%;
+		max-width: 100%;
+		min-width: 100%;
+	}
+}
+
+.ab-inbev-footer {
+	font-family: $td-cn-18;
+	padding: rem(10px);
+	
+	@include mq('xxs') {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-gap: 10px;
+		grid-auto-rows: minmax(100px, auto);
+	}
+	
+	@include mq('md') {
+		padding: rem(11px);
+	}
+
+	.ab-inbev-footer-content-1{
+		@include mq('xxs') {
+			display: grid;
+			grid-template-columns: 1fr;
+      grid-gap: 0px;
+      grid-auto-rows: minmax(auto,auto);
+		}
+		.ul-element-1{
+
+		}
+
+		.ul-element-2{
+			@include mq("xxs"){
+				grid-column: 1;
+				  grid-row: 1;
+			}
+		}
+	}
+
+	.ab-inbev-footer-content-1,
+	.ab-inbev-footer-content-2 {
+		@include cont;
+		color: $white;
+		text-align: center;
+		a {
+			color: $white;
+		}
+	}
+
+	// Logo
+	.ab-inbev-footer-aware-logo {
+		width: rem(120px);
+		height: rem(31px);
+		background-image: url('../images/brand/awarelog.png');
+		background-size: 100% 100%;
+		overflow: hidden;
+		text-indent: -999999px;
+		display: block;
+		margin: rem(14px) auto;
+		@include mq('md') {
+			display: inline-block;
+			vertical-align: middle;
+			margin: 0 0 0 0;
+		}
+
+		@include mq("xxs"){
+			grid-column: 1;
+  			grid-row: 2;
+		}
+
+	}
+	
+	// Tap
+	.tap-logo {
+		@include mq('md') {
+			display: inline-block;
+			width: auto;
+			vertical-align: middle;
+		}
+	}
+
+	.ab-inbev-footer-tap-into-your-beer {
+		display: block;
+		overflow: hidden;
+		text-indent: -999999px;
+		width: rem(200px);
+		height: rem(13px);
+		background-image: url('../images/brand/tap-beer.png');
+		background-size: 100% 100%;
+		margin: 0 auto rem(15px);
+			
+		@include mq('md') {
+			margin: 0 rem(22px);
+			display: inline-block;
+			vertical-align: middle;
+		}
+		
+	}
+
+	// Social footer logos
+	.ab-inbev-footer-social-media {
+		text-align: center;
+		padding: 0;
+		display: block;
+		@include mq('md') {
+			width: auto;
+			display: inline-block;
+			vertical-align: middle;
+			margin: 0 rem(60px);
+		}
+		li {
+			display: inline-block;
+			margin: 0 rem(5px);
+			@include mq('md') {
+				margin: 0 0;
+			}
+			a {
+				display: block;
+				width: rem(29px);
+				height: rem(29px);
+				position: relative;
+				border-radius: 100%;
+				background-color: transparent ;
+				&:hover {
+					background-color: rgba(255,255,255,0.2);
+				}
+			}
+
+			&.ab-inbev-footer-social-media-facebook {
+				margin-left: 0;
+				a {
+					@include iconSVG('../images/icons/facebook-logo.svg', 14px);
+					text-indent: 999999px;
+				}
+			}
+			&.ab-inbev-footer-social-media-instagram {
+				a {
+					@include iconSVG('../images/icons/instagram-logo.svg', 14px);
+					text-indent: 999999px;
+				}
+			}
+			&.ab-inbev-footer-social-media-youtube {
+				a {
+					@include iconSVG('../images/icons/youtube-logo.svg', 14px);
+					text-indent: 999999px;
+				}
+			}
+			&.ab-inbev-footer-social-media-twitter {
+				margin-right: 0;
+				a {
+					@include iconSVG('../images/icons/twitter-logo.svg', 14px);
+					text-indent: 999999px;
+				}
+			}
+		}
+	}
+
+	// First footer line
+	.ab-inbev-footer-content-1 {
+		padding: 0;
+		@include mq('md') {
+			padding: rem(12px) 0;
+			border-bottom: rem(1px) solid $white;
+			text-align: left;
+		}
+		ul {
+			&.ab-inbev-footer-menu {
+				display: block;
+				text-align: center;
+				padding: 0 0 0 0;
+				@include mq('md') {
+					text-align: left;
+					display: inline-block;
+					float: right;
+					text-align: right;
+					margin-top: rem(2px);
+				}
+				li {
+					display: inline-block;
+					border-right: rem(1px) solid $white;
+					@include mq('md') {
+						line-height: 1;
+					}
+					a {
+						padding: 0 rem(14px);
+						@include font(14px);						
+						text-transform: uppercase;
+						@include mq('tb') {
+							@include font(10px);
+						}
+					}
+					&:last-child {
+						border-right: none;
+						a {
+							padding-right: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Second Line
+	.ab-inbev-footer-content-2 {
+		padding: rem(24px) 0;
+		text-align: center;
+		@include mq('md') {
+			width: 100%;
+			text-align: left;
+			overflow: hidden;
+		}
+
+		@include mq("xxs"){
+			grid-column: 1;
+  			grid-row: 3;
+		}
+
+		
+		.ab-inbev-footer-content-2-text-1,
+		.ab-inbev-footer-content-2-text-2,
+		.ab-inbev-footer-content-2-text-3 {
+			text-align: center;
+			@include font(14px);
+			font-weight: normal;
+			@include mq('md') {
+				text-align: left;
+				display: inline-block;
+				text-align: left;
+			}
+		}
+		.ab-inbev-footer-content-2-text-1 {
+			@include mq('md') {
+				padding-right: rem(16px);
+			}
+		}
+		.ab-inbev-footer-content-2-text-2 {
+			@include mq('md') {
+				padding-left: rem(16px);
+				border-left: rem(1px) solid $white;
+			}
+		}
+		.ab-inbev-footer-content-2-text-3 {
+			font-weight: normal;
+			@include mq('md') {
+				float: right;
+				text-align: right;
+			}
+		}
+	}
+}
+
+//Fix for agegate
+.agegate-container-footer {
+
+
+	
+	@include mq('md') {
+		grid-column: 1/3;
+		grid-row: 3;
+	}
+	.agegate_copyright_text {
+		padding: 0 0 0 0;
+		color: $white;
+		background-color: $color-second !important;
+	}
+}

@@ -1,0 +1,267 @@
+//
+// REGISTER
+//
+
+&-register {
+  @extend %page-container;
+  position: relative;
+  @include responsive-image('destapate-bg-register');
+  background-size: contain;
+  background-position: center top;
+  background-repeat: repeat-y;
+  padding-bottom: 70vw;
+  
+  @include media-breakpoint-up(lg) {
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    padding-bottom: 38vw;
+  }
+  
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  
+  &::before {
+  
+  
+    @include media-breakpoint-up(lg) {
+      top: 0;
+      background-image: image('destapate-bg-register-mask-top.png');
+      background-size: contain;
+      background-position: center 15%;
+    }
+    
+  }
+  
+  &::after {
+    bottom: 0;
+    @include responsive-image('destapate-bg-register-mask-bottom');
+    background-size: contain;
+    background-position: center bottom;
+  }
+  
+  
+  @include e(wrap) {
+  
+    //@include media-breakpoint-down(md) {
+      position: relative;
+  
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        bottom: ms(15);
+        width: 100vw;
+        transform: translateX(-50%);
+        mix-blend-mode: color-burn;
+        background-color: rgba(mix(black, palette(themes, secondary), 20%), .35);
+      }
+    
+  }
+  
+  form#cerveza-aguila-destapate-form-register {
+    
+    & > div {
+      @include make-row();
+      justify-content: center;
+  
+      @include media-breakpoint-up(lg) {
+        justify-content: flex-start;
+      }
+      
+      & > a {
+        display: none;
+      }
+  
+      & > .form-item {
+  
+        // Responsive
+        @include media-breakpoint-up(lg) {
+          
+          &.form-type-item {
+            max-width: initial;
+          }
+  
+          @include make-col(6);
+          flex-grow: 1;
+        }
+      }
+    }
+    
+    .form-item {
+      @include make-col-ready();
+      
+      &:not(.form-type-item) {
+      
+      }
+      
+      &#edit-wdocument {
+  
+        @include media-breakpoint-up(lg) {
+          label:not(.error) {
+            opacity: 0;
+            display: block;
+          }
+        }
+      }
+      
+      // Row item
+      &.form-type-item {
+        @include make-row();
+        align-items: flex-end;
+        width: 100%;
+        margin-bottom: 0;
+  
+        @include media-breakpoint-down(md) {
+          padding: 0;
+        }
+        
+        @include media-breakpoint-up(lg) {
+          flex-wrap: nowrap;
+        }
+        
+        &#edit-wdocument,
+        &#edit-wdate {
+          align-items: flex-start;
+          align-content: flex-start;
+        }
+  
+        &#edit-wdate {
+          flex-wrap: wrap;
+          
+          #edit-title {
+            @include make-col(12);
+            
+            label {
+              display: block;
+  
+              @include media-breakpoint-down(md) {
+                text-align: center;
+              }
+            }
+          }
+          
+          .form-item {
+            @include make-col(4);
+            
+            label {
+              width: 200%;
+            }
+            
+            &.form-item-month,
+            &.form-item-year {
+              
+              label.error {
+                display: none !important;
+              }
+            }
+          }
+        }
+        
+        label {
+          //font-size: ms(5);
+          margin-bottom: rem(4px);
+          //text-transform: uppercase;
+        }
+      }
+      
+      &.form-type-checkbox {
+        @include make-col(12);
+      }
+    }
+    
+    input[type="submit"] {
+      @include text-stroke(palette(themes, tertiary), color-burn);
+      @extend %btn--tertiary;
+      margin-top: rem(40px) !important;
+      min-width: 100%;
+      mix-blend-mode: initial !important;
+  
+      &::before {
+        content: 'Guardar y subir';
+      }
+  
+      @include media-breakpoint-up(lg) {
+        margin-top: rem(8px) !important;
+        min-width: 50%;
+      }
+    }
+  }
+  
+  @include e(heading) {
+    @include ms-respond(font-size, 8);
+    @include text-stroke(palette(themes, secondary), color-burn);
+    line-height: 1.1;
+    margin-bottom: rem(24px);
+  
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, 4);
+      margin-bottom: rem(32px);
+    }
+  
+    &::before {
+      content: 'Regístrate y destápate';
+    }
+    
+  }
+  
+  @include e(subheading) {
+    @include ms-respond(font-size, 8);
+    @include text-stroke(palette(themes, secondary), color-burn);
+    margin-bottom: rem(8px);
+  
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, 2);
+      margin-top: 0 !important;
+      margin-bottom: em(0px);
+      text-align: left;
+    }
+  
+    @include m(ingresa) {
+      margin-top: rem(20px);
+      margin-bottom: rem(8px);
+  
+      &::before {
+        content: 'INGRESA TUS DATOS';
+      }
+    }
+  
+    @include m(como) {
+    
+      &::before {
+        content: '¿cómo participar?';
+      }
+    }
+  
+  }
+  
+  @include e(body) {
+    @extend %body;
+    @include ms-respond(font-size, 4);
+    @extend %text-shadow;
+    text-align: center;
+    margin-bottom: rem(20px);
+  
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, 0);
+      text-align: left;
+      margin-bottom: rem(12px);
+      text-shadow: none;
+    }
+  }
+  
+  @include e(overview) {
+  
+    @include media-breakpoint-down(md) {
+      padding-bottom: rem(24px) !important;
+    }
+  }
+}

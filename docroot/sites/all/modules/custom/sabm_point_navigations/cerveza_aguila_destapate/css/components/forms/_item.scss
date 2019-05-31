@@ -1,0 +1,11 @@
+.form-item {
+  @extend %box__item;
+  
+  &:not(.form-type-checkbox) label {
+    display: none;
+  }
+  
+  @include m(error) {
+    @extend %box__item--error;
+  }
+}

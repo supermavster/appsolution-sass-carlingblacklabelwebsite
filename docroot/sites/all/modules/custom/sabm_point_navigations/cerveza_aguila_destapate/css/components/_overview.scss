@@ -1,0 +1,120 @@
+//
+// OVERVIEW
+//
+
+&-overview {
+  position: relative;
+  padding: em(10px) 0;
+  
+  @include media-breakpoint-up(lg) {
+    padding-top: em(32px);
+    padding-bottom: em(8px);
+  }
+  
+  @include media-breakpoint-down(md) {
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 100vw;
+      height: $border-width;
+      transform: translateX(-50%);
+      background-color: #fff;
+    }
+  }
+  
+  @include e(bg) {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100vw;
+    height: 100%;
+    transform: translateX(-50%) translateY(-6px);
+    
+    img {
+      object-position: center right;
+      object-fit: contain;
+    }
+  }
+  
+  @include m(home) {
+    z-index: 1;
+    //padding-left: $grid-gutter-width * 2;
+    padding-right: $grid-gutter-width * 4;
+    
+    @include media-breakpoint-up(lg) {
+      padding-left: $grid-gutter-width * 4;
+      padding-right: $grid-gutter-width * 4;
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 100vw;
+      height: 100%;
+      transform: translateX(-50%);
+      mix-blend-mode: multiply;
+      background-color: rgba(palette(themes, secondary), .4);
+      z-index: -1;
+    }
+  }
+  
+  @include e(item) {
+    margin-top: rem(6px);
+    margin-bottom: rem(6px);
+    
+    @include media-breakpoint-up(lg) {
+      margin-top: rem(12px);
+      margin-bottom: rem(12px);
+    }
+    
+    @include m(register) {
+    
+    }
+  }
+  
+  @include e(index) {
+    @extend %text-shadow;
+    @include ms-respond(font-size, 9);
+    line-height: 1;
+    
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, 4);
+    }
+  }
+  
+  @include e(icon) {
+    @extend %filter-shadow;
+    $icon-size: em(80px);
+    width: $icon-size;
+    height: $icon-size;
+    
+    @include media-breakpoint-down(md) {
+      margin-left: rem(4px);
+      margin-right: rem(8px);
+    }
+    
+    @include media-breakpoint-up(lg) {
+      width: $icon-size * 1.75;
+      height: $icon-size * 1.75;
+      margin-bottom: em(12px);
+    }
+  }
+  
+  @include e(text) {
+    @extend %text-shadow;
+    @extend %h5;
+    line-height: 1;
+    letter-spacing: rem(-.65px);
+    text-align: center;
+    text-transform: uppercase;
+    
+    @include media-breakpoint-up(lg) {
+      margin-top: rem(12px);
+      @include ms-respond(font-size, -1);
+    }
+  }
+}

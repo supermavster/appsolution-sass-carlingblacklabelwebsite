@@ -1,0 +1,149 @@
+// Variables
+// --------
+
+//
+// Color system
+//
+
+$color-black: #000000 !default;
+$color-dark: #2B2B33 !default;
+$color-muted: #9E9E9E !default;
+$color-light: #cfcfcf !default;
+$color-white: #ffffff !default;
+
+$grays: () !default;
+
+$grays: map-merge(
+    (
+      'black': $color-black,
+      dark: $color-dark,
+      muted: $color-muted,
+      light: $color-light,
+      'white': $color-white
+    ),
+    $grays
+);
+
+$color-primary: #ffd802 !default;
+$color-secondary: #007dc5 !default;
+$color-tertiary: #ff5502 !default;
+$color-quaternary: #00dbff !default;
+$color-background: #F5F5F5 !default;
+$color-block: #F5F5F5 !default;
+
+$themes: () !default;
+
+$themes: map-merge(
+    (
+      primary: $color-primary,
+      secondary: $color-secondary,
+      tertiary: $color-tertiary,
+      quaternary: $color-quaternary,
+      background: $color-background
+    ),
+    $themes
+);
+
+$color-success: #4ada64 !default;
+$color-danger: #9c3400 !default;
+$color-warning: #ffb204 !default;
+$color-info: #0084ff !default;
+
+$states: () !default;
+
+$states: map-merge(
+    (
+      success: $color-success,
+      danger: $color-danger,
+      warning: $color-warning,
+      info: $color-info,
+    ),
+    $states
+);
+
+// Palette.
+$palettes: (
+  grays: $grays,
+  themes: $themes,
+  states: $states,
+);
+
+$colors: map-merge(
+    map-merge($grays, $themes),
+    $states
+);
+
+//
+// Names
+//
+/// Base path for assets (fonts, images...),
+/// should not include trailing slash
+/// @access private
+/// @group variables
+/// @type String
+$btn-name: 'btn' !default;
+// Routes
+
+//
+// Fonts
+//
+// Families and modular scale
+
+//@include font-face('Futura Condensed', 'Futura-CondensedExtraBold', 800);
+$font-stack-serif: Constantia, "Lucida Bright", Lucidabright, "Lucida Serif", Lucida, "DejaVu Serif", "Bitstream Vera Serif", "Liberation Serif", Georgia, serif;
+$font-stack-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+$font-stack-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+$font-stack-primary: 'Futura Condensed', $font-stack-sans;
+$font-stack-secondary: 'Paul Slab', $font-stack-serif;
+
+// Modular scale set up
+$modularscale: (
+  base: 13px,
+  ratio: $major-second,
+  320px: (
+    base: 13px,
+    ratio: $minor-second,
+  ),
+  map-get($grid-breakpoints, "sm"): (
+    base: 13px,
+    ratio: $major-second,
+  ),
+  //map-get($grid-breakpoints, "md"): (
+  //  base: 20px,
+  //),
+  map-get($grid-breakpoints, "lg"): (
+    base: 29px,
+    ratio: $minor-third,
+  ),
+  a: (
+    base: 29px,
+    ratio: 1.3,
+  )
+);
+
+$body-font-size: ms(0) !default;
+$base-line-height: 1.5 !default;
+
+//
+// Utilities
+//
+
+// Borders
+$border-radius: rem(8px);
+
+// Shadows
+$text-shadow: rem(0px) rem(2.5px) rem(0px) rgba($color-secondary, .8) !default;
+
+// Transitions
+$transition-duration: .4s;
+$transition-timing-function: $easeOutQuart;
+$transition: all $transition-duration $transition-timing-function !default;
+
+
+// Elements
+$slider-arrow-size: rem(24px);
+$slider-dot-size: rem(24px);
+$pattern-width: em(72px);
+$pattern-height: em(152px);
+$nav-height: em(72px);
+$page-offset-top: em(96px);

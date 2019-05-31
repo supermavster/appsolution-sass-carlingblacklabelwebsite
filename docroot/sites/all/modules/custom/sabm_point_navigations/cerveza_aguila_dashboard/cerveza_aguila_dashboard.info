@@ -1,0 +1,5 @@
+name = Dashboard Aguila
+core = 7.x
+
+
+configure = admin/config/system/dashboard-aguila

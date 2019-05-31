@@ -1,0 +1,168 @@
+<?php
+/**
+ * @file
+ * Menu image.
+ *
+ * This module provides a field to upload an image and associate it with
+ * menu item. The file ID will be available in array of options returned
+ * by menu_link_load() function ($link['options']['menu_image']).
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * {@inheritdoc}
+ *
+ * @see hook_form_alter()
+ */
+function menu_image_form_menu_edit_menu_alter(array &$form) {
+  $settings = menu_image_menu_settings($form['menu_name']['#default_value']);
+  $options = [];
+  $items = [];
+
+  foreach (managed_file_element_widgets() as $widget => $info) {
+    $options[$widget] = $info['label'];
+  }
+
+  $items['widget'] = [
+    '#type' => 'select',
+    '#title' => t('File manager'),
+    '#options' => $options,
+    '#empty_option' => t('- None -'),
+  ];
+
+  $items['style'] = [
+    '#type' => 'select',
+    '#title' => t('Image style'),
+    '#options' => image_style_options(),
+    '#description' => t('Default image style for all images of the menu.'),
+  ];
+
+  $items['size'] = [
+    '#type' => 'textfield',
+    '#title' => t('Upload size'),
+    '#description' => t('Configure maximum size of file to upload (Mb).'),
+    '#element_validate' => ['element_validate_integer_positive'],
+  ];
+
+  $items['extensions'] = [
+    '#type' => 'checkboxes',
+    '#title' => t('File extensions'),
+    '#options' => drupal_map_assoc(['jpg', 'jpeg', 'png', 'gif', 'bmp', 'ico']),
+    '#required' => TRUE,
+    '#description' => t('File extensions available to upload.'),
+  ];
+
+  foreach ($items as $name => $item) {
+    $items[$name]['#default_value'] = $settings[$name];
+  }
+
+  $form['menu_image'] = $items + [
+    '#tree' => TRUE,
+    '#type' => 'fieldset',
+    '#title' => t('Menu Image'),
+  ];
+
+  array_unshift($form['#submit'], __FUNCTION__ . '_submit');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter_submit().
+ *
+ * {@inheritdoc}
+ *
+ * @see menu_image_form_menu_edit_menu_alter()
+ */
+function menu_image_form_menu_edit_menu_alter_submit(array &$form, array &$form_state) {
+  $values = $form_state['values'];
+  $settings = $values['menu_image'];
+
+  $settings['extensions'] = array_filter($settings['extensions']);
+
+  variable_set('menu_image_' . $values['menu_name'], $settings);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * {@inheritdoc}
+ *
+ * @see hook_form_alter()
+ */
+function menu_image_form_menu_edit_item_alter(array &$form, array &$form_state) {
+  // @see menu_edit_item()
+  list(, $link) = $form_state['build_info']['args'];
+
+  $settings = menu_image_menu_settings($form['original_item']['#value']['menu_name']);
+  $data = [
+    'fid' => 0,
+    'style' => '',
+  ];
+
+  if (isset($link['options']['menu_image'])) {
+    $data = $link['options']['menu_image'];
+  }
+
+  if (is_array($data) && empty($data['style'])) {
+    $data['style'] = $settings['style'];
+  }
+
+  $form['menu_image'] = [
+    '#type' => 'fieldset',
+    '#title' => t('Image'),
+    '#description' => t('Upload an image to represent this menu item.'),
+  ];
+
+  $form['menu_image']['menu_image'] = [
+    '#type' => 'managed_file',
+    '#title' => t('Image'),
+    '#widget' => $settings['widget'],
+    '#styles' => TRUE,
+    '#preview' => TRUE,
+    '#parents' => ['options', 'menu_image'],
+    '#description' => t('Available extensions: <strong>@extensions</strong>.<br />Maximum file size: <strong>@size Mb</strong>.', [
+      '@size' => $settings['size'],
+      '@extensions' => implode(', ', $settings['extensions']),
+    ]),
+    '#default_value' => $data,
+    '#title_display' => 'invisible',
+    '#upload_location' => 'public://menu_image',
+    '#upload_validators' => [
+      'file_validate_size' => [$settings['size'] * 1024 * 1024],
+      'file_validate_extensions' => [implode(' ', $settings['extensions'])],
+    ],
+  ];
+
+  array_unshift($form['#submit'], __FUNCTION__ . '_submit');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter_submit().
+ *
+ * {@inheritdoc}
+ *
+ * @see menu_image_form_menu_edit_item_alter()
+ */
+function menu_image_form_menu_edit_item_alter_submit(array &$form, array &$form_state) {
+  managed_file_element_submit($form['menu_image']['menu_image'], $form_state, [
+    'menu_image', 'menu', $form_state['values']['mlid'],
+  ]);
+}
+
+/**
+ * Menu settings.
+ *
+ * @param string $menu_name
+ *   The name of menu.
+ *
+ * @return array
+ *   Configured or default settings.
+ */
+function menu_image_menu_settings($menu_name) {
+  return variable_get("menu_image_$menu_name", [
+    'size' => 2,
+    'style' => '',
+    'widget' => 'imce',
+    'extensions' => ['jpg', 'jpeg', 'png', 'gif'],
+  ]);
+}

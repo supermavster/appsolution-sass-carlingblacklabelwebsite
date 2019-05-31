@@ -1,0 +1,245 @@
+body {
+  background-color: $color-second;
+
+  &.page-agegate {
+    // Main Age wrapper
+    #age_checker {
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      @include mq("md") {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: minmax(auto, auto);
+        grid-gap: 10px;
+        margin: 12px;
+      }
+
+      // Brand
+      .logo {
+        @include mq("md") {
+          grid-column: 1 / 2;
+          grid-row: 1;
+        }
+
+        img {
+          padding: 50px 90px 70px;
+          line-height: 1.42857143;
+          -webkit-transition: all 0.2s ease-in-out;
+          -o-transition: all 0.2s ease-in-out;
+          transition: all 0.2s ease-in-out;
+          display: inline-block;
+          height: auto;
+
+          max-width: 100%;
+
+          @include mq("md") {
+            max-width: 50%;
+            margin-left: 25%;
+          }
+        }
+      }
+
+      .agegate-container {
+        // Hide unncesary copyright
+        text-align: center;
+
+        @include mq("md") {
+          grid-column: 2;
+          grid-row: 1 / 2;
+        }
+
+        #agegate_copyright_text {
+        }
+
+        // Age content
+        #block-system-main {
+          // Top message
+          #age_checker_header_message {
+            margin: 12px;
+            margin-bottom: 0px;
+
+            .agegate-text {
+              &-red {
+                @include fontText(uppercase, $color-main);
+              }
+
+              &-white {
+                @include fontText(uppercase);
+              }
+            }
+
+            .agegate-title-1 {
+            }
+          }
+
+          // Form
+          // Form
+          #age_checker_widget {
+            form {
+              &#sabm-age-gate-form {
+                div {
+                  // Grid
+                  display: grid;
+                  grid-template-columns: 3fr;
+                  grid-auto-rows: minmax(auto, auto);
+
+                  @include mq("md") {
+                    grid-template-columns: 1fr;
+                    margin: 12px;
+                  }
+                  //grid-template-columns: repeat(3, 1fr);
+                  //grid-gap: 10px;
+                }
+
+                // Select default styles
+                .form-type {
+                  &-select {
+                    grid-row: 1;
+                    margin: 12px;
+
+                    label {
+                    }
+
+                    select {
+                      position: relative;
+                      background: transparent;
+                      background-image: none;
+                      display: block;
+                      width: 100%;
+                      outline: none;
+                      color: #888888;
+                      cursor: pointer;
+                      z-index: 2;
+                      border: none;
+                      padding: 10px 10px 10px 5px;
+                      // This is so hacky.. (for Firefox)
+                      // Removes the default select arrow.
+                      text-overflow: "";
+                      text-indent: 5px;
+
+                      @include boxDetailsElements();
+                    }
+
+                    option {
+                      border: none;
+                      background: $color-four;
+                    }
+                  }
+
+                  &::after {
+                    content: "\/";
+                    display: block;
+                    @include iconSVG("../images/icons/caret_down.svg", 19px);
+                    width: rem(19px);
+                    height: rem(11px);
+                    position: absolute;
+                    right: rem(15px);
+                    top: auto;
+                  }
+                }
+              }
+              // Field schemma
+              .form-item {
+                &-list-of-countries {
+                }
+                // Date
+
+                &-day {
+                  grid-column: 1;
+                  margin-left: 12px;
+                }
+
+                &-day,
+                &-month,
+                &-year {
+
+                  // Grid
+                  grid-row: 2;
+
+                  // Style
+                  margin-top: 3px;
+                  height: 80px;
+
+                  @include mq("xxs") {
+                    width: 110px;
+                  }
+
+                  @include mq("md") {
+                    width: 300px;
+                  }
+
+                  label {
+                    display: none;
+                  }
+
+                  input {
+                    // Add Elements - Style
+                    @include defInput();
+                    @include boxDetailsElements();
+
+                    @include mq("md") {
+                    }
+                  }
+
+                  @include mq("md") {
+                  }
+                }
+
+                &-month {
+                  grid-column: 2;
+
+                  @include mq("md") {
+                  }
+                }
+
+                &-year {
+                  grid-column: 3;
+                }
+
+                // Accept checkbox
+                &-remember-me {
+                  grid-column: 1/4;
+                  grid-row: 3;
+                }
+
+                .ab-inbev-remember-me {
+                  @include fontText(none, $white, small, $td-got-lt-std);
+
+                  // Grid
+                  display: grid;
+                  grid-template-columns: 3fr;
+                  grid-auto-rows: minmax(auto,auto);
+
+                  font-weight: 800;
+                  text-align: left;
+
+                  @include mq("md") {
+                  }
+                  span {
+                    a {
+                    }
+                  }
+                  @include mq("md") {
+                  }
+                }
+
+                .ab-inbev-remember-me,
+                .control-label {
+                  margin-left: 35px;
+                  @include mq("md") {
+                  }
+                }
+              }
+
+              /// Add Data
+
+            }
+          }
+
+        }
+      }
+    }
+  }
+}

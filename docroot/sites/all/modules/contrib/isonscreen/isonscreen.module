@@ -1,0 +1,33 @@
+<?php
+/**
+ * @file
+ */
+
+
+/**
+ * Implements hook_libraries_info().
+ */
+function isonscreen_libraries_info() {
+  $libraries['isonscreen'] = array(
+    'name' => 'isOnScreen',
+    'files' => array(
+      'js' => array(
+        'js/jquery.isonscreen.min.js'
+      )
+    ),
+    'version callback' => 'ios_short_circuit_version',
+  );
+
+  return $libraries;
+}
+
+/**
+* Short-circuit the version argument.
+*/
+function ios_short_circuit_version() {
+  return TRUE;
+}
+
+function isonscreen_preprocess_html() {
+   libraries_load('isonscreen');
+}

@@ -1,0 +1,958 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function cerveza_aguila_destapa_menu() {
+  return array(
+    'destapaelcamerino' => array(
+      'title' => 'Promo Destapa',
+      'page callback' => 'cerveza_aguila_destapa_home',
+      'access arguments' => array('access content'),
+    ),
+    'destapaelcamerino/ver-capitulo/%node' => array(
+      'title' => 'Promo Destapa',
+      'page callback' => 'cerveza_aguila_destapa_view_chapter',
+      'page arguments' => array(2),
+      'access arguments' => array('access content'),
+      'delivery callback' => 'ajax_deliver',
+      'file' => 'cerveza_aguila_destapa.video.inc',
+    ),
+    'destapaelcamerino/ver-capitulo/%node/questions/%/%' => array(
+      'title' => 'Promo Destapa',
+      'page callback' => 'cerveza_aguila_destapa_get_question_type_1',
+      'page arguments' => array(2),
+      'access callback' => 'user_is_logged_in',
+      'delivery callback' => 'ajax_deliver',
+      'file' => 'cerveza_aguila_destapa.video.question.inc',
+    ),
+    'destapaelcamerino/ver-capitulo/%node/quiz/%/%' => array(
+      'title' => 'Promo Destapa',
+      'page callback' => 'cerveza_aguila_destapa_get_quiz',
+      'page arguments' => array(2),
+      'access callback' => 'user_is_logged_in',
+      'delivery callback' => 'ajax_deliver',
+      'file' => 'cerveza_aguila_destapa.video.quiz.inc',
+    ),
+    'destapaelcamerino/%node/share' => array(
+      'title' => 'Promo Destapa',
+      'page callback' => 'cerveza_aguila_destapa_share',
+      'page arguments' => array(1),
+      'access arguments' => array('access content'),
+      'delivery callback' => 'ajax_deliver',
+      'file' => 'cerveza_aguila_destapa.share.inc',
+      'type' => MENU_CALLBACK,
+    ),
+    'destapaelcamerino/modal-login-register' => array(
+      'title' => 'Promo Destapa',
+      'page callback' => 'cerveza_aguila_destapa_share_login',
+      'page arguments' => array(1),
+      'access arguments' => array('access content'),
+      'delivery callback' => 'ajax_deliver',
+      'file' => 'cerveza_aguila_destapa.share.inc',
+      'type' => MENU_CALLBACK,
+    ),
+    /*'destapaelcamerino/ranking' => array(
+      'title' => 'Ranking',
+      'page callback' => 'cerveza_aguila_destapa_ranking',
+      'access arguments' => array('access content'),
+      'file' => 'cerveza_aguila_destapa.ranking.inc',
+    ),*/
+    'destapaelcamerino/ganadores' => array(
+      'title' => 'Ganadores',
+      'page callback' => 'cerveza_aguila_destapa_winners',
+      'access arguments' => array('access content'),
+      'file' => 'cerveza_aguila_destapa.winners.inc',
+    ),
+    'destapaelcamerino/user/delete' => array(
+      'title' => 'Ranking',
+      'page callback' => 'cerveza_aguila_destapa_callback_user_delete',
+      'access callback' => 'user_is_logged_in',
+      'delivery callback' => 'ajax_deliver',
+      'file' => 'cerveza_aguila_destapa.user.inc',
+    ),
+    'destapaelcamerino/user/confirm-delete/%/%' => array(
+      'title' => 'Ranking',
+      'page callback' => 'cerveza_aguila_destapa_callback_user_confirm_delete',
+      'page arguments' => array(3, 4),
+      'access callback' => 'user_is_logged_in',
+      'file' => 'cerveza_aguila_destapa.user.inc',
+    ),
+    'user/login-fb' => array(
+      'title' => 'Login FB',
+      'page callback' => 'cerveza_aguila_destapa_login_fb',
+      'access callback' => TRUE,
+      'type' => MENU_CALLBACK,
+    ),
+    'admin/destapaelcamerino/process' => array(
+      'page callback' => 'cerveza_aguila_destapa_schedule',
+      'access callback' => 'cerveza_aguila_destapa_schedule_access',
+      'delivery callback' => 'cerveza_aguila_destapa_deliver',
+      'type' => MENU_CALLBACK,
+    ),
+  );
+}
+
+/**
+ * Delivery callback.
+ */
+function cerveza_aguila_destapa_deliver($page_callback_result) {
+  drupal_add_http_header('Content-Type', 'application/json; charset=utf-8');
+  global $language;
+  drupal_add_http_header('Content-Language', $language->language);
+
+  if (is_int($page_callback_result)) {
+    switch ($page_callback_result) {
+      case MENU_ACCESS_DENIED:
+        drupal_add_http_header('Status', '403 Forbidden');
+        $page_callback_result = array(
+          'status' => 0,
+          'message' => t('Access Denied'),
+        );
+        break;
+    }
+  }
+  print drupal_json_encode($page_callback_result);
+}
+
+function cerveza_aguila_destapa_schedule_access() {
+  return isset($_GET['cron_key']) && variable_get('cron_key', 'drupal') == $_GET['cron_key'];
+}
+
+function cerveza_aguila_destapa_schedule() {
+  watchdog(__FUNCTION__, 'Execute');
+  $rows = cerveza_aguila_destapa_cron1();
+  cerveza_aguila_destapa_marketing_cloud($rows);
+
+  return array(
+    'status' => 1,
+    'count' => count($rows),
+  );
+}
+
+/**
+ * Implements hook_init().
+ */
+function cerveza_aguila_destapa_init() {
+  if (isset($_SESSION['data-layer'])) {
+    foreach ($_SESSION['data-layer'] as $item) {
+      cerveza_aguila_destapa_add_datalayer($item);
+    }
+    unset($_SESSION['data-layer']);
+  }
+}
+
+function cerveza_aguila_destapa_add_datalayer($item) {
+  $js = "dataLayer.push({'event': '" . $item['event'] . "', 'eventCategory': '" . $item['eventCategory'] . "', 'eventAction': '" . $item['eventAction'] . "', 'eventLabel': '" . $item['eventLabel'] . "'})";
+  drupal_add_js($js, array('type' => 'inline', 'scope' => 'footer', 'weight' => 999));
+}
+
+function cerveza_aguila_destapa_login_fb() {
+  global $user;
+  if (user_is_anonymous() && isset($_REQUEST['code']) && !empty($_REQUEST['code'])) {
+    $access_token = $_REQUEST['code'];
+    module_load_include('inc', 'fboauth', 'includes/fboauth.fboauth');
+
+    $fbuser = fboauth_graph_query('me', $access_token);
+
+    if (isset($fbuser->id)) {
+      if ($uid = fboauth_uid_load($fbuser->id)) {
+        if ($account = user_load($uid)) {
+          // Log user in.
+          $form_state['uid'] = $account->uid;
+          user_login_submit(array(), $form_state);
+
+          drupal_goto('destapaelcamerino');
+        }
+      }
+    }
+  }
+
+  drupal_goto('user/login');
+}
+
+function cerveza_aguila_destapa_home() {
+  $old_message = drupal_get_messages();
+  $module_path = drupal_get_path('module', 'cerveza_aguila_destapa');
+  drupal_add_js('https://player.vimeo.com/api/player.js', 'external');
+  drupal_add_js('https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js', 'external');
+  drupal_add_css('https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css', array('type' => 'external'));
+
+  drupal_add_library('system', 'drupal.ajax');
+
+  drupal_add_js($module_path . '/js/jquery.countdown.min.js');
+
+  drupal_add_js($module_path . '/js/fb.js');
+  drupal_add_js($module_path . '/js/tw.js');
+  drupal_add_js($module_path . '/js/jquery.waypoints.min.js');
+  drupal_add_js($module_path . '/js/sticky.min.js');
+  drupal_add_js($module_path . '/js/css_browser_selector.js');
+
+  $node_coming_soon = cerveza_aguila_destapa_get_coming_soon();
+  $description = '...';
+  $time = 0;
+
+  if ($node_coming_soon) {
+    $description = $node_coming_soon->field_descripcion['und'][0]['value'];
+    $time = $node_coming_soon->field_fecha_estreno['und'][0]['value'];
+  }
+
+  drupal_add_js(array(
+    'aguilaDestapa' => array(
+      'fullPath' => url('/', array('absolute' => TRUE)),
+      'time' => date('Y/m/d H:i:s', $time),
+      'openModalVideo' => isset($_SESSION['openModalVideo'])
+    ),
+  ), 'setting');
+
+  if (isset($_SESSION['openModalVideo'])) {
+    unset($_SESSION['openModalVideo']);
+  }
+
+  drupal_add_js($module_path . '/js/cerveza_aguila_destapa.home.js');
+  drupal_add_js($module_path . '/js/cerveza_aguila_destapa.video.js');
+
+
+  return array(
+    '#markup' => theme('page_destapa_el_camerino', array(
+      'description' => $description
+    )),
+  );
+}
+
+function cerveza_aguila_destapa_get_coming_soon() {
+  $selected = NULL;
+  $nid = db_select('field_data_field_fecha_estreno', 'e')
+    ->fields('e', array('entity_id'))
+    ->condition('deleted', 0)
+    ->condition('field_fecha_estreno_value', REQUEST_TIME, '>')
+    ->orderBy('field_fecha_estreno_value')
+    ->range(0, 1)
+    ->execute()
+    ->fetchField();
+
+  if ($nid) {
+    $selected = node_load($nid);
+  }
+
+  return $selected;
+}
+
+
+
+/**
+ * Implements hook_theme().
+ */
+function cerveza_aguila_destapa_theme($existing, $type, $theme, $path) {
+  $items = array();
+
+  $items['item_capitulo'] = array(
+    'template' => 'theme/item-capitulo',
+    'variables' => array(
+      'items' => NULL
+    )
+  );
+
+  $items['page_destapa_el_camerino'] = array(
+    'template' => 'theme/page-destapa-el-camerino',
+    'variables' => array(
+      'items' => NULL
+    )
+  );
+
+  $items['page_ranking_destapa_el_camerino'] = array(
+    'template' => 'theme/page-ranking',
+    'variables' => array(
+      'items' => NULL
+    )
+  );
+
+  $items['page_winners_destapa_el_camerino'] = array(
+    'template' => 'theme/page-winners',
+    'variables' => array(
+      'items' => NULL
+    )
+  );
+
+  $items['cerveza_aguila_destapa_modal_login'] = array(
+    'template' => 'theme/modal-login-register',
+    'variables' => array(),
+  );
+
+  $items['cerveza_aguila_destapa_modal_video'] = array(
+    'template' => 'theme/modal-preview-video',
+    'variables' => array(),
+  );
+
+  $items['cerveza_aguila_destapa_modal_question_type_1'] = array(
+    'template' => 'theme/modal-question-type-1',
+    'variables' => array(),
+  );
+
+  $items['cerveza_aguila_destapa_modal_question_success'] = array(
+    'template' => 'theme/modal-question-success',
+    'variables' => array(),
+  );
+
+  $items['cerveza_aguila_destapa_modal_quiz'] = array(
+    'template' => 'theme/modal-quiz',
+    'variables' => array(),
+  );
+
+  $items['cerveza_aguila_destapa_modal_quiz'] = array(
+    'template' => 'theme/modal-quiz',
+    'variables' => array(),
+  );
+
+  $items['cerveza_aguila_destapa_modal_quiz_failed'] = array(
+    'template' => 'theme/modal-quiz-failed',
+    'variables' => array(),
+  );
+
+  $items['cerveza_aguila_destapa_modal_quiz_success'] = array(
+    'template' => 'theme/modal-quiz-success',
+    'variables' => array(),
+  );
+
+  $items['cerveza_aguila_destapa_modal_share'] = array(
+    'template' => 'theme/modal-share',
+    'variables' => array(),
+  );
+
+  $items['cerveza_aguila_destapa_modal_user_delete'] = array(
+    'template' => 'theme/modal-user-delete',
+    'variables' => array(),
+  );
+
+  $items['page_user_profile'] = array(
+    'path' => drupal_get_path('module', 'cerveza_aguila_destapa') . '/themes',
+    'template' => 'user-profile',
+  );
+
+  $items['user_login'] = array(
+    'render element' => 'form',
+    'path' => drupal_get_path('module', 'cerveza_aguila_destapa') . '/theme',
+    'template' => 'user-login',
+  );
+
+  $items['user_register_form'] = array(
+    'render element' => 'form',
+    'path' => drupal_get_path('module', 'cerveza_aguila_destapa') . '/theme',
+    'template' => 'user-register',
+  );
+
+  $items['user_profile_form'] = array(
+    'render element' => 'form',
+    'path' => drupal_get_path('module', 'cerveza_aguila_destapa') . '/theme',
+    'template' => 'user-profile-edit',
+  );
+
+  $items['user_pass'] = array(
+    'render element' => 'form',
+    'path' => drupal_get_path('module', 'cerveza_aguila_destapa') . '/theme',
+    'template' => 'user-password',
+  );
+  
+  $items['user_pass_reset'] = array(
+    'render element' => 'form',
+    'path' => drupal_get_path('module', 'cerveza_aguila_destapa') . '/theme',
+    'template' => 'user-pass-reset',
+  );
+  
+
+  $items['user_menu'] = array(
+    'render element' => 'form',
+    'path' => drupal_get_path('module', 'cerveza_aguila_destapa') . '/theme',
+    'template' => 'user-menu',
+  );
+
+  $items['top_bar'] = array(
+    'render element' => 'form',
+    'path' => drupal_get_path('module', 'cerveza_aguila_destapa') . '/theme',
+    'template' => 'top-bar',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_user_view_alter().
+ */
+function cerveza_aguila_destapa_user_view_alter(&$build) {
+  global $user;
+  $path_image = drupal_get_path('module', 'cerveza_aguila_destapa') . '/img/user-example.jpg';
+  if (isset($build['#account']->picture) && file_exists($build['#account']->picture->uri)) {
+    $path_image = file_create_url($build['#account']->picture->uri);
+  }
+
+  $total_points = db_select('cerveza_aguila_destapa_ranking', 'r')
+    ->fields('r', array('total_points'))
+    ->condition('uid', $user->uid)
+    ->execute()
+    ->fetchField();
+
+  if (empty($total_points)) {
+    $total_points = 0;
+  }
+
+  $build = array(
+    '#markup' => theme('                                                                                                                      ', array(
+      'build' => $build,
+      'path_image' => url($path_image, array('absolute' => TRUE)),
+      'total_points' => $total_points,
+    ))
+  );
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function cerveza_aguila_destapa_form_alter(&$form, &$form_state, $form_id) {
+  switch($form_id) {
+    case 'user_pass_reset':
+      unset($form['message'], $form['help']);
+      break;
+      
+    case 'user_login':
+      $form['actions']['submit']['#value'] = 'INGRESAR';
+      $path = drupal_get_path('module', 'cerveza_aguila_destapa');
+      drupal_add_js($path . '/js/fb.js');
+      drupal_add_js(drupal_get_path('module', 'cerveza_aguila_destapa') . '/js/cerveza_aguila_destapa.login.js');
+      unset($form['name']['#description'], $form['pass']['#description']);
+      $form['#submit'][] = 'cerveza_aguila_destapa_redirect_login';
+      break;
+
+    case 'user_register_form':
+      if (!user_access('administer site configuration')) {
+        $form['fbtoken'] = array(
+          '#type' => 'hidden',
+        );
+
+        $path = drupal_get_path('module', 'cerveza_aguila_destapa');
+
+        drupal_add_js($path . '/js/fb.js');
+        drupal_add_js($path . '/js/cerveza_aguila_destapa.register.js');
+
+        drupal_add_js('https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js');
+        //drupal_add_js(drupal_get_path('module', 'cerveza_aguila_destapa') . '/js/cerveza_aguila_destapa.login.js');
+        //drupal_add_js(drupal_get_path('module', 'cerveza_aguila_destapa') . '/js/cerveza_aguila_destapa.register.js');
+        $form['#submit'][] = 'cerveza_aguila_destapa_redirect_register';
+        $form['actions']['submit']['#value'] = 'Registrame';
+        $form['field_ciudad']['und']['#options']['_none'] = 'Ciudad';
+        unset($form['field_cc']);
+        array_unshift($form['#validate'], 'cerveza_aguila_destapa_register_validate');
+        array_push($form['#validate'], 'cerveza_aguila_destapa_register_validate_end');
+        if (isset($form['account'])) {
+          unset($form['account']['mail']['#description'], $form['account']['pass']['#description']);
+          $form['account']['name']['#access'] = FALSE;
+          $form['account']['name']['#required'] = FALSE;
+        }
+      }
+      break;
+
+    case 'user_profile_form':
+      drupal_add_library('system', 'drupal.ajax');
+      $path = drupal_get_path('module', 'cerveza_aguila_destapa');
+
+      drupal_add_js(array(
+        'isLogin' => user_is_logged_in()
+      ), 'setting');
+
+      drupal_add_js($path . '/js/cerveza_aguila_destapa.user.register.js');
+      drupal_add_js($path . '/js/cerveza_aguila_destapa.user.js');
+
+      if (isset($_SESSION['login_fb'])) {
+        $form['#not_cancel'] = TRUE;
+      }
+      array_push($form['#validate'], 'cerveza_aguila_destapa_register_validate_end');
+      $form['#submit'][] = 'cerveza_aguila_destapa_redirect_edit';
+      unset($form['locale'], $form['field_terminos_y_condicciones'], $form['timezone']);
+      unset($form['field_cc']);
+      if (isset($form['account'])) {
+        unset($form['account']['fboauth'], $form['timezone'], $form['field_terminos_y_condicciones']);
+        //$form['field_terminos_y_condicciones']['#access'] = FALSE;
+        $form['account']['mail']['#access'] = FALSE;
+        $form['account']['name']['#access'] = FALSE;
+        //$form['account']['pass']['#access'] = FALSE;
+        //$form['account']['current_pass']['#access'] = FALSE;
+      }
+      break;
+      
+    case 'user_pass':
+      $form['actions']['submit']['#value'] = 'Recuperar Contraseña';
+      break;
+  }
+}
+
+function cerveza_aguila_destapa_register_validate($form, &$form_state) {
+  $form_state['values']['name'] = $form_state['values']['mail'];
+}
+
+function cerveza_aguila_destapa_register_validate_end($form, &$form_state) {
+  if (form_get_errors()) {
+    $old_msg = drupal_get_messages();
+    drupal_set_message('Revise los campos en rojo', 'error');
+    if (!empty($form_state['values']['mail']) && (bool) db_select('users')
+        ->fields('users', array(
+          'uid',
+        ))
+        ->condition('mail', db_like($form_state['values']['mail']), 'LIKE')
+        ->range(0, 1)
+        ->execute()
+        ->fetchField()) {
+      drupal_set_message(t('The e-mail address %email is already registered. <a href="@password">Have you forgotten your password?</a>', array(
+        '%email' => $form_state['values']['mail'],
+        '@password' => url('user/password'),
+      )), 'error');
+    }
+  }
+}
+
+function cerveza_aguila_destapa_redirect_register($form, &$form_state) {
+  $_SESSION['openModalVideo'] = TRUE;
+  if (!isset($_SESSION['data-layer'])) {
+    $_SESSION['data-layer'] = array();
+  }
+  
+  $_SESSION['data-layer'][] = array(
+    'event' => 'registro',
+    'eventCategory' => 'registro',
+    'eventAction' => 'status',
+    'eventLabel' => 'exitoso',
+  );
+
+  $date_parse = date_parse($form_state['values']['field_fecha_nacimiento']['und'][0]['value']);
+
+  $url = "https://www.sabmlatmdc.com/gfsaab/set-data";
+
+  $data = array(
+    'api_user'=> '1528494263',
+    'api_token'=> '7c1fed3506691d35f6975d0887db88e7',
+    'formid'=> '2481971',
+    'name'=> $form_state['values']['field_nombres']['und'][0]['value'],
+    'last-name'=> $form_state['values']['field_apellidos']['und'][0]['value'],
+    'document' => '',
+    'birth-day' => str_pad($date_parse['day'], 2, "0", STR_PAD_LEFT) . '/' . str_pad($date_parse['month'], 2, "0", STR_PAD_LEFT) . '/' . $date_parse['year'],
+    'email'=> $form_state['values']['mail'],
+    'tyc'=> 1,
+    'city' => $form_state['values']['field_ciudad']['und'][0]['value'],
+    'phone' => $form_state['values']['field_telefono_movil']['und'][0]['value'],
+    'country'=> 'Colombia',
+    'optin'=> '1'
+  );
+
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL,"http://sabmlatmdc.com/gfsaab/set-data");
+  curl_setopt($ch, CURLOPT_POST, 1);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+  $server_output = curl_exec($ch);
+  $server_output = curl_exec($ch);
+  curl_close ($ch);
+  $character = json_decode($server_output);
+
+  $access_token = $form_state['values']['fbtoken'];
+  if ($access_token) {
+    module_load_include('inc', 'fboauth', 'includes/fboauth.fboauth');
+    $app_id = variable_get('fboauth_id', '');
+    $app_secret = variable_get('fboauth_secret', '');
+    $destination = fboauth_action_invoke('connect', $app_id, $access_token);
+  }
+
+  $form_state['redirect'] = '/destapaelcamerino';
+}
+
+function cerveza_aguila_destapa_redirect_edit($form, &$form_state) {
+
+}
+
+function cerveza_aguila_destapa_redirect_login($form, &$form_state) {
+  $form_state['redirect'] = '/destapaelcamerino';
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function cerveza_aguila_destapa_theme_registry_alter(&$theme_registry) {
+  $extension = '.tpl.php';
+  $module_path = drupal_get_path('module', 'cerveza_aguila_destapa');
+  $files = file_scan_directory($module_path . '/templates', '/' . preg_quote($extension) . '$/');
+
+  foreach ($files as $file) {
+    $template = drupal_basename($file->filename, $extension);
+    $theme = str_replace('-', '_', $template);
+    list($base_theme, $specific) = explode('__', $theme, 2);
+    // Don't override base theme.
+    if (!empty($specific) && isset($theme_registry[$base_theme])) {
+      $theme_info = array(
+        'template' => $template,
+        'path' => drupal_dirname($file->uri),
+        //'variables'  => $theme_registry[$base_theme]['variables'],
+        'base hook' => $base_theme,
+        // Other available value: theme_engine.
+        'type' => 'module',
+        'theme path' => $module_path,
+      );
+      $theme_registry[$theme] = $theme_info;
+    }
+  }
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function cerveza_aguila_destapa_menu_alter(&$items) {
+  $keys = array('user/login', 'user/register', 'user/password', 'user', 'user/%user', 'user/%user/edit', 'user/%user/view');
+  foreach($keys as $key) {
+    $items[$key]['type'] = MENU_NORMAL_ITEM;
+  }
+
+  $items['user']['page callback'] = 'cerveza_aguila_destapa_page_user';
+  $items['user/%user']['page callback'] = 'cerveza_aguila_destapa_page_user';
+}
+
+function cerveza_aguila_destapa_page_user() {
+  global $user;
+  if ($user->uid) {
+    drupal_goto('user/' . $user->uid . '/edit');
+  }
+  else {
+    return drupal_get_form('user_login');
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function cerveza_aguila_destapa_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'cerveza_aguila_destapa') . '/views',
+  );
+}
+
+/**
+ * HOOK_preprocess_HOOK().
+ */
+function cerveza_aguila_destapa_preprocess_html(&$vars) {
+  $paths = array('destapaelcamerino', 'destapaelcamerino/*', 'user', 'user/*', 'user/*/*');
+  if (drupal_match_path(current_path(), implode(PHP_EOL, $paths))) {
+    drupal_add_css('https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css', array('type' => 'external'));
+    drupal_add_css('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css', array('type' => 'external'));
+
+    /*drupal_add_js('https://code.jquery.com/jquery-3.3.1.slim.min.js', array(
+      'type' => 'external',
+      'scope' => 'footer'));*/
+
+    drupal_add_js('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', 'external');
+
+    drupal_add_js('https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js', 'external');
+
+    $module_path = drupal_get_path('module', 'cerveza_aguila_destapa');
+
+    drupal_add_css($module_path . '/css/style.css');
+    $query = db_select('node', 'n')
+      ->fields('n', array('nid'))
+      ->execute();
+    $vars['items']= NULL;
+  }
+}
+
+/**
+ *
+ * Implements hook_date_select_process_alter
+ *
+ **/
+
+function cerveza_aguila_destapa_date_select_process_alter(&$element, &$form_state, $context) {
+  if ($element['#field']['field_name'] == 'field_fecha_nacimiento') {
+    $options = $element['year']['#options'];
+    array_shift($options);
+    $options_2 = array('' => '-Año');
+    foreach(array_reverse($options) as $item) {
+      $options_2[$item] = $item;
+    }
+    $element['year']['#options'] = $options_2;
+  }
+}
+
+/**
+ * Se encarga de insertar los meta tags de facebook
+ * @param $page
+ */
+function cerveza_aguila_destapa_page_alter(&$page) {
+  if (arg(0) == 'destapaelcamerino' && isset($_GET['v']) && isset($_GET['t']) && $_GET['t'] == md5($_GET['v'] . drupal_get_private_key() . drupal_get_hash_salt())) {
+    if ($node = node_load($_GET['v'])) {
+
+      unset($page['content']['metatags']['global']['og:description']);
+      unset($page['content']['metatags']['global']['og:image:type']);
+      unset($page['content']['metatags']['global']['og:image:url']);
+      unset($page['content']['metatags']['global']['og:site_name']);
+      unset($page['content']['metatags']['global']['og:type']);
+      unset($page['content']['metatags']['global']['og:title']);
+      unset($page['content']['metatags']['global']['og:url']);
+      unset($page['content']['metatags']['global']['og:url']);
+      unset($page['content']['metatags']['global']['description']);
+
+      $image = url(file_create_url($node->field_seo_image['und'][0]['uri']), array('absolute' => TRUE));
+
+      $url = url('destapaelcamerino', array(
+        'absolute' => TRUE,
+        'query' => array(
+          'v' => $_GET['v'],
+          't' => $_GET['t'],
+        )
+      ));
+
+      $description = $node->field_seo_body['und'][0]['value'];
+      $title = $node->field_seo_title['und'][0]['value'];
+
+      $og_url = array(
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'property' => 'og:url',
+          'content' => $url,
+        )
+      );
+
+      $og_title = array(
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'property' => 'og:title',
+          'content' => $title,
+        )
+      );
+
+      $og_type = array(
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'property' => 'og:type',
+          'content' => 'article',
+        )
+      );
+
+      $og_description = array(
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'property' => 'og:description',
+          'content' => $description,
+        )
+      );
+
+      $description = array(
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'property' => 'description',
+          'content' => $description,
+        )
+      );
+
+      $og_image = array(
+        '#tag' => 'meta',
+        '#attributes' => array(
+          'property' => 'og:image',
+          'content' => $image,
+        )
+      );
+
+      drupal_add_html_head($og_url, 'og:url');
+      drupal_add_html_head($og_title, 'og:title');
+      drupal_add_html_head($og_type, 'og:type');
+      drupal_add_html_head($og_description, 'og:description');
+      drupal_add_html_head($description, 'description');
+      drupal_add_html_head($og_image, 'og:image');
+    }
+  }
+}
+
+function cerveza_aguila_destapa_add_points($uid, $points, $event) {
+  /*db_insert('cerveza_aguila_destapa_points')
+    ->fields(array(
+      'uid' => $uid,
+      'created' => REQUEST_TIME,
+      'points' => $points,
+      'event' => $event,
+    ))
+    ->execute();
+
+  db_merge('cerveza_aguila_destapa_ranking')
+    ->key(array('uid' => $uid))
+    ->fields(array(
+      'updated' => REQUEST_TIME,
+      'total_points' => $points,
+    ))
+    ->expression('total_points', 'IF(IFNULL(total_points, 0) > 0, total_points + :inc, :inc)', array(':inc' => $points))
+    ->execute();*/
+}
+
+function cerveza_aguila_destapa_get_points($uid=NULL) {
+  if (is_null($uid)) {
+    global $user;
+    $uid = $user->uid;
+  }
+
+  $total = db_select('cerveza_aguila_destapa_ranking', 'r')
+    ->fields('r', array('total_points'))
+    ->condition('r.uid', $uid)
+    ->execute()
+    ->fetchField();
+
+  return $total ? $total : 0;
+}
+
+function cerveza_aguila_destapa_get_ranking($uid=NULL) {
+
+  if (is_null($uid)) {
+    global $user;
+    $uid = $user->uid;
+  }
+
+  $total = cerveza_aguila_destapa_get_points($uid);
+
+  $total = db_select('cerveza_aguila_destapa_ranking', 'r')
+    ->fields('r', array('total_points'))
+    ->condition('r.uid', $uid)
+    ->execute()
+    ->fetchField();
+
+  return $total ? $total : 0;
+}
+
+/**
+ * Implements hook_user_login().
+ */
+function cerveza_aguila_destapa_user_login(&$edit, $account) {
+  if (isset($account->created) && $account->created <= 1527811200 && !isset($account->data['cerveza_aguila_destapa_add_points'])) { //1 Junio 2018 00:00:00
+    $account->data['cerveza_aguila_destapa_add_points'] = TRUE;
+    user_save($account);
+    cerveza_aguila_destapa_add_points($account->uid, variable_get('cerveza_aguila_destapa_add_points', 5), 'extra');
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function cerveza_aguila_destapa_cron1() {
+  $query = db_select('cerveza_aguila_destapa_ranking', 'r')
+    ->fields('r', array('total_points'));
+
+  $query->join('users', 'u', 'u.uid = r.uid');
+
+  $query->join('field_data_field_nombres', 'n', 'n.entity_id = u.uid');
+  $query->leftJoin('field_data_field_apellidos', 'a', 'a.entity_id = u.uid');
+  $query->leftJoin('field_data_field_ciudad', 'c', 'c.entity_id = u.uid');
+  $query->leftJoin('field_data_field_telefono_movil', 't', 't.entity_id = u.uid');
+  $query->leftJoin('field_data_field_fecha_nacimiento', 'fn', 'fn.entity_id = u.uid');
+
+  $result = $query
+    ->fields('u', array('name', 'mail'))
+    ->fields('n', array('field_nombres_value'))
+    ->fields('a', array('field_apellidos_value'))
+    ->fields('c', array('field_ciudad_value'))
+    ->fields('t', array('field_telefono_movil_value'))
+    ->fields('fn', array('field_fecha_nacimiento_value'))
+    ->orderBy('r.total_points', 'DESC')
+    ->orderBy('r.updated')
+    ->execute();
+
+  $index = 1;
+  $rows = array();
+
+  foreach ($result as $item) {
+    if ($item->field_fecha_nacimiento_value) {
+      $date_parse = date_parse($item->field_fecha_nacimiento_value);
+      $item->field_fecha_nacimiento_value = str_pad($date_parse['month'], 2, "0", STR_PAD_LEFT) . '-' . str_pad($date_parse['day'], 2, "0", STR_PAD_LEFT) . '-' . $date_parse['year'];
+    }
+    else {
+      $item->field_fecha_nacimiento_value = '12-24-1960';
+    }
+
+    $rows[] = array(
+      'mail' => $item->mail,
+      'name' => $item->field_nombres_value,
+      'lastname' => $item->field_apellidos_value,
+      'city' => $item->field_ciudad_value,
+      'phone' => $item->field_telefono_movil_value,
+      'birthday' => $item->field_fecha_nacimiento_value,//"12-24-1960",
+      'points' => $item->total_points,
+      'ranking' => $index,
+    );
+    $index++;
+  }
+
+  return $rows;
+}
+
+/**
+ * Implements hook_cron_queue_info().
+ */
+function cerveza_aguila_destapa_cron_queue_info() {
+  $queues['cerveza_aguila_destapa_marketing_cloud'] = array(
+    'worker callback' => 'cerveza_aguila_destapa_mk',
+    'time' => 60,
+  );
+
+  return $queues;
+}
+
+function cerveza_aguila_destapa_marketing_cloud($info) {
+
+  $options = array(
+    'method' => 'POST',
+    'data' => drupal_http_build_query(array(
+      'clientId' => 'ucf8hk3wxkg50nsgxp0mj2le',
+      'clientSecret' => '1M3wUy4UxyDWQ1DRL192ofGl',
+    )),
+    'timeout' => 15,
+    'headers' => array('Content-Type' => 'application/x-www-form-urlencoded'),
+  );
+
+  $result = drupal_http_request('https://auth.exacttargetapis.com/v1/requestToken', $options);
+
+  if ($result->code == 200) {
+    $result = json_decode($result->data);
+
+    $data = array();
+
+    foreach($info as $_data) {
+      $data[] = array(
+        'keys' => array(
+          'EmailAddress' => $_data['mail']
+        ),
+        'values' => array(
+          'Nombre' => $_data['name'],
+          'Apellidos' => $_data['lastname'],
+          'Ciudad' => $_data['city'],
+          'FechaNacimiento' => $_data['birthday'],
+          'Celular' => $_data['phone'],
+          'Puntaje' => $_data['points'],
+          'Posicion' => $_data['ranking']
+        )
+      );
+    }
+
+    $data_string = json_encode($data);
+
+    $headers[] = 'Content-Type: application/json';
+    $headers[] = 'Authorization: Bearer ' . $result->accessToken;
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL,"https://www.exacttargetapis.com/hub/v1/dataevents/key:238A8A47-40CB-4FB3-BBD3-BF8A1FBF3512/rowset");
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $server_output2 = curl_exec($ch);
+    curl_close ($ch);
+  }
+}
+
+function cerveza_aguila_destapa_get_response($uid, $nid) {
+  return db_select('cerveza_aguila_destapa_response', 'r')
+    ->fields('r', array('id'))
+    ->condition('r.uid', $uid)
+    ->condition('r.nid', $nid)
+    ->execute()
+    ->fetchField();
+}

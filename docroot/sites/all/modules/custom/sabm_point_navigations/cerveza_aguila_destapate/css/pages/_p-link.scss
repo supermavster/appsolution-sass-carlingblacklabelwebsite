@@ -1,0 +1,131 @@
+//
+// _p-link
+//
+
+&-p-link {
+  @extend %page-wrapper;
+  position: relative;
+  
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: calc(100% / 5);
+    height: 100%;
+    background-size: contain;
+  }
+  
+  &::before {
+    left: 0;
+    background-image: image('destapate-bg-link-mask-left.png');
+    background-position: bottom left;
+  }
+  
+  &::after {
+    right: 0;
+    background-image: image('destapate-bg-link-mask-right.png');
+    background-position: bottom right;
+  }
+  
+  @include media-breakpoint-up(lg) {
+    background-position: center 25%;
+  }
+  
+  @include e(heading) {
+    
+    @include media-breakpoint-up(lg) {
+    
+    }
+    
+    &::before {
+      content: 'Copia y pega el link';
+    }
+  }
+  
+  @include e(subheading) {
+    @extend %subheading;
+  }
+  
+
+  
+  form#cerveza-aguila-destapate-form-video-link {
+  
+    select,
+    input[type="text"] {
+      text-align: center;
+    }
+    
+    & > div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    #edit-title,
+    #edit-title--2 {
+      @extend %form-title;
+    }
+    
+    #edit-wrapper {
+      @extend %form-wrapper;
+      @include make-row();
+  
+      @include media-breakpoint-down(md) {
+        //width: calc(100% + (#{$grid-gutter-width} * 2));
+        width: 100%;
+      }
+      
+      #edit-left,
+      #edit-right {
+        @include make-col-ready();
+        
+        @include media-breakpoint-up(lg) {
+          @include make-col(6);
+          padding: 0 ($grid-gutter-width * 4);
+        }
+      }
+      
+      .destapate-btn--file {
+        @include ms-respond(font-size, 1);
+        padding-right: 0;
+        padding-left: 0;
+        
+        @include media-breakpoint-up(lg) {
+          @include ms-respond(font-size, -2);
+        }
+      }
+    }
+    
+    .form-item {
+      
+      &.form-item-name label {
+        display: none !important;
+      }
+      
+      label {
+        display: block;
+        @include ms-respond(font-size, 3);
+        margin-bottom: rem(4px);
+  
+        @include media-breakpoint-up(lg) {
+          @include ms-respond(font-size, -1);
+        }
+      }
+    }
+    
+    input[type="submit"] {
+      width: 100%;
+      
+      @include media-breakpoint-up(lg) {
+        margin-top: rem(72px);
+        width: auto;
+      }
+    }
+  }
+}
+
+&-disclaimer {
+  
+
+}

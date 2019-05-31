@@ -1,0 +1,12 @@
+name = XML sitemap node
+description = Adds content links to the sitemap.
+package = XML sitemap
+core = 7.x
+dependencies[] = xmlsitemap
+files[] = xmlsitemap_node.test
+
+; Information added by Drupal.org packaging script on 2019-02-11
+version = "7.x-2.6+19-dev"
+core = "7.x"
+project = "xmlsitemap"
+datestamp = "1549922585"

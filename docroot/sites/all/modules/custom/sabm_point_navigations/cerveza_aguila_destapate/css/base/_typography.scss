@@ -1,0 +1,95 @@
+//
+// Body text style
+//
+
+@for $i from 1 through 6 {
+  h#{$i} {
+    @extend %h#{$i};
+  }
+}
+
+p {
+  @extend %body;
+  
+  + p {
+    margin-top: em(24px);
+  }
+}
+
+// Body
+& {
+  //@include ms-respond(font-size, 0);
+  font-size: ms(0);
+  font-family: $font-stack-primary;
+  font-weight: 400;
+  font-kerning: auto;
+  letter-spacing: em(.16px);
+  line-height: 1.2;
+  text-rendering: optimizeLegibility;
+  color: palette(grays, 'white');
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  .#{$project-name} {
+    
+    &-heading {
+      @include ms-respond(font-size, 7);
+      @include text-stroke(palette(themes, tertiary), color-burn);
+      margin-bottom: rem(12px);
+      
+      @include media-breakpoint-up(lg) {
+        @include ms-respond(font-size, 3);
+        margin-bottom: rem(8px);
+      }
+    }
+    
+    &-subheading {
+      @extend %subheading;
+    }
+    
+    &-lead {
+      @extend %lead;
+    }
+    
+    &-h1 {
+      @extend %h1;
+    }
+    
+    &-h2 {
+      @extend %h2;
+    }
+    
+    &-h3 {
+      @extend %h3;
+    }
+    
+    &-h4 {
+      @extend %h4;
+    }
+    
+    &-h5 {
+      @extend %h5;
+    }
+    
+    &-body {
+      @extend %body;
+    }
+    
+    &-small {
+      @extend %small;
+    }
+    
+    &-caption {
+      @extend %caption;
+    }
+    
+    &-tiny {
+      @extend %tiny;
+    }
+    
+    &-smallcaps {
+      @extend %smallcaps;
+    }
+  }
+  
+}

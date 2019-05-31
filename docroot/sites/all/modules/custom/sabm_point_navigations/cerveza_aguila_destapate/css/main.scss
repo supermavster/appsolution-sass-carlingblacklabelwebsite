@@ -1,0 +1,41 @@
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+$project-name: 'destapate';
+$page-name: 'page-#{$project-name}';
+$asset-base-path: '../assets' !default;
+
+@mixin font-face($font-name, $file-name, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: quote($font-name);
+    src: url('#{$asset-base-path}/fonts/#{$file-name}' + '.eot');
+    src: url('#{$asset-base-path}/fonts/#{$file-name}' + '.woff') format('woff'),
+    url('#{$asset-base-path}/fonts/#{$file-name}' + '.ttf') format('truetype'),
+    url('#{$asset-base-path}/fonts/#{$file-name}' + '.svg') format('svg');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+@include font-face('Futura Condensed', 'Futura-CondensedExtraBold', 800);
+
+.#{$page-name} {
+  @import "vendor/index";
+  @import "utilities/index";
+  @import "layout/index";
+  @import "pages/index";
+  @import "components/index";
+  @import "base/index";
+}
+
+
+

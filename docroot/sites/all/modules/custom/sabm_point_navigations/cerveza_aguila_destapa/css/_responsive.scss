@@ -1,0 +1,1159 @@
+
+.section-register,
+.section-login,
+.section-ranking {
+  height: auto;
+  padding-bottom: 5rem;
+
+  @media (min-width: 768px) {
+    padding-bottom: 10rem;
+  }
+}
+
+.ranking-table-wrapper {
+  margin-top: 5rem;
+
+  @media (min-width: 768px) {
+    margin-top: 2rem;
+  }
+}
+
+// Desktop
+
+@media (min-width: 1680px) {
+  .section-login{
+    height: calc(100vh - 107px)
+  }
+}
+
+
+@media (max-width: 1680px) {
+  .section-ranking {
+    .player-left {
+      left: 17%;
+      margin-left: -330px;
+    }
+
+    .player-right {
+      left: auto;
+      right: 22%;
+      margin-right: -350px;
+    }
+  }
+}
+
+@media (max-width: 1440px) {
+  .section-login {
+    .player-img {
+      left: 3%;
+    }
+  }
+
+  .section-ranking {
+    .player-left {
+      left: 14%;
+      margin-left: -250px;
+      width: 500px;
+    }
+
+    .player-right {
+      left: auto;
+      right: 22%;
+      margin-right: -300px;
+      width: 600px;
+    }
+  }
+
+  .section-ganar {
+    .content-wrapper {
+      padding-top: 200px;
+    }
+  }
+}
+
+@media (max-width: 1280px) {
+
+  .section-register {
+    .player-img {
+      width: 350px;
+    }
+  }
+
+  .section-login {
+    .player-img {
+      left: 10%;
+      margin-left: -200px;
+      width: 400px;
+    }
+  }
+
+  .section-ranking {
+    .player-left {
+      left: 5%;
+      margin-left: -200px;
+      width: 400px;
+    }
+
+    .player-right {
+      left: auto;
+      right: 15%;
+      margin-right: -180px;
+      width: 400px;
+    }
+  }
+
+  .section-profile,
+  .section-ranking {
+    .content-wrapper {
+      background-size: 90%;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+
+  .section-ranking {
+    .player-right {
+      right: 0;
+      margin-right: 0;
+    }
+  }
+
+  // Layout
+
+  .content-wrapper {
+    .top-section {
+      margin: 0 auto;
+      max-width: 90%;
+    }
+  }
+
+  .main-menu {
+    right: 3%;
+  }
+
+  // Capítulos
+
+  .section-capitulos,
+  .section-ganar {
+    .player-img {
+      left: -150px;
+    }
+  }
+
+  // Premios
+
+  .section-premios {
+    .player-img {
+      left: -20px;
+    }
+  }
+}
+
+// Mobile
+
+@media (max-width: 992px) {
+
+  // Layout
+
+  .main-menu {
+    display: none;
+  }
+
+  // Hero
+
+  .section-hero {
+    h1 {
+      font-size: 56px;
+    }
+
+    .copy-wrapper {
+      h3 {
+        font-size: 24px;
+      }
+    }
+  }
+
+  // Contador
+
+  .section-contador{
+    h2,
+    ul.countdown li .number {
+      font-size: 40px;
+    }
+  }
+
+  // Capítulos
+
+  .section-capitulos {
+    .capitulos-wrapper {
+      width: auto;
+    }
+  }
+
+  .section-ganar {
+    .content-wrapper {
+      padding-top: 100px;
+    }
+  }
+
+  .page-destapaelcamerino {
+
+    .top-section {
+
+      display: block;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+
+  // Layout
+
+  .user-profile {
+    width: 64px !important;
+
+    .user-thumbnail {
+      position: initial;
+    }
+
+    .dropdown {
+      height: 64px;
+      width: 64px !important;
+
+      > a {
+        height: 100%;
+        margin-left: 0;
+        padding: 0 !important;
+        position: absolute;
+        width: 100%;
+        z-index: 10;
+      }
+
+      .dropdown-border {
+        display: none;
+      }
+
+      > a {
+        background-color: transparent;
+        border-bottom: none;
+        border-top: none;
+        span {
+          display: none;
+        }
+
+        &::after {
+          float: none;
+          margin: 0;
+          position: absolute;
+          bottom: 0;
+          right: 0;
+        }
+      }
+
+      .dropdown-menu {
+        background-color: $color-primary;
+        //display: block !important;
+        left: auto;
+        min-width: initial;
+        right: 0;
+
+        a {
+          color: $color-white;
+          display: block;
+          font-size: 12px;
+          padding: 5px 10px;
+          text-decoration: none;
+        }
+
+        .dropdown-item:hover {
+          background-color: transparent;
+          color: $color-secondary;
+        }
+      }
+    }
+  }
+
+  .content-wrapper {
+    .top-section {
+      //top: 80px;
+
+      h3.section-h3 {
+        width: 100%;
+
+        &::before {
+          display: none;
+        }
+
+        &::after {
+          display: block;
+          margin: 0 auto;
+          width: 70%;
+        }
+      }
+
+      .top-nav-bar {
+        a {
+          display: block;
+          height: 64px;
+          margin: 0 auto;
+          text-align: center;
+          padding: 0;
+          width: 64px;
+
+          img {
+            height: 64px;
+            padding: 10px;
+            width: 64px;
+          }
+
+          &.btn-home {
+            background-image: url("../img/icon-home-white.svg");
+          }
+
+          &.btn-ranking {
+            background-image: url("../img/icon-ranking-white.svg");
+          }
+
+          &.btn-register {
+            background-image: url("../img/icon-register-white.svg");
+          }
+
+          &.btn-login {
+            background-image: url("../img/icon-login-white.svg");
+          }
+
+          &.btn-home,
+          &.btn-ranking,
+          &.btn-register,
+          &.btn-login {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 60%;
+          }
+        }
+      }
+    }
+  }
+
+  .section-capitulos,
+  .section-login {
+    .content-wrapper {
+      .top-section {
+        .top-nav-bar {
+          a {
+            &.btn.btn-default.active {
+              background-color: $color-secondary !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .section-register,
+  .section-ranking,
+  .section-profile,
+  .section-capitulos,
+  .section-login {
+    .content-wrapper {
+      .top-section {
+        .top-nav-bar {
+
+          a {
+            &.btn.btn-default.active {
+              background-color: $color-white;
+              &.btn-home {
+                background-image: url("../img/icon-home-primary.svg");
+              }
+
+              &.btn-ranking {
+                background-image: url("../img/icon-ranking-primary.svg");
+              }
+
+              &.btn-register {
+                background-image: url("../img/icon-register-primary.svg");
+              }
+
+              &.btn-login {
+                background-image: url("../img/icon-login-primary.svg");
+              }
+            }
+
+          }
+
+        }
+      }
+    }
+  }
+
+  .section-hero,
+  .section-capitulos,
+  .section-ganar,
+  .section-premios,
+  .section-register,
+  .section-ranking {
+    min-height: initial;
+  }
+
+  // Hero
+
+  .section-hero {
+    .content-wrapper {
+      .copy-wrapper {
+        left: 0;
+        padding: 0 30px;
+
+        h1 {
+          font-size: 48px;
+        }
+
+        .btn {
+          display: block;
+        }
+      }
+    }
+  }
+
+  // Capítulos
+
+  .section-capitulos {
+    .container {
+      height: 100% !important;
+    }
+
+    .player-img {
+      left: 0;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .content-wrapper {
+      padding: 50px 0 0;
+      position: initial;
+
+      .capitulos-wrapper {
+        align-content: flex-end;
+        display: flex;
+        //height: calc(100% - 200px);
+        //margin-top: 200px;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .view-lista-videos-promo-destapa {
+          margin-top: 40vw;
+
+          .item-list {
+            ul {
+              li {
+                margin: 0 5px 5px 0;
+                width: 100%;
+
+                .slider-card {
+                  margin-bottom: 0;
+
+                  img,
+                  .video-thumbnail {
+                    height: 250px;
+                    margin: 10px 0;
+                    max-width: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                    width: 100%;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Ranking
+
+  .section-ranking {
+    .content-wrapper {
+      //padding-top: 320px;
+    }
+  }
+
+  // Register
+
+  .section-register {
+    .content-wrapper {
+      .login-box {
+        margin: 0 auto 20px;
+        position: initial;
+      }
+    }
+  }
+
+  // Form wrappers
+
+  .section-register,
+  .section-login,
+  .section-ranking,
+  .section-profile {
+    height: 100%;
+
+    .content-wrapper {
+      //padding-top: 250px;
+    }
+  }
+
+  .section-register,
+  .section-ranking,
+  .section-login {
+
+    .content-wrapper {
+      position: initial;
+
+      .login-form-wrapper,
+      .register-form-wrapper,
+      .ranking-table-wrapper {
+        margin-bottom: 20px;
+        padding: 15px;
+
+        h3 {
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  // Profile
+
+  .profile-status {
+    .status-title {
+      margin: 10px 30px 0;
+      padding: 30px 80px;
+    }
+
+    .user-photo-edit {
+      .user-picture {
+        width: 130px;
+      }
+
+      .form-item {
+        height: 130px;
+        margin: 11px 0 0 11px;
+        width: 130px;
+      }
+
+      .user-picture img,
+      .form-item .form-file {
+        height: 116px;
+        width: 116px;
+      }
+    }
+
+    .user-photo-edit .user-picture,
+    .star-points {
+      height: 130px;
+    }
+
+    .star-points {
+      width: 124px;
+
+      span {
+        padding-top: 40px;
+      }
+    }
+
+    .user-photo-edit,
+    .star-points {
+      top: -40px;
+    }
+  }
+
+  // Modals
+
+  .modal-dialog {
+    .modal-content {
+      .modal-body {
+        padding: 15px;
+
+        .my-player-vimeo-processed {
+          iframe {
+            max-width: 100% !important;
+          }
+        }
+      }
+    }
+  }
+
+  // Messages
+
+  .messages {
+    margin: 15px 10% !important;
+    width: 80%;
+  }
+}
+
+@media (max-width: 640px) {
+
+  // Layout
+
+  .user-profile {
+    .dropdown {
+      .dropdown-menu {
+        right: -10%;
+      }
+    }
+  }
+
+  .section-h3 {
+    letter-spacing: 10px;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
+
+  // Buttons
+
+  .btn {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  // Hero
+
+  .section-hero {
+    .content-wrapper {
+
+      .copy-wrapper {
+        width: 80%;
+      }
+    }
+  }
+
+  // Capítulos
+
+  .section-capitulos {
+    .content-wrapper {
+      .capitulos-wrapper {
+        .view-lista-videos-promo-destapa {
+          .item-list {
+            ul {
+              li {
+                .slider-card {
+                  img,
+                  .video-thumbnail {
+                    height: 200px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Ganar
+
+  .section-ganar {
+    .player-img {
+      left: auto;
+      right: 0;
+      max-width: 60% !important;
+    }
+
+    .ganar-wrapper {
+      height: auto;
+      margin: 0;
+      position: initial;
+      top: initial;
+      width: auto;
+    }
+  }
+
+  // Premios
+
+  .section-premios {
+    min-height: 900px;
+
+    .player-img {
+      left: 0;
+      max-height: 90%;
+    }
+
+    .premios-wrapper {
+      margin-top: 200px;
+    }
+  }
+
+  // Profile status
+
+  .profile-status {
+    .user-photo-edit {
+      .user-picture {
+        left: -50px;
+      }
+    }
+
+    .star-points {
+      right: -50px;
+    }
+  }
+
+  // Forms
+
+  .login-form-wrapper,
+  .register-form-wrapper {
+    .form-text,
+    .form-submit,
+    .form-type-select,
+    .container-inline-date {
+      width: 100%;
+    }
+  }
+
+  .section-profile,
+  .section-ranking {
+    .content-wrapper {
+      background-image: none;
+    }
+  }
+
+  // Modals
+
+  .modal-dialog {
+    &.modal-lg {
+      margin: 0;
+
+      .modal-content {
+        .modal-body {
+          padding: 0 0 30px;
+
+          h2 {
+            font-size: 24px;
+          }
+
+          .col-12 {
+            padding: 0;
+
+            .my-player-vimeo-processed {
+              margin: 5px 0;
+
+              iframe {
+                height: 360px;
+              }
+            }
+          }
+
+          .comparte-gana {
+            padding-right: 100px;
+
+            h3,
+            h4 {
+              font-size: 12px;
+            }
+          }
+
+          .social-links {
+            a {
+              height: 24px;
+              width: 24px;
+            }
+          }
+
+        }
+      }
+    }
+
+    .modal-content {
+      .modal-body {
+        .col-5,
+        .col-7 {
+          h2,
+          h3 {
+            line-height: 24px;
+          }
+        }
+        h2,
+        h3 {
+          font-size: 20px;
+        }
+
+        .col-6 {
+          flex-direction: column;
+        }
+
+      }
+    }
+  }
+
+  .modal-10-puntos {
+    padding-top: 0;
+
+    img.star-10-puntos {
+      margin-left: -126px;
+      top: -100px;
+      width: 200px;
+    }
+
+    .form-type-select {
+      background-position-x: calc(100% - 10px);
+      background-size: 10%;
+      font-size: 16px;
+    }
+  }
+
+}
+
+@media (max-width: 480px) {
+  .content-wrapper {
+    .top-section {
+      //top: 40px;
+
+      .section-h3 {
+        font-size: 20px;
+        letter-spacing: 3px;
+      }
+    }
+  }
+
+  .btn,
+  .section-terminos .btn {
+    font-size: 16px;
+    padding: 8px 10px
+  }
+
+  // Hero
+
+  .section-hero {
+
+    .content-wrapper {
+      .copy-wrapper {
+        bottom: 120px;
+
+        h1 {
+          font-size: 32px;
+        }
+
+        h3 {
+          font-size: 16px;
+          margin-bottom: 10px;
+        }
+      }
+
+      .top-section {
+        top: 70px;
+        //position: absolute;
+      }
+    }
+  }
+
+  // Contador
+
+  .section-contador {
+    padding: 10px 0;
+
+    h2,
+    ul.countdown li .number {
+      font-size: 22px;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    h3 {
+      font-size: 12px;
+    }
+
+    ul.countdown {
+      li {
+        font-size: 10px;
+
+        .number {
+          margin-top: 10px;
+        }
+
+        label {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  // Capítulos
+
+  .section-capitulos {
+    .content-wrapper {
+      .capitulos-wrapper {
+        //height: calc(100% - 150px);
+        //margin-top: 150px;
+
+        .view-lista-videos-promo-destapa {
+          .item-list {
+            ul {
+              li {
+                img,
+                .video-thumbnail {
+                  height: 150px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Ranking
+
+  .section-ranking {
+    .content-wrapper {
+      //padding-top: 310px;
+    }
+  }
+
+  // Profile
+
+  .profile-status {
+    .status-title {
+      padding: 20px 60px;
+    }
+
+    .user-photo-edit {
+      .user-picture {
+        left: -10px;
+        width: 100px;
+      }
+
+      .form-item {
+        height: 86px;
+        margin: 7px 0 0 -3px;
+        width: 86px;
+      }
+
+      .user-picture img,
+      .form-item .form-file {
+        height: 86px;
+        width: 86px;
+      }
+    }
+
+    .user-photo-edit .user-picture,
+    .star-points {
+      height: 100px;
+    }
+
+    .star-points {
+      right: -10px;
+      width: 95px;
+
+      span {
+        padding-top: 20px;
+      }
+    }
+
+    .user-photo-edit,
+    .star-points {
+      top: -40px;
+    }
+  }
+
+  // Términos
+
+  .section-terminos {
+    h3 {
+      font-size: 16px;
+    }
+  }
+
+  // Modals
+
+  .modal-dialog {
+    .modal-header {
+      .close {
+        font-size: 40px;
+      }
+    }
+
+    &.modal-lg {
+      .modal-content {
+        .modal-body {
+          .col-12 {
+            .my-player-vimeo-processed {
+              margin: 5px 0;
+
+              iframe {
+                height: 270px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 375px) {
+
+  // Layout
+
+  .content-wrapper {
+    .top-section {
+      .section-h3 {
+        margin-bottom: 0;
+      }
+
+      .top-nav-bar {
+        a {
+          height: 44px;
+          width: 44px;
+
+          img {
+            height: 44px;
+            padding: 10px;
+            width: 44px;
+          }
+        }
+      }
+    }
+  }
+
+  // Hero
+
+  .section-hero {
+    .content-wrapper {
+      .top-section {
+        top: 70px;
+      }
+    }
+  }
+
+  // Capítulos
+
+  .section-capitulos {
+    .content-wrapper {
+      .capitulos-wrapper {
+        //height: calc(100% - 90px);
+        //margin-top: 90px;
+
+        .view-lista-videos-promo-destapa {
+          .item-list {
+            ul {
+              li {
+                .slider-card {
+                  img,
+                  .video-thumbnail {
+                    height: 140px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Ganar
+
+  .section-ganar {
+    .ganar-wrapper {
+      //margin-top: 100px;
+    }
+  }
+
+  // Premios
+
+  .section-premios {
+    .premios-wrapper {
+      margin-top: 100px;
+    }
+  }
+
+  // Register
+
+  .section-register,
+  .section-login {
+    .top-section {
+      //top: 80px;
+    }
+
+    .content-wrapper {
+      //padding-top: 190px;
+    }
+  }
+
+  // Profile
+
+  .section-profile {
+    .content-wrapper {
+      //padding-top: 230px;
+    }
+  }
+
+  // Login
+
+  .section-login {
+    height: auto;
+
+    .content-wrapper {
+      position: initial;
+    }
+  }
+
+  // Ranking
+
+  .section-ranking {
+    .top-section {
+      //top: 80px;
+    }
+    .content-wrapper {
+      //padding-top: 280px;
+    }
+  }
+
+  // Forms
+
+  .section-register {
+    .register-form-wrapper {
+      .nacimiento {
+        legend {
+          font-size: inherit;
+          margin: 0 0 5px;
+        }
+      }
+    }
+  }
+
+  .section-profile {
+    .register-form-wrapper {
+      .nacimiento {
+        legend {
+          font-size: inherit;
+          margin: 10px 0 5px;
+        }
+      }
+    }
+  }
+
+  // Modals
+
+  .modal-dialog {
+    &.modal-lg {
+      .modal-content {
+        .modal-body {
+          .col-12 {
+            .my-player-vimeo-processed {
+
+              iframe {
+                height: 212px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

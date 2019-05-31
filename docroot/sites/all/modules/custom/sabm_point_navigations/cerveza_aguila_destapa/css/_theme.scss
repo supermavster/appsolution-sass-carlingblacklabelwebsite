@@ -1,0 +1,491 @@
+// Vars
+
+$color-black: #000;
+$color-white: #fff;
+$color-light-gray: #f5f5f5;
+$color-gray: #777;
+
+$color-primary: #0c689c;
+$color-secondary: #ffda0e;
+$color-third: #005476;
+
+$color-error: #c00;
+$color-success: #04742a;
+
+// Colors
+
+.text-primary,
+.login-form-wrapper a,
+.form-type-select select,
+.login-box h3,
+.status-title h3,
+.slider-card a {
+  color: $color-primary;
+}
+
+.btn-default {
+  background-color: $color-primary;
+}
+
+.btn-transparent {
+  background-color: transparent;
+}
+
+.section-contador {
+  background-color: $color-black;
+}
+
+.section-contador,
+.section-terminos h3,
+.section-terminos .btn,
+.section-hero .main-menu li a {
+  color: $color-white;
+}
+
+.text-white,
+a.btn,
+.btn,
+.form-submit,
+.register-form-wrapper a,
+.register-form-wrapper p,
+.terms-conditions,
+.terms-conditions span,
+.star-points span {
+  color: $color-white !important;
+}
+
+.section-ganar,
+.section-register,
+.section-ranking,
+.section-profile {
+  .top-section {
+    a {
+      span {
+        color: $color-white;
+      }
+    }
+  }
+}
+
+.content-wrapper {
+  h4,
+  h5,
+  h6,
+  p,
+  .section-ganar span {
+    color: $color-primary
+  }
+}
+
+// Typography
+
+body {
+  font-size: 12px;
+}
+
+.section-hero {
+  h1,
+  h3 {
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 60px;
+  }
+
+  .copy-wrapper {
+    h3 {
+      font-size: 24px;
+      font-style: oblique;
+    }
+  }
+}
+
+.page-destapaelcamerino{
+
+  .top-section{
+
+    display: none;
+
+    // Default
+    .btn{
+      background-color: transparent;
+      transition: all 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .section-h3{
+      transition: all 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    &.stuck{
+      position: fixed;
+      top: 5px;
+    }
+
+    // White background
+    &.white-background-menu{
+      display: block;
+
+      .btn{
+        background-color: $color-primary;
+      }
+      .section-h3{
+        color: $color-primary;
+      }
+    }
+
+    // Yellow background
+    &.yellow-background-menu{
+      display: block;
+
+      .btn{
+        background-color: $color-primary;
+      }
+
+      .section-h3 {
+        color: $color-primary;
+
+        &::before,
+        &::after {
+          background-color: #fff;
+        }
+      }
+    }
+  }
+
+  .main-menu{
+    position: fixed;
+    pointer-events: initial;
+
+    // Default
+    li {
+      a {
+        border-right: 12px solid $color-white;
+        &.active {
+          border-right-color: $color-secondary;
+        }
+      }
+    }
+
+    &.yellow-background-menu{
+      li {
+        a {
+          color: $color-primary;
+
+          &.active {
+            border-right-color: $color-primary;
+          }
+        }
+      }
+    }
+
+    &.white-background-menu{
+      li {
+        a {
+          border-right-color: $color-primary;
+          color: $color-primary;
+        }
+      }
+    }
+  }
+}
+
+
+.top-nav-bar .btn {
+  font-size: 16px;
+}
+
+h4,
+.section-h3 {
+  font-size: 26px;
+}
+
+h4,
+.section-h3,
+.top-nav-bar .btn,
+.section-contador h3,
+.section-terminos h3,
+.form-submit,
+.login-form-wrapper .btn.btn-default,
+.section-capitulos .slider-card .cap-desc {
+  text-transform: uppercase;
+}
+
+.section-h3 {
+  color: $color-primary;
+  position: relative;
+  letter-spacing: 10px;
+  margin: 0 auto 25px;
+
+  &:before,
+  &:after {
+    background-color: $color-secondary;
+    content: '';
+    display: inline-block;
+    height: 2px;
+  }
+
+  @media (min-width: 768px) {
+    display: flex;
+    justify-content: center;
+
+    &:before,
+    &:after {
+      top: 10px;
+      position: relative;
+      flex-grow: 1;
+      max-width: 10vw;
+    }
+
+    &:before {
+      margin-right: 20px
+    }
+
+    &:after {
+      margin-left: 20px
+    }
+  }
+
+}
+
+// Buttons
+
+.btn-default,
+.form-submit {
+  background-color: $color-primary;
+}
+
+a.btn-secondary,
+a.btn-secondary:hover,
+a.btn-secondary:focus,
+a.btn-secondary:active,
+.modal-body .form-submit,
+.modal-body .form-submit:hover,
+.modal-body .form-submit:focus,
+.modal-body .form-submit:active {
+  background-color: $color-secondary;
+  color: $color-primary !important;
+  font-size: 20px;
+}
+
+.modal-body {
+  .form-submit{
+    max-width: 250px;
+    margin: 0 auto;
+    display: inherit;
+  }
+}
+
+.section-register,
+.section-ranking,
+.section-profile {
+  .top-section {
+    .top-nav-bar {
+      .btn.btn-default.active {
+        background-color: $color-white;
+        span {
+          color: $color-primary;
+        }
+
+        svg {
+          fill: $color-primary;
+        }
+      }
+    }
+  }
+}
+
+.section-capitulos,
+.section-login {
+  .top-section {
+    .top-nav-bar {
+      .btn.btn-default.active {
+        background-color: $color-secondary;
+        span {
+          color: $color-primary;
+        }
+
+        svg {
+          fill: $color-primary;
+        }
+      }
+    }
+  }
+}
+
+.section-hero,
+.section-ganar {
+  .main-menu {
+    li {
+      a {
+        border-right: 12px solid $color-white;
+
+        &.active {
+          border-right-color: $color-secondary;
+        }
+      }
+    }
+  }
+}
+
+.section-profile {
+  .register-form-wrapper {
+    .form-actions {
+      .form-submit {
+        background-color: $color-secondary;
+        color: $color-primary !important;
+      }
+    }
+  }
+}
+
+.section-ganar,
+.section-register,
+.section-profile,
+.section-ranking {
+  .main-menu {
+    li {
+      a {
+
+        &.active {
+          border-right-color: $color-primary;
+        }
+      }
+    }
+  }
+  .section-h3 {
+    color: $color-primary;
+
+    &:before,
+    &:after {
+      background-color: $color-white;
+    }
+  }
+
+  span {
+    color: $color-primary;
+  }
+}
+
+.ranking-table-wrapper table tr td {
+  color: $color-gray;
+}
+
+.section-login h3,
+.form-text,
+.checkbox,
+.modal-body h2,
+.modal-body h3,
+.modal-body h4,
+.modal-body span,
+.video-thumbnail span {
+  color: $color-primary;
+}
+
+.ranking-table-wrapper table tr:nth-child(1) td,
+.ranking-table-wrapper table tr:nth-child(2) td,
+.ranking-table-wrapper table tr:nth-child(3) td,
+.ranking-table-wrapper table tr:nth-child(4) td,
+.ranking-table-wrapper table tr:nth-child(5) td {
+  color: $color-primary;
+}
+
+// Backgrounds
+
+.section-capitulos,
+.section-ganar,
+.section-premios,
+.section-terminos {
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.section-capitulos,
+.section-comparte,
+.section-premios,
+.section-login,
+.modal-content {
+  background-image: url("../img/bg-white-texture.png");
+}
+
+.section-ganar {
+  background-image: url("../img/bg-yellow-bordered-texture.png");
+}
+
+.section-terminos,
+.register-form-wrapper,
+.ranking-table-wrapper {
+  background-image: url("../img/bg-blue-texture.png");
+
+  h3,
+  h5,
+  .nacimiento span {
+    color: $color-white !important;
+  }
+}
+
+.login-form-wrapper,
+.section-register,
+.section-ranking,
+#modal-preview-video .modal-content {
+  background-image: url("../img/bg-yellow-texture.png");
+}
+
+#modal-preview-video .modal-content .container {
+  .social-links{
+    padding-top: 8px;
+  }
+
+  h2 {
+    margin-left: 5px;
+  }
+
+  h2, h3{
+    display: inline-block;
+
+    &.video-description{
+      margin-left: 20px;
+    }
+  }
+}
+
+.section-profile,
+.section-ranking {
+  .content-wrapper {
+    background-image: url("../img/bg-vectores.png");
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+.section-capitulos {
+  .video-thumbnail {
+    background-image: url("../img/bg-video-thumbnail.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+// Error
+
+.messages {
+  color: $color-white !important;
+
+  * {
+    color: $color-white !important;
+  }
+
+  &.error {
+    background-color: $color-error;
+
+  }
+
+  &.status,
+  div.status {
+    background-color: $color-success;
+
+  }
+}
+
+

@@ -1,0 +1,26 @@
+//
+// _c-slider
+//
+
+&-c-slider {
+  
+  .slick-initialized.slick-slider {
+    @extend %slider__wrapper;
+  
+    .slick-arrow {
+      @extend %slider__arrow;
+  
+      &.slick-next {
+        @extend %slider__arrow--next;
+      }
+  
+      &.slick-prev {
+        @extend %slider__arrow--prev;
+      }
+    }
+  
+    .slick-dots {
+      @extend %slider__dots;
+    }
+  }
+}

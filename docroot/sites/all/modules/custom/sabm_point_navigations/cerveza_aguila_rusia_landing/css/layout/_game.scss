@@ -1,0 +1,1140 @@
+
+.game {
+
+  @include e(wrapper) {
+    background-image: url("../img/backgrounds/bg-game-landing-mobile.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center bottom;
+  }
+}
+
+.landing {
+
+  @include e(wrapper) {
+
+    @include m(mobile) {
+      //padding-top: 2rem;
+
+      @include breakpoint(tablet-landscape-up) {
+        padding-top: 0rem;
+      }
+    }
+
+    @include m(login) {
+      background-image: url("../img/backgrounds/bg-game-login-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        background-image: url("../img/backgrounds/bg-game-login-desktop.jpg");
+      }
+    }
+
+    @include m(table) {
+      background-image: url("../img/backgrounds/bg-game-register-desktop.jpg");
+    }
+
+    @include m(recoverPassword) {
+      background-image: url("../img/backgrounds/bg-game-recoverPassword-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        background-image: url("../img/backgrounds/bg-game-recoverPassword-desktop.jpg");
+      }
+    }
+
+    @include m(recoverConfirmation) {
+      background-image: url("../img/backgrounds/bg-game-recoverConfirmation-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        background-image: url("../img/backgrounds/bg-game-recoverConfirmation-desktop.jpg");
+      }
+    }
+
+    @include m(questions) {
+      background-image: url("../img/backgrounds/bg-game-questions-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        background-image: url("../img/backgrounds/bg-game-questions-desktop.jpg");
+      }
+    }
+
+    @include m(results) {
+      background-image: url("../img/backgrounds/bg-game-results-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        background-image: url("../img/backgrounds/bg-game-results-desktop.jpg");
+      }
+    }
+
+    @include m(register) {
+      background-image: url("../img/backgrounds/bg-game-register-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        background-image: url("../img/backgrounds/bg-game-register-desktop.jpg");
+      }
+    }
+
+    @include m(ranking) {
+      background-image: url("../img/backgrounds/bg-game-ranking-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        background-image: url("../img/backgrounds/bg-game-ranking-desktop.jpg");
+      }
+
+      &::before {
+        pointer-events: none;
+        @extend %absolute;
+        background-image: url("../img/backgrounds/bg-game-ranking-mask-mobile.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        z-index: 1;
+
+        @include breakpoint(tablet-landscape-up) {
+          display: none;
+        }
+      }
+    }
+
+    @include m(winners) {
+      background-image: url("../img/backgrounds/bg-game-winners-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        background-image: url("../img/backgrounds/bg-game-winners-desktop.jpg");
+      }
+    }
+
+    @include m(profile) {
+      background-image: url("../img/backgrounds/bg-game-profile-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        background-position: center bottom;
+        background-image: url("../img/backgrounds/bg-game-profile-desktop.jpg");
+      }
+    }
+
+    @include m(instructions) {
+      background-image: url("../img/backgrounds/bg-game-instructions-mobile.jpg");
+
+      @include breakpoint(tablet-landscape-up) {
+        background-image: url("../img/backgrounds/bg-game-instructions-desktop.jpg");
+
+      }
+
+      &::before {
+        pointer-events: none;
+        @extend %absolute;
+        background-image: url("../img/backgrounds/bg-game-instructions-mask-mobile.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: left bottom;
+        z-index: 1;
+
+        @include breakpoint(tablet-landscape-up) {
+        }
+
+        @include breakpoint(desktop-up) {
+          background-size: cover;
+          background-image: url("../img/backgrounds/bg-game-instructions-mask-desktop.png");
+          //background-size: contain;
+        }
+      }
+    }
+  }
+}
+
+.questions {
+
+  .form-item-question2 {
+    margin-top: 1rem;
+
+    @include breakpoint(tablet-landscape-up) {
+      margin-top: 2rem;
+    }
+  }
+
+  input {
+    margin: 0 auto;
+    margin-top: 2.5rem;
+    max-width: 240px;
+  }
+
+  label {
+    display: block !important;
+    @extend %h5;
+    margin-bottom: .5rem !important;
+    color: palette(base, black) !important;
+
+    @include breakpoint(tablet-landscape-up) {
+      margin-bottom: 1rem !important;
+    }
+  }
+}
+
+.instructions {
+
+  @include e(container) {
+    background-color: palette(base, white);
+
+    @include breakpoint(tablet-landscape-up) {
+      margin-bottom: 5rem;
+    }
+
+    & .row > .col-12 {
+      padding: 24px 48px;
+
+      &:nth-child(2) {
+        padding: 0px 48px;
+      }
+
+      @include breakpoint(tablet-landscape-up) {
+        padding: 24px 0;
+
+        &:nth-child(1) {
+          padding-left: 72px;
+        }
+
+        &:nth-child(2) {
+          padding: 24px 32px;
+        }
+
+        &:nth-child(3) {
+          padding-right: 72px;
+        }
+      }
+    }
+  }
+
+  @include e(header) {
+    width: 100%;
+    margin-bottom: 1rem;
+
+    img {
+      @extend %imgContain;
+    }
+  }
+
+  @include e(screen) {
+    width: 100%;
+    margin-bottom: 1rem;
+    object-position: top center;
+
+    @include breakpoint(tablet-landscape-up) {
+      height: 95%;
+    }
+
+    img {
+      @extend %imgCover;
+    }
+  }
+
+  @include e(keys) {
+    margin: 0 auto;
+    width: 100%;
+    margin-top: 1rem;
+    max-width: 168px;
+
+    img {
+      @extend %imgContain;
+    }
+  }
+
+  @include e(paragraph) {
+    text-align: center;
+
+    @include breakpoint(tablet-landscape-up) {
+      text-align: left;
+    }
+  }
+
+  @include e(title) {
+    text-align: center;
+    @extend %h4;
+    margin-bottom: 1rem !important;
+
+    @include breakpoint(tablet-landscape-up) {
+      text-align: left !important;
+      margin-bottom: 1.5rem !important;
+    }
+  }
+
+  .button {
+    margin: 1rem 0;
+    z-index: 1;
+    position: relative;
+
+    @include breakpoint(tablet-landscape-up) {
+      //transform: translateY(100%);
+    }
+  }
+}
+
+.picture {
+
+  .user-picture {
+    border-radius: 50%;
+    width: em(120px);
+    height: em(120px);
+    background-color: palette(base, bg);
+    position: relative;
+    margin: 0 auto;
+
+    &::before,
+    &::after {
+      @extend %absolute;
+      border-radius: 50%;
+    }
+
+    &::before {
+      box-shadow: inset 2px 2px 10px rgba(palette(base, white), .75);
+    }
+
+    &::after {
+      box-shadow: inset -1px -1px 1px rgba(palette(base, black), .75);
+    }
+
+    & > img {
+      //padding: em(6px);
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 1;
+      position: relative;
+      @extend %imgCover;
+      object-fit: contain !important;
+
+      @include breakpoint(tablet-landscape-up) {
+        //padding: em(8px);
+      }
+    }
+  }
+}
+
+.results {
+
+  @include e(pic) {
+    border-radius: 50%;
+    width: em(88px);
+    height: em(88px);
+    background-color: palette(base, bg);
+    position: relative;
+    margin-left: auto;
+
+    &::before,
+    &::after {
+      @extend %absolute;
+      border-radius: 50%;
+    }
+
+    &::before {
+      box-shadow: inset 2px 2px 10px rgba(palette(base, white), .75);
+    }
+
+    &::after {
+      box-shadow: inset -1px -1px 1px rgba(palette(base, black), .75);
+    }
+
+    @include breakpoint(tablet-landscape-up) {
+      width: em(168px);
+      height: em(168px);
+    }
+
+    @include m(small) {
+
+      @include breakpoint(phone-only) {
+        max-height: 72px;
+        max-width: 72px;
+      }
+
+    }
+
+    @include m(winners) {
+
+      @include breakpoint(tablet-landscape-up) {
+        width: em(144px);
+        height: em(144px);
+      }
+    }
+
+    & > img {
+      padding: em(6px);
+      border-radius: 50%;
+      overflow: hidden;
+      z-index: 1;
+      position: relative;
+      @extend %imgCover;
+
+      @include breakpoint(tablet-landscape-up) {
+        padding: em(8px);
+      }
+    }
+  }
+
+  @include e(tag) {
+    @extend %outline-sm;
+    position: absolute;
+    bottom: -15%;
+    right: 10%;
+    color: palette(base, primary);
+    text-align: center;
+    font-family: $font-stack-mono;
+    width: 32px;
+    height: 40px;
+    background-image: url("../img/badges/badges-ranking-position.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: 2px;
+    font-size: ms(2);
+    line-height: 32px;
+    z-index: 2;
+
+    @include breakpoint(tablet-landscape-up) {
+      transform: scale(2);
+      bottom: -5%;
+      right: 15%;
+    }
+  }
+
+  @include e(label) {
+    position: absolute;
+    font-size: ms(-2);
+    font-weight: 700;
+    color: palette(base, secondary);
+    background-color: palette(base, white);
+    padding: 8px 12px;
+    white-space: nowrap;
+    z-index: 1;
+    bottom: -10px;
+    right: 0px;
+    transform: scale(.5);
+
+    @include breakpoint(tablet-landscape-up) {
+      transform: scale(1);
+      right: 65px;
+    }
+
+    @include m(bottom) {
+      color: palette(base, white);
+      background-color: palette(base, secondary);
+      bottom: -25px;
+      right: 10px;
+
+      @include breakpoint(tablet-landscape-up) {
+        bottom: -40px;
+        right: 55px;
+      }
+    }
+
+  }
+}
+
+.landing__wrapper--results {
+
+  .results {
+
+    @include e(button) {
+      margin: 1rem 0;
+
+      @include breakpoint(tablet-landscape-up) {
+        margin: 2rem 0;
+        margin-top: initial;
+      }
+    }
+
+    @include e(icon) {
+      width: 48px;
+      height: 48px;
+
+      img {
+        @extend %imgContain;
+      }
+    }
+
+    @include e(points) {
+      @include ms-respond(font-size, 8);
+      line-height: em(80px, ms(8));
+      margin: 8px 0 0px;
+
+      @include breakpoint(tablet-landscape-up) {
+        @include ms-respond(font-size, 9);
+        line-height: em(72px, ms(9));
+        margin: 1rem 0 0px;
+      }
+    }
+
+    @include e(done) {
+      margin-bottom: 0;
+    }
+
+    @include e(icons) {
+      width: em(64px);
+
+      @include breakpoint(tablet-landscape-up) {
+        width: em(120px);
+      }
+
+      img {
+        @extend %imgContain;
+      }
+    }
+  }
+}
+
+.landing__wrapper--register {
+
+  .register {
+
+    @include e(title) {
+      text-transform: uppercase;
+      margin: 1rem auto;
+
+      @include breakpoint(tablet-landscape-up) {
+        margin: 2rem auto;
+      }
+    }
+
+    @include e(subtitle) {
+      margin-top: 2rem;
+
+      @include breakpoint(tablet-landscape-up) {
+        //margin-top: 0rem;
+      }
+    }
+
+    @include e(line) {
+
+      @include breakpoint(tablet-landscape-up) {
+        height: 2px;
+        width: 100%;
+        background: palette(base, secondary);
+      }
+    }
+
+    .field_terms_and_conditions {
+      margin-top: .5rem;
+
+      h6 {
+        font-weight: 400;
+        margin: 0;
+        margin-top: 5px;
+      }
+
+      input[type="checkbox"] {
+        width: 40px;
+        height: 40px;
+
+        @include breakpoint(tablet-landscape-up) {
+          width: initial;
+          height: initial;
+          //transform: translateX(48px);
+        }
+      }
+    }
+
+
+    .form-item-pass-pass1 {
+      @include breakpoint(tablet-landscape-up) {
+        margin-bottom: 12px !important;
+      }
+    }
+
+    .field-name-field-telefono-movil {
+      @include breakpoint(tablet-portrait-up) {
+        margin-right: 12px;
+      }
+    }
+    .field-type-datetime {
+      text-align: left;
+
+      @include breakpoint(tablet-portrait-up) {
+        margin-right: 12px;
+      }
+
+      .fieldset-legend {
+        display: block;
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 700;
+        text-align: center;
+
+        @include breakpoint(tablet-landscape-up) {
+          padding-left: 24px;
+          text-align: left;
+        }
+      }
+
+      .date-no-float {
+        width: 100%;
+      }
+    }
+
+    .date-no-float {
+      margin: 0;
+    }
+
+    .password-strength,
+    div.password-confirm {
+      display: none;
+    }
+
+    div.form-item div.password-suggestions {
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      border: 0;
+      text-align: left;
+    }
+
+    .field-name-field-cc {
+
+      @include breakpoint(tablet-landscape-up) {
+        margin-top: 29px;
+      }
+    }
+
+    .form-item {
+      margin: 6px 0;
+    }
+
+    .form-type-password {
+      width: 100% !important;
+    }
+
+    .form-type-date-select {
+      width: 100%;
+      margin: 0 !important;
+
+      @include breakpoint(tablet-landscape-up) {
+        //width: calc(100% + 12px);
+        //transform: translateX(-12px);
+      }
+
+      .date-padding {
+        display: flex;
+        width: inherit;
+        padding: 0;
+
+        .form-item {
+          flex: 1 0 auto;
+
+          .date-day {
+            padding: 0 4px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.landing__wrapper--winners {
+
+  .winners {
+
+    @include e(shirt) {
+      transform: scale(1.3);
+    }
+
+    @include e(title) {
+      margin-top: 2rem;
+      font-size: ms(2);
+
+      @include breakpoint(tablet-landscape-up) {
+        margin-top: 5rem;
+        font-size: ms(6);
+      }
+    }
+  }
+}
+
+.table {
+
+  @include e(button) {
+    margin: 1rem 0;
+
+    @include breakpoint(tablet-landscape-up) {
+      margin-top: 0;
+    }
+
+    @include m(winners) {
+
+      @include breakpoint(tablet-landscape-up) {
+        margin: 1rem 0 3rem;
+      }
+    }
+  }
+
+  @include e(badge) {
+    position: absolute;
+    width: 96px;
+    left: 50%;
+    transform: translate(-50%, -90%);
+    z-index: 1;
+
+    img {
+      @extend %imgContain;
+    }
+
+    @include breakpoint(tablet-landscape-up) {
+      width: 144px;
+    }
+  }
+
+  @include e(wrapper) {
+    position: relative;
+    padding: 16px;
+    border: 6px solid palette(base, bg);
+    background: white;
+    padding-top: 72px;
+    margin-top: 1.5rem;
+
+    @include breakpoint(tablet-landscape-up) {
+      margin: 0 48px;
+      padding: 32px;
+      padding-top: 72px;
+      border: 12px solid palette(base, bg);
+      margin-top: 4rem;
+    }
+
+    @include m(winners) {
+      padding: 16px;
+
+      @include breakpoint(tablet-landscape-up) {
+        padding: 8px;
+      }
+    }
+
+    * {
+      font-weight: 700;
+      color: #898989;
+    }
+  }
+
+  @include e(head) {
+    text-align: center;
+    background-color: #e8e8e8;
+
+    p {
+      padding: 16px 0px;
+    }
+  }
+
+  @include e(body) {
+    height: 260px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #fff;
+    text-align: left;
+    margin-bottom: 2rem;
+
+    &::-webkit-scrollbar {
+      width: 18px;
+      background-color: #e8e8e8;
+    }
+
+    &::-webkit-scrollbar-track {
+      //background-color: #898989;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      height: 72px;
+      background-color: palette(base, secondary);
+    }
+
+    ul {
+      &:nth-child(odd) {
+        background-color: #f3f3f3;
+      }
+
+      &:first-child {
+
+        li:first-child {
+          background-image: url("../img/badges/badge-ranking-first-place.png");
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+
+          p {
+            display: none;
+          }
+        }
+      }
+    }
+
+    p {
+      padding: 4px 8px;
+    }
+
+    .col {
+      border-left: 2px solid #e8e8e8;
+      border-right: 2px solid #e8e8e8;
+    }
+  }
+}
+
+.recover {
+
+  h1 {
+    margin: 1rem 0 2rem;
+
+    @include breakpoint(tablet-landscape-up) {
+      margin: 1.5rem 0;
+    }
+  }
+
+  h3 {
+
+    @include breakpoint(tablet-landscape-up) {
+      margin-bottom: 0rem;
+    }
+  }
+
+  .button {
+    margin-bottom: 2rem;
+
+    @include breakpoint(tablet-landscape-up) {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.landing__wrapper--profile {
+
+  .profile {
+
+    @include e(header) {
+      width: 100%;
+      transform: scale(1.2);
+
+      img {
+        max-height: 240px;
+        @extend %imgContain;
+      }
+    }
+
+    @include e(title) {
+      z-index: 1;
+      position: relative;
+      @include ms-respond(font-size, 7);
+    }
+
+    @include e(container) {
+      transform: translateY(-1.5rem);
+      background-color: rgba(palette(base, white), .5);
+      padding: 2rem 8px 1rem;
+
+      @include breakpoint(tablet-landscape-up) {
+        padding: 0;
+        background-color: transparent;
+        transform: translateY(0rem);
+      }
+    }
+  }
+}
+
+.results {
+
+  @include e(icons) {
+    height: 96px;
+
+    @include breakpoint(tablet-landscape-up) {
+      height: 196px;
+    }
+
+    img {
+      object-position: center;
+      @extend %imgContain;
+
+      @include breakpoint(tablet-landscape-up) {
+        object-position: left;
+      }
+    }
+  }
+
+  @include e(stats) {
+    padding: 0 0px 8px 8px;
+
+    @include breakpoint(tablet-landscape-up) {
+      padding: 0 16px;
+    }
+  }
+
+  @include e(text) {
+    margin: auto;
+    font-weight: 900;
+    font-family: $font-stack-sans;
+  }
+
+  @include e(name) {
+    font-size: ms(0);
+    @extend %outline;
+
+    @include breakpoint(tablet-landscape-up) {
+      font-size: ms(3);
+    }
+  }
+
+  @include e(score) {
+    font-size: ms(4);
+    @extend %outline;
+
+    @include breakpoint(tablet-landscape-up) {
+      font-size: ms(7);
+      line-height: 72px;
+    }
+  }
+
+  @include e(placeholder) {
+    margin-left: 8px;
+    font-size: ms(1);
+    line-height: 28px;
+    @extend %outline;
+
+    @include breakpoint(tablet-landscape-up) {
+      font-size: ms(4);
+      line-height: 40px;
+    }
+  }
+
+  @include e(mail) {
+    font-size: ms(-1);
+
+    @include breakpoint(tablet-landscape-up) {
+      font-size: ms(2);
+    }
+  }
+
+  @include e(button) {
+    margin: 0 0 1rem;
+
+    @include breakpoint(tablet-landscape-up) {
+      margin: 1.5rem 0;
+    }
+  }
+}
+
+.firefox {
+
+  .game__container {
+    @include breakpoint(tablet-landscape-up) {
+      height: 90vh;
+    }
+  }
+}
+
+.game {
+
+  @include e(container) {
+    //transform: translateY(-3.5rem);
+    height: 100vh;
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    @include breakpoint(tablet-landscape-up) {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+    }
+
+    #iframe {
+      border: 0;
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      @include breakpoint(tablet-landscape-up) {
+        position: absolute;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 75vh;
+      }
+    }
+
+    #game {
+      right: 0;
+      bottom: 0;
+    }
+
+    #canvas {
+      //width: 100% !important;
+      //height: 100% !important;
+      left: 50% !important;
+      transform: translateX(-50%);
+      //object-fit: contain;
+
+      //@include breakpoint(tablet-landscape-up) {
+      //  padding: 3rem;
+      //}
+    }
+
+    .play {
+      width: 100% !important;
+      height: 100% !important;
+      background-color: transparent;
+
+      img {
+        //padding: 1rem;
+        object-fit: cover;
+
+        @include breakpoint(tablet-landscape-up) {
+          //padding: 3rem;
+        }
+      }
+    }
+  }
+
+  //#game {
+  //  height: 90vh;
+  //  width: 100%;
+  //  position: relative;
+  //}
+  //
+}
+//
+.page-camino-a-rusia-juego-table {
+
+  .footer,
+  .header {
+    display: none;
+
+    @include breakpoint(tablet-landscape-up) {
+      display: block;
+    }
+  }
+}
+
+.messages {
+  font-family: $font-stack-sans;
+  max-width: calc(100vw - 16px);
+  position: fixed;
+  top: 0;
+  z-index: 111;
+  right: 0;
+  left: 0;
+  text-align: center;
+  font-size: 16px;
+  border-width: 3px !important;
+  box-shadow: 0px 10px 50px 1px rgba(0,0,0,0.4);
+  letter-spacing: 2px;
+  padding: 16px 32px 16px 60px !important;
+  background-repeat: no-repeat;
+  background-size: 24px;
+  background-position: 24px center !important;
+  color: palette(base, white) !important;
+  border-radius: 4px;
+
+  @include breakpoint(tablet-landscape-up) {
+    max-width: fit-content;
+    left: 50%;
+    transform: translateX(-50%);
+
+  }
+
+  a {
+    color: palette(base, white) !important;
+    text-decoration: underline;
+    font-weight: 700;
+  }
+
+  &.error {
+    background-color: lighten(palette(state, danger), 10%);
+    border-color: lighten(palette(state, danger), 10%);
+    background-image: url("../img/icons/icon-close.png");
+  }
+
+  &.status {
+    background-color: lighten(palette(state, success), 10%);
+    border-color: lighten(palette(state, success), 10%);
+    background-image: url("../img/icons/icon-guarantee.png");
+  }
+
+  &.warning {
+    background-color: lighten(palette(state, warning), 10%);
+    border-color: lighten(palette(state, warning), 10%);
+  }
+
+  .message-item {
+    font-weight: 700;
+  }
+
+  .message-item + .message-item {
+    margin-top: 4px;
+  }
+
+}
+
+.page-user-edit {
+
+  #edit-picture {
+    margin: 1rem 0;
+  }
+
+  .form-wrapper {
+
+
+    .fieldset-legend {
+      display: none;
+    }
+
+    .user-picture {
+      text-align: center;
+      //display: none ;
+
+      .image-style-thumbnail {
+        width: 120px;
+        height: 120px;
+        overflow: hidden;
+        border-radius: 50%;
+        object-fit: contain;
+        background-color: #fff;
+        border: 3px solid palette(base, bg);
+      }
+    }
+
+    .form-type-checkbox {
+      display: none;
+    }
+
+    .form-type-file {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto;
+      position: absolute;
+      top: 100px;
+      left: calc(50% + 20px);
+      background: palette(base, secondary);
+      overflow: hidden;
+      border-radius: 50%;
+      background-image: url("../img/icons/icon-pencil.png");
+      background-repeat: no-repeat;
+      background-size: 24px;
+      background-position: center;
+      cursor: pointer;
+      z-index: 10;
+
+      .description {
+        display: none;
+      }
+    }
+
+    input[type="file"] {
+      //@extend %button;
+      opacity: 0;
+      padding: 0;
+    }
+  }
+}
+
+.marker, .form-required {
+  display: none;
+}
+
+.firefox .landing__wrapper--register .register .field-type-datetime {
+  transform: translateY(-2px);
+
+}

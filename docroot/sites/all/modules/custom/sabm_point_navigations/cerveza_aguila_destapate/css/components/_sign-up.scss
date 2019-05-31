@@ -1,0 +1,115 @@
+//
+// SIGNUP
+//
+
+$form-id: 'webform-client-form-6';
+
+&-signup {
+  
+  ##{$form-id} {
+    
+    .webform-component-date {
+      
+      
+      & > .element-invisible {
+        display: block;
+      }
+    }
+    
+    .webform-container-inline {
+      @include make-row();
+      
+      .form-item {
+        @extend %grid-column;
+        flex-basis: 0;
+        flex-grow: 1;
+        max-width: 100%;
+        margin-bottom: 0;
+      }
+  
+      label.error {
+        //padding-left: ($grid-gutter-width / 2);
+        padding-right: ($grid-gutter-width / 2);
+      }
+    }
+  
+    label.error {
+      @extend %label;
+      @extend %label--error;
+    }
+    
+    input,
+    select {
+      
+      &.error {
+        border-color: palette(states, danger) !important;
+      }
+    }
+  
+  
+    .form-actions {
+      margin-top: rem(40px);
+    }
+  }
+  
+  .element-invisible {
+    display: none;
+  }
+  
+  @include e(pattern) {
+    position: relative;
+    
+    &::before,
+    &::after {
+      position: absolute;
+      content: '';
+      width: $pattern-width;
+      height: $pattern-height;
+      background-size: contain;
+      background-repeat: no-repeat;
+      transform: rotate(270deg);
+    }
+    
+    &::before {
+      top: 0;
+      left: -$pattern-width;
+      transform-origin: center top;
+      background-image: image('gmba-patterns-dots-secondary.svg');
+      
+      @include media-breakpoint-up(lg) {
+        top: rem(32px);
+        left: -$pattern-width / 2;
+        transform: rotate(0deg);
+      }
+    }
+    
+    &::after {
+      bottom: 0;
+      right: 0;
+      background-image: image('gmba-patterns-dots.svg');
+      
+      @include media-breakpoint-up(lg) {
+        bottom: rem(-16px);
+      }
+    }
+  }
+  
+  @include e(container) {
+    position: relative;
+    padding: em(72px) ($grid-gutter-width / 2);
+    background-color: palette(grays, 'white');
+    
+    @include media-breakpoint-down(sm) {
+      margin-right: -$grid-gutter-width / 2;
+      margin-left: -$grid-gutter-width / 2;
+      overflow: hidden;
+    }
+    
+    @include media-breakpoint-up(lg) {
+      border-radius: $border-radius;
+      padding: em(56px) em(64px);
+      transform: translate(#{rem(-32px)}, #{rem(40px)});
+    }
+    
+  }
+}

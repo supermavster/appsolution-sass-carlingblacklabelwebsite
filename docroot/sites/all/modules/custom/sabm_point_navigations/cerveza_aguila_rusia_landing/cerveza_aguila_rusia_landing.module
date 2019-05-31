@@ -1,0 +1,91 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function cerveza_aguila_rusia_landing_menu()
+{
+    return array(
+        'camino-a-rusia' => array(
+            'title' => 'Camino a Rusia',
+            'page callback' => 'cerveza_aguila_rusia_landing_home',
+            'access arguments' => array('access content'),
+        ),
+        'admin/config/system/cerveza_aguila_rusia_landing' => array(
+            'title' => 'Camino a Rusia',
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('cerveza_aguila_rusia_landing_form_settings'),
+            'access arguments' => array('administer site configuration'),
+          ),
+    );
+}
+
+function cerveza_aguila_rusia_landing_home()
+{
+    $build = array();
+    $build['page'] = array(
+        '#markup' => theme('page_camino_rusia'),
+    );
+    return $build;
+}
+
+function cerveza_aguila_rusia_landing_form_settings($form, &$form_state) {
+    $form['cerveza_aguila_rusia_landing_terms'] = array(
+        '#type' => 'managed_file',
+        '#title' => t("Terms"),
+        '#default_value' => variable_get('cerveza_aguila_rusia_landing_terms'),
+        '#upload_location' => 'public://cerveza_aguila_rusia_landing/',
+        '#upload_validators' => array('file_validate_extensions' => array('pdf')),
+    );
+
+    $form['fieldset']['cerveza_aguila_rusia_landing_terms_url'] = array(
+        '#type' => 'value',
+        '#value' => variable_get('cerveza_aguila_rusia_landing_terms_url'),
+    );
+
+    return system_settings_form($form);
+  }
+
+  function cerveza_aguila_rusia_landing_form_settings_validate($form, &$form_state) {
+    if (!empty($form_state['values']['cerveza_aguila_rusia_landing_terms'])) {
+        $file = file_load($form_state['values']['cerveza_aguila_rusia_landing_terms']);
+        if ($file->status != FILE_STATUS_PERMANENT) {
+            $file->status = FILE_STATUS_PERMANENT;
+            file_save($file);
+            file_usage_add($file, 'cerveza_aguila_rusia_landing', 'cerveza_aguila_rusia_landing', 1985);
+            $form_state['values']['cerveza_aguila_rusia_landing_terms_url'] = file_create_url($file->uri);
+        }
+    }
+    else {
+        $form_state['values']['cerveza_aguila_rusia_landing_terms_url'] = '';
+    }
+  }
+
+function cerveza_aguila_rusia_landing_theme()
+{
+    $items = array();
+
+    $items['page_camino_rusia'] = array(
+        'template' => 'themes/page_camino_a_rusia',
+        'variables' => array(
+            'template_path' => url(drupal_get_path('module', 'cerveza_aguila_rusia_landing'), array('absolute' => TRUE, 'https' => true)),
+        ),
+    );
+    return $items;
+}
+
+/**
+ * HOOK_preprocess_HOOK().
+ */
+function cerveza_aguila_rusia_landing_preprocess_page(&$vars)
+{
+    $vars['template_path'] = url(drupal_get_path('module', 'cerveza_aguila_rusia_landing'), array('absolute' => TRUE, 'https' => true));
+    $paths = array('camino-a-rusia', 'camino-a-rusia/*');
+    if (drupal_match_path(current_path(), implode(PHP_EOL, $paths))) {
+        $path = drupal_get_path('module', 'cerveza_aguila_rusia');
+        drupal_add_css('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', array('type' => 'external'));
+        drupal_add_js('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
+        drupal_add_js($path . '/js/css_browser_selector.js');
+        drupal_add_js($path . '/js/scripts.js');
+        drupal_add_css($path . '/css/style.css');
+    }
+}

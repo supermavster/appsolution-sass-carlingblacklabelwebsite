@@ -1,0 +1,118 @@
+<?php
+/**
+ * Implements hook_schema().
+ */
+function cerveza_aguila_destapa_schema() {
+  $schema = array();
+  $schema['cerveza_aguila_destapa_points'] = array(
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+      ),
+      'uid' => array(
+        'type' => 'int',
+      ),
+      'created' => array(
+        'type' => 'int',
+      ),
+      'points' => array(
+        'type' => 'int',
+      ),
+      'event' => array(
+         'type' => 'varchar',
+         'length' => 30,
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+
+  $schema['cerveza_aguila_destapa_ranking'] = array(
+    'fields' => array(
+      'uid' => array(
+        'type' => 'int',
+      ),
+      'updated' => array(
+        'type' => 'int'
+      ),
+      'total_points' => array(
+        'type' => 'int',
+      ),
+    ),
+    'primary key' => array('uid'),
+  );
+
+  $schema['cerveza_aguila_destapa_response'] = array(
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+      ),
+      'uid' => array(
+        'type' => 'int',
+      ),
+      'nid' => array(
+        'type' => 'int'
+      ),
+      'created' => array(
+        'type' => 'int'
+      ),
+      'response' => array(
+        'type' => 'varchar',
+        'length' => 255,
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+
+  $schema['cerveza_aguila_destapa_share'] = array(
+      'fields' => array(
+        'id' => array(
+           'type' => 'serial',
+         ),
+        'uid' => array(
+          'type' => 'int',
+        ),
+        'nid' => array(
+          'type' => 'int',
+        ),
+        'created' => array(
+          'type' => 'int'
+        ),
+        'type' => array(
+          'type' => 'varchar',
+          'length' => 10,
+        ),
+      ),
+      'primary key' => array('id'),
+    );
+
+  $schema['cerveza_aguila_destapa_play'] = array(
+        'fields' => array(
+          'id' => array(
+             'type' => 'serial',
+           ),
+          'uid' => array(
+            'type' => 'int',
+          ),
+          'nid' => array(
+            'type' => 'int',
+          ),
+          'created' => array(
+            'type' => 'int'
+          ),
+          'type' => array(
+            'type' => 'varchar',
+            'length' => 10,
+          ),
+        ),
+        'primary key' => array('id'),
+      );
+
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install()
+ */
+function cerveza_aguila_destapa_install() {
+    db_query("UPDATE {system} SET weight = 99999 WHERE name = 'cerveza_aguila_destapa'");
+}

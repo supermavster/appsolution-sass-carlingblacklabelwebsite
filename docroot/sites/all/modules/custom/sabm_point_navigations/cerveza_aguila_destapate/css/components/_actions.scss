@@ -1,0 +1,119 @@
+//
+// ACTIONS
+//
+
+&-actions {
+  
+  @include e(item) {
+    $offset: em(16px);
+    position: relative;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: $offset;
+    height: 100%;
+    background-image: image('destapate-bg-actions.png');
+    background-size: cover;
+    border: 6px solid white;
+    
+    @include media-breakpoint-up(lg) {
+      padding: $offset * 2;
+      border-left: 0;
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: $offset;
+      right: $offset;
+      bottom: $offset;
+      left: $offset;
+      mix-blend-mode: multiply;
+      background-color: rgba(palette(themes, secondary), .2);
+  
+      @include media-breakpoint-up(lg) {
+        top: $offset * 2;
+        right: $offset * 2;
+        bottom: $offset * 2;
+        left: $offset * 2;
+      }
+    }
+    
+    @include m(last) {
+      
+      @include media-breakpoint-down(md) {
+        border-top: 0;
+      }
+      
+      @include media-breakpoint-up(lg) {
+        border-right: 0;
+      }
+    }
+  }
+  
+  @include e(text) {
+    @include ms-respond(font-size, 5);
+    @include text-stroke(#005d9d, color-burn);
+    margin: rem(12px) auto;
+    
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, 1);
+    }
+    
+    @include m(participa) {
+      
+      &::before {
+        content: 'Participa de una';
+      }
+    }
+    
+    @include m(destapate) {
+      
+      &::before {
+        content: 'Destápate y gana premios';
+      }
+    }
+    
+    @include m(conoce) {
+      max-width: 72%;
+  
+      @include media-breakpoint-up(lg) {
+        max-width: 65%;
+      }
+      
+      &::before {
+        content: 'Conoce más historias
+            de colombianos que
+            se destaparon sin miedo';
+      }
+    }
+    
+  }
+  
+  @include e(button) {
+    margin: rem(12px) auto;
+  
+    @include media-breakpoint-down(md) {
+      margin: rem(8px) auto;
+      @include ms-respond(font-size, 8);
+    }
+  
+    @include m(sube) {
+      @include text-stroke(palette(themes, tertiary), color-burn);
+  
+      &::before {
+        content: 'Sube tu video o foto';
+      }
+    }
+  
+    @include m(mira) {
+      @include text-stroke(rgba(palette(themes, tertiary), 1), color-burn);
+    
+      &::before {
+        content: 'Mira las historias';
+      }
+    }
+  }
+
+}

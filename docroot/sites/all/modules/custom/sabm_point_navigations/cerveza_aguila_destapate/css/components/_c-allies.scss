@@ -1,0 +1,32 @@
+//
+// Allies
+//
+
+&-c-allies {
+  border-top: $border-width solid palette(themes, secondary);
+  border-bottom: $border-width solid palette(themes, secondary);
+  padding: em(8px) 0;
+  background-color: #fff;
+  
+  @include media-breakpoint-up(lg) {
+    padding: em(24px) 0;
+  }
+  
+  @include e(heading) {
+    text-transform: uppercase;
+    text-align: center;
+    color: palette(themes, secondary);
+  
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, 3);
+    }
+  }
+
+  img {
+    padding: 1rem;
+  
+    @include media-breakpoint-up(lg) {
+      padding-bottom: 0;
+    }
+  }
+}

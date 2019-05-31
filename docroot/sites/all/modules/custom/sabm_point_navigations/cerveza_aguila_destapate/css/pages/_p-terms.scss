@@ -1,0 +1,46 @@
+//
+// _p-terms
+//
+
+&-p-terms {
+  @extend %page-wrapper;
+  background-image: image('destapate-bg-register.png');
+  //background-image: none;
+  background-size: contain;
+  background-repeat: repeat-y;
+  background-color: palette(themes, secondary);
+  
+  @include e(heading) {
+  
+    @include ms-respond(font-size, 8);
+    @include text-stroke(palette(themes, tertiary), color-burn);
+    margin-bottom: rem(24px);
+  
+    @include media-breakpoint-up(lg) {
+      @include ms-respond(font-size, 4);
+    }
+  
+    &::before {
+      content: 'Términos y condiciones';
+    }
+  }
+  
+  ul {
+    padding-left: 1em;
+    
+    li {
+      list-style: disc;
+    }
+  }
+  
+  .body * {
+    margin-top: 0;
+    color: white;
+    background: transparent !important;
+    font-size: ms(3);
+  
+    @include media-breakpoint-up(lg) {
+      font-size: ms(4);
+    }
+  }
+}

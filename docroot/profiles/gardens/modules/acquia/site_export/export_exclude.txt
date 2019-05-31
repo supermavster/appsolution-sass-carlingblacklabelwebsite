@@ -1,0 +1,12 @@
+.svn
+CVS
+.git
+settings.php
+index.php
+.htaccess
+profiles/gardens/modules/contrib/views_bulk_operations/actions/script.action.inc
+profiles/gardens/modules/gardens/gardens_statsd/gardens_statsd.install
+profiles/gardens/modules/gardens/gardens_statsd/gardens_statsd.module
+modules/aggregator/aggregator.pages.inc
+modules/block/block.module
+profiles/gardens/modules/contrib/mollom/mollom.module

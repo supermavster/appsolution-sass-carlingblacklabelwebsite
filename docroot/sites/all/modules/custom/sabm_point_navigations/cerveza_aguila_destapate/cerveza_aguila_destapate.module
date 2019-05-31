@@ -1,0 +1,473 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function cerveza_aguila_destapate_menu() {
+  return array(
+    'destapate' => array(
+      'title' => 'Promo Destapate',
+      'page callback' => 'cerveza_aguila_destapate_home',
+      'access arguments' => array('access content'),
+      'file' => 'inc/cerveza_aguila_destapate.pages.inc',
+    ),
+    'destapate/jurados' => array(
+      'title' => 'Promo Destapate',
+      'page callback' => 'cerveza_aguila_destapate_referee',
+      'access arguments' => array('access content'),
+      'file' => 'inc/cerveza_aguila_destapate.pages.inc',
+      'type' => MENU_CALLBACK,
+    ),
+    'destapate/galeria' => array(
+      'title' => 'Promo Destapate',
+      'page callback' => 'cerveza_aguila_destapate_gallery',
+      'access arguments' => array('access content'),
+      'file' => 'inc/cerveza_aguila_destapate.pages.inc',
+      'type' => MENU_CALLBACK,
+    ),
+    'destapate/galeria/%' => array(
+      'title' => 'Promo Destapate',
+      'page callback' => 'cerveza_aguila_destapate_gallery',
+      'page arguments' => array(2),
+      'access arguments' => array('access content'),
+      'file' => 'inc/cerveza_aguila_destapate.pages.inc',
+      'type' => MENU_CALLBACK,
+    ),
+    'destapate/terminos' => array(
+      'title' => 'Promo Destapate',
+      'page callback' => 'cerveza_aguila_destapate_page_terms',
+      'access arguments' => array('access content'),
+      'file' => 'inc/cerveza_aguila_destapate.pages.inc',
+      'type' => MENU_CALLBACK,
+    ),
+    'destapate/registro' => array(
+      'title' => 'Promo Destapate',
+      'page callback' => 'cerveza_aguila_destapate_page_register',
+      'access arguments' => array('access content'),
+      'file' => 'inc/cerveza_aguila_destapate.register.inc',
+    ),
+    'destapate/seleccion/%node/%/%' => array(
+      'title' => 'Promo Destapate',
+      'page callback' => 'cerveza_aguila_destapate_page_select',
+      'page arguments' => array(2),
+      'access callback' => 'cerveza_aguila_destapate_access_register',
+      'access arguments' => array('seleccion', 2, 3, 4),
+      'file' => 'inc/cerveza_aguila_destapate.register.inc',
+      'type' => MENU_CALLBACK,
+    ),
+    'destapate/upload/%node/%/%' => array(
+      'title' => 'Promo Destapate',
+      'page callback' => 'cerveza_aguila_destapate_page_upload',
+      'page arguments' => array(2, 'U'),
+      'access callback' => 'cerveza_aguila_destapate_access_register',
+      'access arguments' => array('upload', 2, 3, 4),
+      'file' => 'inc/cerveza_aguila_destapate.register.inc',
+      'type' => MENU_CALLBACK,
+    ),
+    'destapate/video-link/%node/%/%' => array(
+      'title' => 'Promo Destapate',
+      'page callback' => 'cerveza_aguila_destapate_page_video_link',
+      'page arguments' => array(2, 'VL'),
+      'access callback' => 'cerveza_aguila_destapate_access_register',
+      'access arguments' => array('video-link', 2, 3, 4),
+      'file' => 'inc/cerveza_aguila_destapate.register.inc',
+      'type' => MENU_CALLBACK,
+    ),
+    'destapate/video-record/%node/%/%' => array(
+      'title' => 'Promo Destapate',
+      'page callback' => 'cerveza_aguila_destapate_page_video_record',
+      'page arguments' => array(2, 'VR'),
+      'access callback' => 'cerveza_aguila_destapate_access_register',
+      'access arguments' => array('video-record', 2, 3, 4),
+      'file' => 'inc/cerveza_aguila_destapate.video_record.inc',
+      'type' => MENU_CALLBACK,
+    ),
+    'destapate/video-record-upload/%node/%/%' => array(
+      'title' => 'Promo Destapate',
+      'page callback' => 'cerveza_aguila_destapate_page_video_record_upload',
+      'page arguments' => array(2, 'VRU'),
+      'access callback' => 'cerveza_aguila_destapate_access_register',
+      'access arguments' => array('video-record-upload', 2, 3, 4),
+      'file' => 'inc/cerveza_aguila_destapate.video_record.inc',
+      'type' => MENU_CALLBACK,
+    ),
+    'destapate/resultado/%node/%/%' => array(
+      'title' => 'Destápate #SinMiedo',
+      'page callback' => 'cerveza_aguila_destapate_page_video_end',
+      'page arguments' => array(2),
+      'access callback' => 'cerveza_aguila_destapate_access_public',
+      'access arguments' => array('resultado', 2, 3, 4),
+      'file' => 'inc/cerveza_aguila_destapate.register.inc',
+      'type' => MENU_CALLBACK,
+    ),
+    'destapate/public/%node' => array(
+      'title' => 'Destápate #SinMiedo',
+      'page callback' => 'cerveza_aguila_destapate_page_video_end',
+      'page arguments' => array(2),
+      'access callback' => 'cerveza_aguila_destapate_access_public_2',
+      'access arguments' => array(2),
+      'file' => 'inc/cerveza_aguila_destapate.register.inc',
+      'type' => MENU_CALLBACK,
+    ),
+  );
+}
+
+function cerveza_aguila_destapate_access_register($opt, $node, $key, $token) {
+  return $token == cerveza_aguila_destapate_get_token($opt . $key . $node->nid);
+}
+
+function cerveza_aguila_destapate_access_public($opt, $node, $key, $token) {
+  return $token == cerveza_aguila_destapate_get_token($opt . $key . $node->nid, FALSE);
+}
+
+function cerveza_aguila_destapate_access_public_2($node) {
+  return $node->status && $node->type == 'contenido_destapate' && $node->field_estado['und'][0]['value'] == 'A' && $node->field_page['und'][0]['value'];
+}
+/**
+ * Implements hook_theme().
+ */
+function cerveza_aguila_destapate_theme($existing, $type, $theme, $path) {
+  $items = array();
+
+  $items['page_destapate_home'] = array(
+    'template' => 'theme/page-home',
+    'variables' => array()
+  );
+
+  $items['page_destapate_gallery'] = array(
+    'template' => 'theme/page-gallery',
+    'variables' => array()
+  );
+
+  $items['page_destapate_referee'] = array(
+    'template' => 'theme/page-referee',
+    'variables' => array()
+  );
+
+  $items['page_destapate_terms'] = array(
+    'template' => 'theme/page-terms',
+  );
+
+  $items['page_destapate_register'] = array(
+    'template' => 'theme/page-register',
+    'variables' => array(
+      'form' => NULL,
+    )
+  );
+
+  $items['page_destapate_select'] = array(
+    'template' => 'theme/page-select-option',
+    'variables' => array(
+      'link_record' => NULL,
+      'link_upload' => NULL,
+      'link_youtube' => NULL,
+    )
+  );
+
+  $items['page_destapate_upload'] = array(
+    'template' => 'theme/page-upload',
+    'variables' => array(
+      'form' => NULL,
+    )
+  );
+
+  $items['page_destapate_video_link'] = array(
+    'template' => 'theme/page-video-link',
+    'variables' => array(
+      'form' => NULL,
+    )
+  );
+
+  $items['page_destapate_video_record'] = array(
+    'template' => 'theme/page-video-record',
+    'variables' => array()
+  );
+
+  $items['page_destapate_video_record_upload'] = array(
+    'template' => 'theme/page-video-record-upload',
+    'variables' => array(
+      'form' => NULL,
+    )
+  );
+
+  $items['page_destapate_video_end'] = array(
+    'template' => 'theme/page-video-end',
+    'variables' => array(
+      'form' => NULL,
+    )
+  );
+
+  $items['destapate_email_public'] = array(
+    'template' => 'theme/email-public',
+  );
+
+  $items['destapate_email_received'] = array(
+    'template' => 'theme/email-received',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function cerveza_aguila_destapate_theme_registry_alter(&$theme_registry) {
+  $extension = '.tpl.php';
+  $module_path = drupal_get_path('module', 'cerveza_aguila_destapate');
+  $files = file_scan_directory($module_path . '/templates', '/' . preg_quote($extension) . '$/');
+
+  foreach ($files as $file) {
+    $template = drupal_basename($file->filename, $extension);
+    $theme = str_replace('-', '_', $template);
+    list($base_theme, $specific) = explode('__', $theme, 2);
+    // Don't override base theme.
+    if (!empty($specific) && isset($theme_registry[$base_theme])) {
+      $theme_info = array(
+        'template' => $template,
+        'path' => drupal_dirname($file->uri),
+        //'variables'  => $theme_registry[$base_theme]['variables'],
+        'base hook' => $base_theme,
+        // Other available value: theme_engine.
+        'type' => 'module',
+        'theme path' => $module_path,
+      );
+      $theme_registry[$theme] = $theme_info;
+    }
+  }
+}
+
+
+/**
+ * Implements hook_views_api().
+ */
+function cerveza_aguila_destapate_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'cerveza_aguila_destapate') . '/views',
+  );
+}
+
+/**
+ * HOOK_preprocess_HOOK().
+ */
+function cerveza_aguila_destapate_preprocess_html(&$vars) {
+  $paths = array('destapate', 'destapate/*', 'user', 'user/*', 'user/*/*');
+  if (drupal_match_path(current_path(), implode(PHP_EOL, $paths))) {
+    $module_path = drupal_get_path('module', 'cerveza_aguila_destapate');
+    
+    drupal_add_css('https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css', array('type' => 'external'));
+    drupal_add_css('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css', array('type' => 'external'));
+    //drupal_add_css($module_path . '/js/bootstrap-modal-ios.css');
+
+    /*drupal_add_js('https://code.jquery.com/jquery-3.3.1.slim.min.js', array(
+      'type' => 'external',
+      'scope' => 'footer'));*/
+
+    drupal_add_js('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', 'external');
+
+    drupal_add_js('https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js', 'external');
+  
+    //drupal_add_js($module_path . '/js/bootstrap-modal-ios.js');
+    
+
+    drupal_add_css($module_path . '/css/main.css');
+    drupal_add_js(drupal_get_path('module', 'cerveza_aguila_destapate') . '/js/main.js');
+  }
+
+}
+
+/**
+ * Implements hook_node_presave().
+ */
+function cerveza_aguila_destapate_node_presave($node) {
+  if ($node->type == 'contenido_destapate' && $node->field_sendmail['und'][0]['value'] == 0  && $node->field_estado['und'][0]['value'] != 'P') {
+
+    if ($node->field_estado['und'][0]['value'] == 'A') {
+      $node->field_sendmail['und'][0]['value'] = 1;
+      $node->status = 1;
+      $params = array(
+        'url_final' => url('destapate/public/' . $node->nid, array('absolute' => TRUE)),
+      );
+      drupal_mail('cerveza_aguila_destapate', 'published', $node->field_correo_electronico['und'][0]['value'], NULL, $params);
+    }
+    elseif ($node->field_estado['und'][0]['value'] == 'N') {
+      $node->field_sendmail['und'][0]['value'] = 1;
+      //drupal_mail('cerveza_aguila_destapate', 'not_published', $node->field_correo_electronico['und'][0]['value'], NULL);
+    }
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function cerveza_aguila_destapate_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'received':
+      $message['from'] = variable_get('site_mail');
+      $message['subject'] = 'Ya recibimos tu historia';
+      $message['body'][] = theme('destapate_email_received', array(
+        'link_video' => $params['url_final'],
+      ));
+      break;
+
+    case 'published':
+      $message['from'] = variable_get('site_mail');
+      $message['subject'] = 'Tu historia ya está publicada';
+      $message['body'][] = theme('destapate_email_public', array(
+        'link_video' => $params['url_final'],
+      ));
+      break;
+
+    /*case 'not_published':
+      $message['from'] = variable_get('site_mail');
+      $message['subject'] = 'Tu video no ha sido publicado';
+      $message['body'][] = theme('ab_himno_mail_not_published');
+      break;*/
+  }
+}
+
+function cerveza_aguila_destapate_get_token($value = '', $private_=TRUE) {
+  //return drupal_hmac_base64($value, ($private_ ? ip_address() : '') . drupal_get_private_key() . drupal_get_hash_salt());
+  return drupal_hmac_base64($value, ($private_ ? '' : '') . drupal_get_private_key() . drupal_get_hash_salt());
+}
+
+/**
+ * returns a array for use with #options in a form field
+ * */
+function cerveza_aguila_destapate_taxonomy_options_array($machine_name) {
+  $options = array();
+  $v = taxonomy_vocabulary_machine_name_load($machine_name);
+  $terms = taxonomy_get_tree($v->vid);
+  foreach ($terms as $term) {
+    $options[$term->tid] = $term->name;
+  }
+  return $options;
+}
+
+function cerveza_aguila_destapate_taxonomy_options_array2($machine_name) {
+  $options = array();
+  $v = taxonomy_vocabulary_machine_name_load($machine_name);
+  $terms = taxonomy_get_tree($v->vid);
+
+  foreach ($terms as $term) {
+
+    $options[]= array(
+      'tid' => $term->tid,
+      'name' => $term->name,
+      'body' => $term->description,
+    );
+
+  }
+  return $options;
+}
+
+/**
+ * Implements hook_library().
+ */
+function cerveza_aguila_destapate_library() {
+  $libraries = array();
+
+  $libraries['jquery.Slick'] = array(
+    'title' => 'Slick',
+    'website' => 'http://kenwheeler.github.io/slick/',
+    'version' => VERSION,
+    'js' => array(
+      'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js' => array(
+        'data' => 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js',
+        'type' => 'external',
+      ),
+    ),
+    'css' => array(
+      'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css' => array(
+        'data' => 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css',
+        'type' => 'external',
+      ),
+    ),
+  );
+
+  $libraries['jquery.ABValidator'] = array(
+    'title' => 'jQuery Validator',
+    'website' => 'https://jqueryvalidation.org',
+    'version' => VERSION,
+    'js' => array(
+      'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js' => array(
+        'data' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js',
+        'type' => 'external',
+      ),
+      'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.min.js' => array(
+        'data' => 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.min.js',
+        'type' => 'external',
+      ),
+      drupal_get_path('module', 'cerveza_aguila_destapate') . '/js/cerveza_aguila_destapate.validator.js' => array(),
+    ),
+  );
+
+  return $libraries;
+}
+
+function cerveza_aguila_destapate_get_link($node) {
+  $token = cerveza_aguila_destapate_get_token('resultado' . REQUEST_TIME . $node->nid, FALSE);
+  return 'destapate/resultado/' . $node->nid . '/' . REQUEST_TIME . '/' . $token;
+}
+
+/**
+ * Implements hook_cron_queue_info().
+ */
+function cerveza_aguila_destapate_cron_queue_info() {
+  $queues['cerveza_aguila_destapate_consumer'] = array(
+    'worker callback' => 'cerveza_aguila_destapate_add_consumer',
+    'time' => 60,
+  );
+
+  return $queues;
+}
+
+function cerveza_aguila_destapate_add_consumer($data) {
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL,"http://sabmlatmdc.com/gfsaab/set-data");
+  curl_setopt($ch, CURLOPT_POST, 1);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+  $server_output = curl_exec($ch);
+  curl_close($ch);
+  $character = json_decode($server_output);
+}
+
+/**
+ * Implements hook_init().
+ */
+function cerveza_aguila_destapate_init() {
+  if (isset($_SESSION['data-layer'])) {
+    foreach ($_SESSION['data-layer'] as $item) {
+      cerveza_aguila_destapate_add_datalayer($item);
+    }
+    unset($_SESSION['data-layer']);
+  }
+}
+
+function cerveza_aguila_destapate_add_datalayer($item) {
+  $js = "dataLayer.push({'event': '" . $item['event'] . "', 'eventCategory': '" . $item['eventCategory'] . "', 'eventAction': '" . $item['eventAction'] . "', 'eventLabel': '" . $item['eventLabel'] . "'})";
+  drupal_add_js($js, array('type' => 'inline', 'scope' => 'footer', 'weight' => 999));
+}
+
+function cerveza_aguila_destapate_add_queue_datalayer($item) {
+  if (!isset($_SESSION['data-layer'])) {
+    $_SESSION['data-layer'] = array();
+  }
+  $_SESSION['data-layer'][] = $item;
+}
+
+
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function cerveza_aguila_destapate_views_pre_render(&$view) {
+  if ($view->name == 'lista_galeria_destapate') {
+    $results = &$view->result;
+    foreach ($results as $key => $result) {
+      if ($result->_field_data['nid']['entity']->field_tipo_contenido['und'][0]['value'] == 'U' && $result->_field_data['nid']['entity']->field_archivo['und'][0]['filemime'] != 'video/mp4') {
+        $results[$key]->field_field_thumbnail[0]['rendered']['#item'] = $result->_field_data['nid']['entity']->field_archivo['und'][0];
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+//
+// CHECKBOX
+//
+
+.form-type-checkbox {
+  $checkbox-size: 40px;
+  $checkbox-offset: 12px;
+  display: flex;
+  align-items: center;
+
+  input[type="checkbox"] {
+    display: none;
+
+    &:checked {
+
+      & + label::before {
+        background-color: palette(themes, secondary);
+        //background-image: image('gmba-icon-check.svg');
+      }
+    }
+  }
+
+  label.option {
+    @extend %label;
+    position: relative;
+    margin-left: $checkbox-size + $checkbox-offset;
+    overflow: visible;
+  
+    @include media-breakpoint-up(lg) {
+      margin-left: $checkbox-size / 1.5 + $checkbox-offset;
+    }
+
+    &::before {
+      @extend %transition;
+      position: absolute;
+      content: '';
+      width: $checkbox-size;
+      height: $checkbox-size;
+      top: 50%;
+      left: -$checkbox-size - $checkbox-offset;
+      background-size: contain;
+      background-repeat: no-repeat;
+      border: ($border-width / 2) solid white;
+      background-color: #fff;
+      cursor: pointer;
+      transform: translateY(-50%);
+  
+      @include media-breakpoint-up(lg) {
+        width: $checkbox-size / 1.5;
+        height: $checkbox-size / 1.5;
+        left: (-$checkbox-size / 1.5) - $checkbox-offset;
+      }
+    }
+
+    a {
+      //color: palette(grays, 'white');
+      text-decoration: underline;
+    }
+  }
+
+
+}
+

@@ -1,0 +1,35 @@
+//
+// VIDEO
+//
+
+&-video {
+  @include section-container();
+  background-color: palette(grays, 'white');
+  
+  @include media-breakpoint-down(md) {
+    border-top-style: initial;
+  }
+  
+  @include media-breakpoint-up(lg) {
+    border-top-width: em(6px);
+  }
+  
+  .embed-responsive-item {
+    object-fit: cover;
+    @extend %embed-responsive-item;
+  }
+  
+  @include e(embed) {
+    @extend %embed-responsive;
+  
+    &::before {
+      @include media-breakpoint-up(lg) {
+        padding-top: percentage(9 / 16);
+      }
+  
+      @include media-breakpoint-down(md) {
+        padding-top: percentage(12 / 8);
+      }
+    }
+  }
+}

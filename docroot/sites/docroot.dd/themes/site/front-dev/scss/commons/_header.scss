@@ -1,0 +1,77 @@
+.navbar {
+	&.container {
+		
+		.container {			
+			.navbar-header {				
+				a {
+					&.logo {
+						
+						img {
+							display: none;
+						}
+					}
+				}
+			}
+
+			.navbar-collapse {
+				.navbar-nav {
+					float: none;
+					clear: both;
+					> li {
+						display: block;
+						@include mq('md') {
+							display: inline-block;
+							vertical-align: middle;
+						}
+						a {
+							padding-top: 0;
+							padding-bottom: 0;
+							&:hover,
+							&:focus {
+								color: $red;
+							}
+						}
+						&.active {
+							a {
+								background-color: transparent;
+							}
+						}
+					}
+				}
+			}
+
+			.navbar-collapse,
+			.navbar-header {
+				@include mq('md') {
+					display: inline-block !important;
+					vertical-align: middle;
+					float: none;
+				}
+			}
+
+			
+			// Brand
+			.name {
+				&.navbar-brand {
+					display: inline-block;
+					vertical-align: middle;
+				}
+			}
+		}
+
+		// Scrolled menu 
+		&.scroll_menu {
+			
+			.container {
+				// Brand
+				.navbar-header {
+					a {
+						&.logo {
+							
+						}
+					}
+				}
+			}
+		}
+	}
+}
